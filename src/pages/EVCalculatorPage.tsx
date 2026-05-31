@@ -1,0 +1,190 @@
+import { useState, useCallback } from 'react'
+import type { Card } from '@/types/poker'
+import CardSelector from '@/components/poker/CardSelector'
+import EquityDisplay from '@/components/poker/EquityDisplay'
+import { calculateEquity } from '@/lib/poker/equity'
+
+export default function EVCalculatorPage() {
+  const [heroCards, setHeroCards] = useState<Card[]>([])
+  const [villainCards, setVillainCards] = useState<Card[]>([])
+  const [boardCards, setBoardCards] = useState<Card[]>([])
+  const [selectingFor, setSelectingFor] = useState<'hero' | 'villain' | 'board'>('hero')
+  const [potSize, setPotSize] = useState(100)
+  const [betToCall, setBetToCall] = useState(50)
+  const [result, setResult] = useState<{ heroEquity: number; heroWins: number; villainWins: number; tie: number; ev: number } | null>(null)
+  const [calculating, setCalculating] = useState(false)
+
+  const allUsed = [...heroCards, ...villainCards, ...boardCards]
+
+  const handleCardSelect = useCallback((card: Card) => {
+    if (selectingFor === 'hero' && heroCards.length < 2) {
+      setHeroCards([...heroCards, card])
+    } else if (selectingFor === 'villain' && villainCards.length < 2) {
+      setVillainCards([...villainCards, card])
+    } else if (selectingFor === 'board' && boardCards.length < 5) {
+      setBoardCards([...boardCards, card])
+    }
+    setResult(null)
+  }, [selectingFor, heroCards, villainCards, boardCards])
+
+  const reset = () => {
+    setHeroCards([])
+    setVillainCards([])
+    setBoardCards([])
+    setResult(null)
+  }
+
+  const calculate = () => {
+    if (heroCards.length < 2 || villainCards.length < 2) return
+    setCalculating(true)
+
+    setTimeout(() => {
+      const eq = calculateEquity(heroCards, villainCards, boardCards, 10000)
+      const ev = eq.heroEquity * (potSize + betToCall) - (1 - eq.heroEquity) * betToCall
+      setResult({
+        heroEquity: eq.heroEquity * 100,
+        heroWins: eq.heroWins * 100,
+        villainWins: eq.villainWins * 100,
+        tie: eq.tie * 100,
+        ev,
+      })
+      setCalculating(false)
+    }, 100)
+  }
+
+  const potOdds = potSize > 0 ? (betToCall / (potSize + betToCall)) * 100 : 0
+
+  return (
+    <div className="min-h-screen bg-gray-950 p-8">
+      <div className="max-w-5xl mx-auto">
+        <h1 className="text-3xl font-bold text-white mb-8">EV 计算器</h1>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Card selection */}
+          <div className="lg:col-span-2">
+            <div className="flex gap-3 mb-4">
+              {(['hero', 'villain', 'board'] as const).map((target) => {
+                const count = target === 'hero' ? heroCards.length : target === 'villain' ? villainCards.length : boardCards.length
+                const max = target === 'board' ? 5 : 2
+                const color = target === 'hero' ? 'blue' : target === 'villain' ? 'red' : 'green'
+                const label = target === 'hero' ? 'Hero 手牌' : target === 'villain' ? 'Villain 手牌' : '公共牌'
+                return (
+                  <button
+                    key={target}
+                    onClick={() => setSelectingFor(target)}
+                    className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                      selectingFor === target
+                        ? `bg-${color}-600 text-white`
+                        : 'bg-gray-800 text-gray-400'
+                    }`}
+                  >
+                    {label} ({count}/{max})
+                  </button>
+                )
+              })}
+            </div>
+
+            <CardSelector
+              selectedCards={selectingFor === 'hero' ? heroCards : selectingFor === 'villain' ? villainCards : boardCards}
+              onSelect={handleCardSelect}
+              excludeCards={allUsed}
+              maxSelectable={selectingFor === 'board' ? 5 : 2}
+            />
+
+            {/* Selected cards display */}
+            <div className="mt-4 flex gap-6 flex-wrap">
+              <SelectedCardsDisplay label="Hero" color="text-blue-400" cards={heroCards} />
+              <SelectedCardsDisplay label="Villain" color="text-red-400" cards={villainCards} />
+              {boardCards.length > 0 && <SelectedCardsDisplay label="Board" color="text-green-400" cards={boardCards} />}
+            </div>
+
+            <div className="flex gap-3 mt-4">
+              <button
+                onClick={calculate}
+                disabled={heroCards.length < 2 || villainCards.length < 2 || calculating}
+                className="px-6 py-2 bg-red-600 hover:bg-red-500 disabled:bg-gray-700 text-white rounded-lg font-semibold transition-colors"
+              >
+                {calculating ? '计算中...' : '计算 EV'}
+              </button>
+              <button
+                onClick={reset}
+                className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg transition-colors"
+              >
+                重置
+              </button>
+            </div>
+          </div>
+
+          {/* Results */}
+          <div className="space-y-6">
+            <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 space-y-4">
+              <h3 className="text-lg font-semibold text-white">底池设置</h3>
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">底池大小</label>
+                <input
+                  type="number"
+                  value={potSize}
+                  onChange={(e) => setPotSize(Number(e.target.value))}
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">需要跟注</label>
+                <input
+                  type="number"
+                  value={betToCall}
+                  onChange={(e) => setBetToCall(Number(e.target.value))}
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"
+                />
+              </div>
+              <div className="text-sm text-gray-500">
+                底池赔率: {potOdds.toFixed(1)}%
+              </div>
+            </div>
+
+            {result && (
+              <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 space-y-4">
+                <h3 className="text-lg font-semibold text-white">计算结果</h3>
+                <EquityDisplay
+                  heroWins={result.heroWins}
+                  villainWins={result.villainWins}
+                  tie={result.tie}
+                />
+                <div>
+                  <div className="text-sm text-gray-400 mb-1">期望值 (EV)</div>
+                  <div className={`text-3xl font-bold ${result.ev >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {result.ev >= 0 ? '+' : ''}{result.ev.toFixed(2)} BB
+                  </div>
+                </div>
+                <div className="text-xs text-gray-600 bg-gray-800 rounded p-2 font-mono">
+                  EV = ({result.heroEquity.toFixed(1)}% × {potSize + betToCall}) − ({(100 - result.heroEquity).toFixed(1)}% × {betToCall}) = {result.ev.toFixed(2)}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SelectedCardsDisplay({ label, color, cards }: { label: string; color: string; cards: Card[] }) {
+  const SUIT_SYMBOLS: Record<string, string> = { s: '♠', h: '♥', d: '♦', c: '♣' }
+  const SUIT_COLORS: Record<string, string> = { s: 'text-gray-900', h: 'text-red-600', d: 'text-red-600', c: 'text-gray-900' }
+
+  return (
+    <div>
+      <span className={`text-sm font-semibold ${color}`}>{label}: </span>
+      {cards.length === 0 ? (
+        <span className="text-gray-600">未选择</span>
+      ) : (
+        cards.map((c, i) => (
+          <span key={i} className="inline-block bg-white rounded px-2 py-1 mx-0.5 text-sm font-bold">
+            <span className="text-gray-900">{c.rank}</span>
+            <span className={SUIT_COLORS[c.suit]}>{SUIT_SYMBOLS[c.suit]}</span>
+          </span>
+        ))
+      )}
+    </div>
+  )
+}

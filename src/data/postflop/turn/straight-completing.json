@@ -1,0 +1,61 @@
+{
+  "scenario": "turn",
+  "turnType": "straight-completing",
+  "exampleBoard": ["Kh", "7d", "6s", "8c"],
+  "position": "IP",
+  "stackDepth": 100,
+  "potType": "single-raised",
+  "previousAction": "c-bet-called",
+  "strategy": {
+    "straight": {
+      "bet_75pct": 0.60,
+      "bet_50pct": 0.20,
+      "check": 0.20
+    },
+    "set": {
+      "bet_66pct": 0.40,
+      "check": 0.35,
+      "bet_75pct": 0.25
+    },
+    "twoPair": {
+      "bet_50pct": 0.30,
+      "check": 0.45,
+      "bet_75pct": 0.25
+    },
+    "overpair": {
+      "check": 0.60,
+      "bet_50pct": 0.25,
+      "bet_33pct": 0.15
+    },
+    "topPair_good_kicker": {
+      "check": 0.70,
+      "bet_33pct": 0.20,
+      "bet_50pct": 0.10
+    },
+    "flushDraw": {
+      "bet_66pct": 0.40,
+      "check": 0.45,
+      "bet_33pct": 0.15
+    },
+    "gutshot": {
+      "check": 0.65,
+      "bet_50pct": 0.25,
+      "bet_33pct": 0.10
+    },
+    "air": {
+      "check": 0.85,
+      "bet_50pct": 0.10,
+      "bet_75pct": 0.05
+    }
+  },
+  "handClassification": {
+    "straight": ["made_straight"],
+    "set": ["set_or_trips"],
+    "twoPair": ["two_pair"],
+    "overpair": ["pair_above_top_board"],
+    "topPair_good_kicker": ["top_pair_kq_kicker"],
+    "flushDraw": ["flush_draw_only"],
+    "gutshot": ["inside_straight_draw_no_other_draw"],
+    "air": ["no_pair_no_draw_no_overcards"]
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "scenario": "turn",
+  "turnType": "overcard",
+  "exampleBoard": ["Kh", "7d", "2s", "Ac"],
+  "position": "IP",
+  "stackDepth": 100,
+  "potType": "single-raised",
+  "previousAction": "c-bet-called",
+  "strategy": {
+    "topPair_topKicker": {
+      "bet_75pct": 0.50,
+      "bet_50pct": 0.20,
+      "check": 0.30
+    },
+    "topPair_weakKicker": {
+      "bet_50pct": 0.35,
+      "check": 0.50,
+      "bet_33pct": 0.15
+    },
+    "secondPair": {
+      "check": 0.75,
+      "bet_33pct": 0.15,
+      "bet_50pct": 0.10
+    },
+    "overpair_no_ace": {
+      "bet_50pct": 0.35,
+      "check": 0.50,
+      "bet_33pct": 0.15
+    },
+    "set": {
+      "bet_75pct": 0.50,
+      "bet_50pct": 0.30,
+      "check": 0.20
+    },
+    "flushDraw": {
+      "bet_66pct": 0.40,
+      "check": 0.45,
+      "bet_33pct": 0.15
+    },
+    "gutshot": {
+      "check": 0.65,
+      "bet_50pct": 0.25,
+      "bet_33pct": 0.10
+    },
+    "ace_high_bluff": {
+      "bet_66pct": 0.30,
+      "check": 0.55,
+      "bet_75pct": 0.15
+    },
+    "air": {
+      "check": 0.85,
+      "bet_50pct": 0.10,
+      "bet_66pct": 0.05
+    }
+  },
+  "handClassification": {
+    "topPair_topKicker": ["top_pair_ace_kicker"],
+    "topPair_weakKicker": ["second_pair_now_ace_on_board"],
+    "secondPair": ["second_pair_flop_now_third_pair"],
+    "overpair_no_ace": ["pair_above_flop_top_below_ace"],
+    "set": ["set_or_trips"],
+    "flushDraw": ["flush_draw_only"],
+    "gutshot": ["inside_straight_draw_no_other_draw"],
+    "ace_high_bluff": ["ace_high_no_pair_bluff"],
+    "air": ["no_pair_no_draw_no_overcards"]
+  }
+}

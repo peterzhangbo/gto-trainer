@@ -1,0 +1,25 @@
+[scenario]
+scenario_type = "c-bet"
+position = "BTN"
+villain_position = "BB"
+stack_depth = 100
+ante = false
+board = ["Js", "Ts", "7h"]
+board_texture = "wet-connected"
+
+# NOTE: With 4 bet sizes across 3 streets, this scenario requires ~46GB RAM.
+# For machines with less memory, reduce bet_sizes (e.g., "66%, a" uses ~4.5GB).
+bet_sizes = "33%, 66%, 100%, a"
+raise_sizes = "3x"
+
+starting_pot = 5.0
+
+[solver]
+max_iterations = 1000
+target_exploitability = 0.5
+num_threads = 4
+
+[output]
+format = "frontend-json"
+include_ev = true
+include_actions = ["bet", "check", "fold"]

@@ -1,0 +1,54 @@
+{
+  "scenario": "river",
+  "riverType": "scary",
+  "exampleBoard": ["Kh", "7h", "2h", "5h", "3d"],
+  "position": "IP",
+  "stackDepth": 100,
+  "potType": "single-raised",
+  "previousAction": "turn-bet-called",
+  "strategy": {
+    "flush": {
+      "bet_75pct": 0.55,
+      "bet_50pct": 0.20,
+      "check": 0.25
+    },
+    "set": {
+      "bet_50pct": 0.30,
+      "check": 0.50,
+      "bet_33pct": 0.20
+    },
+    "twoPair": {
+      "bet_50pct": 0.25,
+      "check": 0.60,
+      "bet_33pct": 0.15
+    },
+    "topPair": {
+      "check": 0.80,
+      "bet_33pct": 0.20
+    },
+    "overpair": {
+      "check": 0.75,
+      "bet_33pct": 0.15,
+      "bet_50pct": 0.10
+    },
+    "missedDraw": {
+      "bet_75pct": 0.30,
+      "check": 0.50,
+      "bet_50pct": 0.20
+    },
+    "air": {
+      "check": 0.85,
+      "bet_75pct": 0.10,
+      "bet_50pct": 0.05
+    }
+  },
+  "handClassification": {
+    "flush": ["flush_made"],
+    "set": ["set_or_trips"],
+    "twoPair": ["two_pair"],
+    "topPair": ["top_pair_any_kicker"],
+    "overpair": ["pair_above_top_board"],
+    "missedDraw": ["straight_draw_that_missed"],
+    "air": ["no_pair_no_draw"]
+  }
+}

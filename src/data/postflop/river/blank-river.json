@@ -1,0 +1,43 @@
+{
+  "scenario": "river",
+  "riverType": "blank",
+  "exampleBoard": ["Kh", "7d", "2s", "3c", "4d"],
+  "position": "IP",
+  "stackDepth": 100,
+  "potType": "single-raised",
+  "previousAction": "turn-check-back",
+  "strategy": {
+    "overpair": {
+      "bet_75pct": 0.60,
+      "check": 0.40
+    },
+    "topPair_good_kicker": {
+      "bet_50pct": 0.50,
+      "check": 0.50
+    },
+    "topPair_weak_kicker": {
+      "bet_33pct": 0.35,
+      "check": 0.65
+    },
+    "middlePair": {
+      "check": 0.85,
+      "bet_33pct": 0.15
+    },
+    "bottomPair": {
+      "check": 0.95,
+      "bet_33pct": 0.05
+    },
+    "air": {
+      "check": 0.90,
+      "bet_75pct": 0.10
+    }
+  },
+  "handClassification": {
+    "overpair": ["pair_above_top_board"],
+    "topPair_good_kicker": ["top_pair_kq_kicker"],
+    "topPair_weak_kicker": ["top_pair_j_or_lower_kicker"],
+    "middlePair": ["second_pair"],
+    "bottomPair": ["third_pair_or_lower"],
+    "air": ["no_pair_no_draw"]
+  }
+}

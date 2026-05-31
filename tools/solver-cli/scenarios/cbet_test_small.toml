@@ -1,0 +1,26 @@
+[scenario]
+scenario_type = "c-bet"
+position = "BTN"
+villain_position = "BB"
+stack_depth = 100
+ante = false
+board = ["Td", "9d", "6h"]
+board_texture = "dry-high"
+
+# Using fewer bet sizes to keep memory usage manageable for testing.
+# A full solve with all bet sizes requires ~46GB of RAM.
+bet_sizes = "75%, a"
+raise_sizes = "2.5x"
+
+starting_pot = 5.0
+
+[solver]
+# Fewer iterations for testing purposes
+max_iterations = 50
+target_exploitability = 1.0
+num_threads = 4
+
+[output]
+format = "frontend-json"
+include_ev = true
+include_actions = ["bet", "check", "fold"]

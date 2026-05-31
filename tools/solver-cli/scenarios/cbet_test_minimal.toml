@@ -1,0 +1,25 @@
+[scenario]
+scenario_type = "c-bet"
+position = "BTN"
+villain_position = "BB"
+stack_depth = 100
+ante = false
+board = ["Td", "9d", "6h"]
+board_texture = "dry-high"
+
+# Minimal bet sizes for quick testing
+bet_sizes = "75%"
+raise_sizes = "2.5x"
+
+starting_pot = 5.0
+
+[solver]
+# Just 5 iterations to verify the pipeline works
+max_iterations = 5
+target_exploitability = 0.001
+num_threads = 4
+
+[output]
+format = "frontend-json"
+include_ev = true
+include_actions = ["bet", "check", "fold"]

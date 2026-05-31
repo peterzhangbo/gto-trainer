@@ -1,0 +1,65 @@
+{
+  "scenario": "c-bet",
+  "boardTexture": "monochrome",
+  "exampleBoard": ["9s", "7s", "3s"],
+  "position": "IP",
+  "stackDepth": 100,
+  "potType": "single-raised",
+  "strategy": {
+    "overpair_noFlushDraw": {
+      "bet_75pct": 0.45,
+      "bet_33pct": 0.25,
+      "check": 0.30
+    },
+    "topPair_noFlushDraw": {
+      "bet_33pct": 0.35,
+      "check": 0.65
+    },
+    "middlePair_noFlushDraw": {
+      "check": 0.80,
+      "bet_33pct": 0.20
+    },
+    "flush": {
+      "bet_75pct": 0.50,
+      "bet_33pct": 0.30,
+      "check": 0.20
+    },
+    "flushDraw_highCard": {
+      "bet_75pct": 0.30,
+      "bet_33pct": 0.40,
+      "check": 0.30
+    },
+    "flushDraw_weak": {
+      "bet_33pct": 0.35,
+      "check": 0.65
+    },
+    "oesd_noFlush": {
+      "bet_33pct": 0.35,
+      "check": 0.65
+    },
+    "gutshot_noFlush": {
+      "check": 0.85,
+      "bet_33pct": 0.15
+    },
+    "overcards_noFlush": {
+      "check": 0.80,
+      "bet_33pct": 0.20
+    },
+    "air_noFlush": {
+      "check": 0.90,
+      "bet_33pct": 0.10
+    }
+  },
+  "handClassification": {
+    "overpair_noFlushDraw": ["pair_above_top_board_no_flush_draw"],
+    "topPair_noFlushDraw": ["top_pair_no_flush_draw"],
+    "middlePair_noFlushDraw": ["second_pair_or_lower_no_flush_draw"],
+    "flush": ["made_flush"],
+    "flushDraw_highCard": ["flush_draw_with_overcard_or_ace"],
+    "flushDraw_weak": ["flush_draw_without_overcard"],
+    "oesd_noFlushDraw": ["open_ended_straight_draw_no_flush_draw"],
+    "gutshot_noFlushDraw": ["inside_straight_draw_no_flush_draw"],
+    "overcards_noFlushDraw": ["two_overcards_no_flush_draw"],
+    "air_noFlush": ["no_pair_no_draw_no_flush_draw"]
+  }
+}

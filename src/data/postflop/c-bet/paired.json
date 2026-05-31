@@ -1,0 +1,67 @@
+{
+  "scenario": "c-bet",
+  "boardTexture": "paired",
+  "exampleBoard": ["8h", "8d", "3s"],
+  "position": "IP",
+  "stackDepth": 100,
+  "potType": "single-raised",
+  "strategy": {
+    "overpair": {
+      "bet_75pct": 0.50,
+      "bet_33pct": 0.30,
+      "check": 0.20
+    },
+    "topPair_topKicker": {
+      "bet_75pct": 0.30,
+      "bet_33pct": 0.45,
+      "check": 0.25
+    },
+    "topPair_goodKicker": {
+      "bet_33pct": 0.55,
+      "check": 0.45
+    },
+    "topPair_weakKicker": {
+      "bet_33pct": 0.35,
+      "check": 0.65
+    },
+    "middlePair": {
+      "bet_33pct": 0.25,
+      "check": 0.75
+    },
+    "threeOfAKind": {
+      "bet_75pct": 0.55,
+      "bet_33pct": 0.30,
+      "check": 0.15
+    },
+    "fullHouse": {
+      "bet_75pct": 0.60,
+      "bet_33pct": 0.25,
+      "check": 0.15
+    },
+    "overcards": {
+      "bet_33pct": 0.40,
+      "check": 0.60
+    },
+    "flushDraw": {
+      "bet_33pct": 0.50,
+      "bet_75pct": 0.15,
+      "check": 0.35
+    },
+    "air": {
+      "bet_33pct": 0.45,
+      "check": 0.55
+    }
+  },
+  "handClassification": {
+    "overpair": ["pair_above_both_board_cards"],
+    "topPair_topKicker": ["matching_high_board_card_ace_kicker"],
+    "topPair_goodKicker": ["matching_high_board_card_kq_kicker"],
+    "topPair_weakKicker": ["matching_high_board_card_weak_kicker"],
+    "middlePair": ["pair_between_board_cards"],
+    "threeOfAKind": ["trips_with_pocket_pair"],
+    "fullHouse": ["full_house_or_better"],
+    "overcards": ["two_overcards_no_pair_no_draw"],
+    "flushDraw": ["flush_draw"],
+    "air": ["no_pair_no_draw_no_overcards"]
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "scenarios": [
+    {
+      "id": "rfi_utg",
+      "name": "UTG Raise First In",
+      "category": "preflop",
+      "subCategory": "rfi",
+      "position": "UTG",
+      "description": "GTO opening range from Under the Gun in 6-max, 100bb deep",
+      "filePath": "preflop/rfi/utg.json"
+    },
+    {
+      "id": "rfi_mp",
+      "name": "MP Raise First In",
+      "category": "preflop",
+      "subCategory": "rfi",
+      "position": "MP",
+      "description": "GTO opening range from Middle Position in 6-max, 100bb deep",
+      "filePath": "preflop/rfi/mp.json"
+    },
+    {
+      "id": "rfi_co",
+      "name": "CO Raise First In",
+      "category": "preflop",
+      "subCategory": "rfi",
+      "position": "CO",
+      "description": "GTO opening range from Cutoff in 6-max, 100bb deep",
+      "filePath": "preflop/rfi/co.json"
+    },
+    {
+      "id": "rfi_btn",
+      "name": "BTN Raise First In",
+      "category": "preflop",
+      "subCategory": "rfi",
+      "position": "BTN",
+      "description": "GTO opening range from Button in 6-max, 100bb deep",
+      "filePath": "preflop/rfi/btn.json"
+    },
+    {
+      "id": "rfi_sb",
+      "name": "SB Raise First In",
+      "category": "preflop",
+      "subCategory": "rfi",
+      "position": "SB",
+      "description": "GTO opening range from Small Blind in 6-max, 100bb deep",
+      "filePath": "preflop/rfi/sb.json"
+    },
+    {
+      "id": "threebet_btn_vs_co",
+      "name": "BTN 3Bet vs CO Open",
+      "category": "preflop",
+      "subCategory": "threebet",
+      "position": "BTN",
+      "villainPosition": "CO",
+      "description": "GTO 3betting and calling range from Button vs Cutoff open",
+      "filePath": "preflop/threebet/btn_vs_co.json"
+    },
+    {
+      "id": "threebet_sb_vs_btn",
+      "name": "SB 3Bet vs BTN Open",
+      "category": "preflop",
+      "subCategory": "threebet",
+      "position": "SB",
+      "villainPosition": "BTN",
+      "description": "GTO 3betting and calling range from Small Blind vs Button open",
+      "filePath": "preflop/threebet/sb_vs_btn.json"
+    },
+    {
+      "id": "defend_bb_vs_btn",
+      "name": "BB Defend vs BTN Open",
+      "category": "preflop",
+      "subCategory": "defend",
+      "position": "BB",
+      "villainPosition": "BTN",
+      "description": "GTO defending range (call and 3bet) from Big Blind vs Button open",
+      "filePath": "preflop/defend/bb_vs_btn.json"
+    },
+    {
+      "id": "cbet_dry_high",
+      "name": "C-Bet: Dry High Board",
+      "category": "postflop",
+      "subCategory": "c-bet",
+      "boardTexture": "dry-high",
+      "exampleBoard": ["Kh", "7d", "2s"],
+      "description": "GTO continuation bet strategy on dry high boards (e.g. K-7-2 rainbow)",
+      "filePath": "postflop/c-bet/dry-high.json"
+    },
+    {
+      "id": "cbet_wet_connected",
+      "name": "C-Bet: Wet Connected Board",
+      "category": "postflop",
+      "subCategory": "c-bet",
+      "boardTexture": "wet-connected",
+      "exampleBoard": ["Js", "Ts", "9d"],
+      "description": "GTO continuation bet strategy on wet connected boards (e.g. J-T-9 two-tone)",
+      "filePath": "postflop/c-bet/wet-connected.json"
+    },
+    {
+      "id": "cbet_paired",
+      "name": "C-Bet: Paired Board",
+      "category": "postflop",
+      "subCategory": "c-bet",
+      "boardTexture": "paired",
+      "exampleBoard": ["8h", "8d", "3s"],
+      "description": "GTO continuation bet strategy on paired boards (e.g. 8-8-3 rainbow)",
+      "filePath": "postflop/c-bet/paired.json"
+    },
+    {
+      "id": "cbet_monochrome",
+      "name": "C-Bet: Monotone Board",
+      "category": "postflop",
+      "subCategory": "c-bet",
+      "boardTexture": "monochrome",
+      "exampleBoard": ["9s", "7s", "3s"],
+      "description": "GTO continuation bet strategy on monotone boards (e.g. 9-7-3 all spades)",
+      "filePath": "postflop/c-bet/monochrome.json"
+    },
+    {
+      "id": "turn_brick",
+      "name": "Turn: Brick Card",
+      "category": "postflop",
+      "subCategory": "turn",
+      "turnType": "brick",
+      "exampleBoard": ["Kh", "7d", "2s", "3c"],
+      "description": "GTO turn strategy when the turn is a low, non-threatening card that does not change the board texture significantly (e.g. 3c on a K-7-2r flop)",
+      "filePath": "postflop/turn/brick-turn.json"
+    },
+    {
+      "id": "turn_flush_completing",
+      "name": "Turn: Flush-Completing Card",
+      "category": "postflop",
+      "subCategory": "turn",
+      "turnType": "flush-completing",
+      "exampleBoard": ["Kh", "7h", "2h", "3h"],
+      "description": "GTO turn strategy when the turn completes a possible flush draw on the flop (e.g. fourth heart on a three-heart flop)",
+      "filePath": "postflop/turn/flush-completing.json"
+    },
+    {
+      "id": "turn_straight_completing",
+      "name": "Turn: Straight-Completing Card",
+      "category": "postflop",
+      "subCategory": "turn",
+      "turnType": "straight-completing",
+      "exampleBoard": ["Kh", "7d", "6s", "8c"],
+      "description": "GTO turn strategy when the turn card completes a possible straight draw (e.g. 8 on a K-7-6 flop creates 7-8 straight draws)",
+      "filePath": "postflop/turn/straight-completing.json"
+    },
+    {
+      "id": "turn_overcard",
+      "name": "Turn: Overcard to Flop Top Pair",
+      "category": "postflop",
+      "subCategory": "turn",
+      "turnType": "overcard",
+      "exampleBoard": ["Kh", "7d", "2s", "Ac"],
+      "description": "GTO turn strategy when the turn brings an overcard to the flop's top pair (e.g. Ace on a King-high flop), shifting hand strengths significantly",
+      "filePath": "postflop/turn/overcard-turn.json"
+    },
+    {
+      "id": "river_blank",
+      "name": "River: Blank Card",
+      "category": "postflop",
+      "subCategory": "river",
+      "riverType": "blank",
+      "exampleBoard": ["Kh", "7d", "2s", "3c", "4d"],
+      "description": "GTO river strategy when the river is a blank that does not complete any draws or significantly alter the board (e.g. 4d on a K-7-2-3c board)",
+      "filePath": "postflop/river/blank-river.json"
+    },
+    {
+      "id": "river_scary",
+      "name": "River: Scary Card (Flush or Straight Completes)",
+      "category": "postflop",
+      "subCategory": "river",
+      "riverType": "scary",
+      "exampleBoard": ["Kh", "7h", "2h", "5h", "3d"],
+      "description": "GTO river strategy when the river completes a flush or straight draw, requiring adjusted ranges for both value bets and bluffs",
+      "filePath": "postflop/river/scary-river.json"
+    },
+    {
+      "id": "river_paired",
+      "name": "River: Paired Board",
+      "category": "postflop",
+      "subCategory": "river",
+      "riverType": "paired",
+      "exampleBoard": ["Kh", "7d", "2s", "3c", "2h"],
+      "description": "GTO river strategy when the river pairs the board, introducing the possibility of full houses and shifting optimal bet sizes",
+      "filePath": "postflop/river/paired-river.json"
+    }
+  ]
+}

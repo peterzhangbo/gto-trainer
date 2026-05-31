@@ -1,0 +1,90 @@
+{
+  "scenario": "c-bet",
+  "boardTexture": "wet-connected",
+  "exampleBoard": ["Js", "Ts", "9d"],
+  "position": "IP",
+  "stackDepth": 100,
+  "potType": "single-raised",
+  "strategy": {
+    "overpair": {
+      "bet_75pct": 0.40,
+      "bet_33pct": 0.25,
+      "check": 0.35
+    },
+    "topPair_topKicker": {
+      "bet_75pct": 0.35,
+      "bet_33pct": 0.25,
+      "check": 0.40
+    },
+    "topPair_goodKicker": {
+      "bet_33pct": 0.35,
+      "check": 0.65
+    },
+    "topPair_weakKicker": {
+      "bet_33pct": 0.20,
+      "check": 0.80
+    },
+    "middlePair": {
+      "check": 0.75,
+      "bet_33pct": 0.25
+    },
+    "bottomPair": {
+      "check": 0.85,
+      "bet_33pct": 0.15
+    },
+    "twoPair": {
+      "bet_75pct": 0.60,
+      "bet_33pct": 0.25,
+      "check": 0.15
+    },
+    "threeOfAKind": {
+      "bet_75pct": 0.55,
+      "bet_33pct": 0.30,
+      "check": 0.15
+    },
+    "straight": {
+      "bet_75pct": 0.60,
+      "bet_33pct": 0.25,
+      "check": 0.15
+    },
+    "oesd": {
+      "bet_75pct": 0.25,
+      "bet_33pct": 0.30,
+      "check": 0.45
+    },
+    "gutshot": {
+      "bet_33pct": 0.35,
+      "check": 0.65
+    },
+    "flushDraw": {
+      "bet_75pct": 0.30,
+      "bet_33pct": 0.35,
+      "check": 0.35
+    },
+    "comboDraw": {
+      "bet_75pct": 0.55,
+      "bet_33pct": 0.30,
+      "check": 0.15
+    },
+    "air": {
+      "check": 0.85,
+      "bet_33pct": 0.15
+    }
+  },
+  "handClassification": {
+    "overpair": ["pair_above_top_board"],
+    "topPair_topKicker": ["top_pair_ace_kicker"],
+    "topPair_goodKicker": ["top_pair_kq_kicker"],
+    "topPair_weakKicker": ["top_pair_j_or_lower_kicker"],
+    "middlePair": ["second_pair"],
+    "bottomPair": ["third_pair_or_lower"],
+    "twoPair": ["two_pair_or_better_below_top"],
+    "threeOfAKind": ["set_or_trips"],
+    "straight": ["made_straight"],
+    "oesd": ["open_ended_straight_draw"],
+    "gutshot": ["inside_straight_draw_no_other_draw"],
+    "flushDraw": ["flush_draw_only"],
+    "comboDraw": ["flush_draw_plus_straight_draw_or_oesd"],
+    "air": ["no_pair_no_draw_no_overcards"]
+  }
+}

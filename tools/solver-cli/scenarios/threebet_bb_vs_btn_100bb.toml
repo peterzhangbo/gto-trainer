@@ -1,0 +1,16 @@
+[scenario]
+scenario_type = "3bet"
+position = "BB"
+villain_position = "BTN"
+stack_depth = 100
+ante = false
+
+[solver]
+max_iterations = 1000
+target_exploitability = 0.5
+num_threads = 4
+
+[output]
+format = "frontend-json"
+include_ev = true
+include_actions = ["3bet", "call", "fold"]
