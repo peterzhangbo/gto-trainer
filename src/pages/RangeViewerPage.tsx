@@ -206,6 +206,7 @@ export default function RangeViewerPage() {
       villainPosition: meta.villainPosition,
       boardTexture: meta.boardTexture,
     })
+    // eslint-disable-next-line react-hooks/preserve-manual-memoization
   }, [overlayMode, overlayScenarioId, scenarios])
 
   const overlayStrategy = useMemo<Record<string, StrategyEntry>>(() => {
@@ -541,8 +542,8 @@ export default function RangeViewerPage() {
 
         {isPreflopView ? (
           <>
-            {/* Matrix container - horizontally scrollable on mobile */}
-            <div className="overflow-x-auto pb-2 mx-auto" ref={matrixRef}>
+            {/* Matrix container - horizontally scrollable on mobile with snap */}
+            <div className="overflow-x-auto pb-2 mx-auto snap-x snap-mandatory md:snap-none" ref={matrixRef}>
               <div className="inline-block min-w-[640px]">
                 {/* Column headers */}
                 <div className="flex ml-14 mb-0.5">
@@ -1097,11 +1098,11 @@ function MobileOverlay({ hand, entry, onClose }: MobileOverlayProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl w-[90%] max-w-sm p-5"
+        className="bg-gray-900 border border-gray-700 border-b-0 rounded-t-2xl shadow-2xl w-full max-w-lg p-5 pb-8 max-h-[70vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

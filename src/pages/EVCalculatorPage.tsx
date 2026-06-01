@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import type { Card } from '@/types/poker'
 import CardSelector from '@/components/poker/CardSelector'
 import EquityDisplay from '@/components/poker/EquityDisplay'
@@ -13,7 +13,6 @@ export default function EVCalculatorPage() {
   const [selectingFor, setSelectingFor] = useState<'hero' | 'villain' | 'board'>('hero')
   const [potSize, setPotSize] = useState(100)
   const [betToCall, setBetToCall] = useState(50)
-  const [evResult, setEvResult] = useState<{ heroEquity: number; ev: number } | null>(null)
 
   const { calculateEquity, result, calculating, reset: resetEquity } = useEquity()
 
@@ -27,29 +26,25 @@ export default function EVCalculatorPage() {
     } else if (selectingFor === 'board' && boardCards.length < 5) {
       setBoardCards([...boardCards, card])
     }
-    setEvResult(null)
   }, [selectingFor, heroCards, villainCards, boardCards])
 
-  // Compute EV when equity result arrives
-  useEffect(() => {
-    if (result) {
-      const equity = result.heroEquity / 100
-      const ev = equity * (potSize + betToCall) - (1 - equity) * betToCall
-      setEvResult({ heroEquity: result.heroEquity, ev })
-    }
+  // Derived EV using useMemo (no useEffect needed)
+  const evResult = useMemo(() => {
+    if (!result) return null
+    const equity = result.heroEquity / 100
+    const ev = equity * (potSize + betToCall) - (1 - equity) * betToCall
+    return { heroEquity: result.heroEquity, ev }
   }, [result, potSize, betToCall])
 
   const reset = () => {
     setHeroCards([])
     setVillainCards([])
     setBoardCards([])
-    setEvResult(null)
     resetEquity()
   }
 
   const handleCalculate = () => {
     if (heroCards.length < 2 || villainCards.length < 2) return
-    setEvResult(null)
     calculateEquity(heroCards, villainCards, boardCards, 10000)
   }
 
@@ -99,17 +94,17 @@ export default function EVCalculatorPage() {
               {boardCards.length > 0 && <SelectedCardsDisplay label={t('calc.board')} color="text-green-400" cards={boardCards} />}
             </div>
 
-            <div className="flex flex-wrap gap-3 mt-4">
+            <div className="flex flex-col sm:flex-row gap-3 mt-4">
               <button
                 onClick={handleCalculate}
                 disabled={heroCards.length < 2 || villainCards.length < 2 || calculating}
-                className="min-h-[44px] px-6 py-2 bg-red-600 hover:bg-red-500 disabled:bg-gray-700 text-white rounded-lg font-semibold transition-colors"
+                className="min-h-[44px] px-6 py-2 bg-red-600 hover:bg-red-500 disabled:bg-gray-700 text-white rounded-lg font-semibold transition-colors w-full sm:w-auto"
               >
                 {calculating ? t('calc.calculating') : t('calc.calculate')}
               </button>
               <button
                 onClick={reset}
-                className="min-h-[44px] px-6 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg transition-colors"
+                className="min-h-[44px] px-6 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg transition-colors w-full sm:w-auto"
               >
                 {t('calc.reset')}
               </button>
@@ -126,7 +121,7 @@ export default function EVCalculatorPage() {
                   type="number"
                   value={potSize}
                   onChange={(e) => setPotSize(Number(e.target.value))}
-                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"
+                  className="w-full min-h-[44px] px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"
                 />
               </div>
               <div>
@@ -135,7 +130,7 @@ export default function EVCalculatorPage() {
                   type="number"
                   value={betToCall}
                   onChange={(e) => setBetToCall(Number(e.target.value))}
-                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"
+                  className="w-full min-h-[44px] px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"
                 />
               </div>
               <div className="text-sm text-gray-500">

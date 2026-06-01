@@ -39,7 +39,7 @@ export default function CardSelector({
           <div key={suit} className="flex gap-0.5">
             <div
               className={cn(
-                'flex w-7 items-center justify-center text-sm font-bold',
+                'flex w-9 items-center justify-center text-sm font-bold',
                 isRedSuit(suit) ? 'text-red-500' : 'text-gray-400'
               )}
             >
@@ -58,7 +58,7 @@ export default function CardSelector({
                   onClick={() => !excluded && onSelect(card)}
                   disabled={disabled}
                   className={cn(
-                    'flex h-8 w-7 items-center justify-center rounded border text-xs font-bold transition-all',
+                    'flex h-11 w-9 items-center justify-center rounded border text-xs font-bold transition-all min-h-[44px]',
                     selected
                       ? 'border-yellow-400 bg-yellow-900/50 text-yellow-300'
                       : excluded

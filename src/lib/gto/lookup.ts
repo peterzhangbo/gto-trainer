@@ -254,8 +254,11 @@ export function getPreflopScenarioSummary(
 // ---------------------------------------------------------------------------
 
 function normaliseHand(hand: string): string {
-  // Uppercase and trim; input like "aks", "jTo", "tt" -> "AKs", "JTo", "TT"
-  return hand.toUpperCase().trim();
+  // Uppercase ranks, keep suit lowercase; input like "aks", "jTo", "tt" -> "AKs", "JTo", "TT"
+  const h = hand.trim()
+  if (h.length <= 2) return h.toUpperCase() // pocket pair like "TT"
+  // e.g. "AKs" -> rank part "AK" (uppercase) + suit "s" (lowercase)
+  return h.slice(0, -1).toUpperCase() + h.slice(-1).toLowerCase()
 }
 
 function getBestAction(frequencies: Record<string, number>): {

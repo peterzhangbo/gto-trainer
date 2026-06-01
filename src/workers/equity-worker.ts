@@ -2,6 +2,7 @@
 // Runs in a separate thread to avoid blocking the UI
 
 // pokersolver is CJS — use dynamic import (Vite transforms at bundle time)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mod: any = await import('pokersolver')
 const Hand = mod.Hand
 

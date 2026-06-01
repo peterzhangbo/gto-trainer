@@ -203,6 +203,8 @@ const translations = {
     // Toast messages
     'toast.sessionSaveFailed': '保存训练会话失败',
     'toast.sessionUpdateFailed': '更新训练会话失败',
+    'toast.loadSessionsFailed': '加载训练记录失败',
+    'toast.loadDrillsFailed': '加载训练数据失败',
 
     // GTO label prefix (used in drill details)
     'drill.gtoLabel': 'GTO',
@@ -460,6 +462,8 @@ const translations = {
     // Toast messages
     'toast.sessionSaveFailed': 'Failed to save session',
     'toast.sessionUpdateFailed': 'Failed to update session',
+    'toast.loadSessionsFailed': 'Failed to load sessions',
+    'toast.loadDrillsFailed': 'Failed to load drills',
 
     // GTO label prefix (used in drill details)
     'drill.gtoLabel': 'GTO',

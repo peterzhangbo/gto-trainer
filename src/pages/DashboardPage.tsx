@@ -52,10 +52,10 @@ export default function DashboardPage() {
       ])
 
       if (sessionsRes.error) {
-        showToast(sessionsRes.error.message || 'Failed to load sessions', 'error')
+        showToast(sessionsRes.error.message || t('toast.loadSessionsFailed'), 'error')
       }
       if (drillsRes.error) {
-        showToast(drillsRes.error.message || 'Failed to load drills', 'error')
+        showToast(drillsRes.error.message || t('toast.loadDrillsFailed'), 'error')
       }
       if (sessionsRes.data) setSessions(sessionsRes.data)
       if (drillsRes.data) setDrills(drillsRes.data)
@@ -63,7 +63,7 @@ export default function DashboardPage() {
     }
 
     fetchData()
-  }, [user])
+  }, [user, t])
 
   // Compute stats
   const totalDrills = drills.length
@@ -225,7 +225,7 @@ export default function DashboardPage() {
                     {sessions.filter((s) => s.total_hands > 0).map((s) => (
                       <tr key={s.id} className="border-b border-gray-800/50">
                         <td className="py-3 text-gray-400 text-sm">
-                          {new Date(s.started_at).toLocaleDateString('zh-CN')}
+                          {new Date(s.started_at).toLocaleDateString()}
                         </td>
                         <td className="py-3 text-white">{scenarioNames[s.scenario_type] ?? s.scenario_type}</td>
                         <td className="py-3 text-gray-300 text-right">{s.total_hands}</td>
