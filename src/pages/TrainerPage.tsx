@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import {
   getScenarioData,
   getScenarioById,
@@ -559,6 +559,11 @@ export default function TrainerPage() {
   const [handCategory, setHandCategory] = useState('')
   const [isPostflopDrill, setIsPostflopDrill] = useState(false)
 
+  // Auto-advance settings from localStorage
+  const [autoAdvance] = useState(() => localStorage.getItem('gto-auto-advance') === 'true')
+  const [autoAdvanceDelay] = useState(() => Number(localStorage.getItem('gto-auto-advance-delay') || 2))
+  const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   const selectedMeta = useMemo(
     () => ALL_SCENARIOS.find((s) => s.id === selectedScenarioId),
     [selectedScenarioId],
@@ -635,6 +640,18 @@ export default function TrainerPage() {
       generatePostflopDrill(scenarioData, selectedMeta)
     }
   }, [scenarioData, selectedMeta, generatePreflopDrill, generatePostflopDrill])
+
+  // Auto-advance effect: when drillState becomes 'revealed' and autoAdvance is on, schedule next drill
+  useEffect(() => {
+    if (drillState === 'revealed' && autoAdvance && difficulty !== 'expert') {
+      autoAdvanceTimer.current = setTimeout(() => {
+        generateDrill()
+      }, autoAdvanceDelay * 1000)
+      return () => {
+        if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current)
+      }
+    }
+  }, [drillState, autoAdvance, autoAdvanceDelay, difficulty, generateDrill])
 
   const handleStart = async () => {
     if (!scenarioData || !selectedMeta) return

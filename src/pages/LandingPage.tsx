@@ -86,40 +86,6 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
 /* Poker Table SVG                                                     */
 /* ------------------------------------------------------------------ */
 
-function PokerTableSVG() {
-  return (
-    <div className="relative w-full max-w-lg mx-auto opacity-20 animate-float" aria-hidden="true">
-      <svg viewBox="0 0 500 300" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-        {/* Table felt */}
-        <ellipse cx="250" cy="150" rx="220" ry="120" fill="#0a3d0a" stroke="#1a5c1a" strokeWidth="3" />
-        <ellipse cx="250" cy="150" rx="200" ry="105" fill="none" stroke="#1a5c1a" strokeWidth="1" strokeDasharray="4 6" />
-
-        {/* Position markers */}
-        {[
-          { x: 250, y: 28, label: 'BTN' },
-          { x: 420, y: 70, label: 'SB' },
-          { x: 460, y: 150, label: 'BB' },
-          { x: 420, y: 230, label: 'UTG' },
-          { x: 250, y: 272, label: 'MP' },
-          { x: 80, y: 230, label: 'CO' },
-          { x: 40, y: 150, label: 'HJ' },
-          { x: 80, y: 70, label: 'LJ' },
-        ].map(({ x, y, label }) => (
-          <g key={label}>
-            <circle cx={x} cy={y} r="16" fill="#1f2937" stroke="#374151" strokeWidth="1.5" />
-            <text x={x} y={y + 1} textAnchor="middle" dominantBaseline="central" fill="#9ca3af" fontSize="8" fontWeight="600" fontFamily="monospace">
-              {label}
-            </text>
-          </g>
-        ))}
-
-        {/* Pot area */}
-        <circle cx="250" cy="150" r="20" fill="none" stroke="#374151" strokeWidth="1" strokeDasharray="3 3" />
-        <text x="250" y="151" textAnchor="middle" dominantBaseline="central" fill="#4b5563" fontSize="9" fontFamily="monospace">POT</text>
-      </svg>
-    </div>
-  )
-}
 
 /* ------------------------------------------------------------------ */
 /* Landing Page                                                        */
