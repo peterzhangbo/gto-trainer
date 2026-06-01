@@ -80,8 +80,8 @@ export const useTrainingStore = create<TrainingState>((set, get) => ({
     const gtoStrategy = generateMockStrategy(notation)
 
     let board: Card[] | undefined
-    let pot = 1.5
-    let stack = config.stackDepth
+    let pot: number
+    let stack: number
 
     if (config.street !== 'preflop') {
       const boardSize = config.street === 'flop' ? 3 : config.street === 'turn' ? 4 : 5

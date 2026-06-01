@@ -24,7 +24,7 @@ export default function SignupPage() {
     try {
       await signUp(email, password, displayName)
       navigate('/trainer')
-    } catch (err) {
+    } catch {
       setError(t('auth.signupFailed'))
     } finally {
       setLoading(false)

@@ -76,7 +76,7 @@ export default function ActionButtons({
         const isBest = action === bestAction
         const frequency = gtoStrategy?.[action]
         const key = ACTION_LABEL_KEYS[action]
-        const label = key ? t(key as any) : ACTION_LABEL_FALLBACK[action] || action
+        const label = key ? t(key as Parameters<typeof t>[0]) : ACTION_LABEL_FALLBACK[action] || action
 
         return (
           <button
@@ -102,7 +102,7 @@ export default function ActionButtons({
 
       {revealed && bestAction && (() => {
         const bestKey = ACTION_LABEL_KEYS[bestAction]
-        const bestLabel = bestKey ? t(bestKey as any) : ACTION_LABEL_FALLBACK[bestAction] || bestAction
+        const bestLabel = bestKey ? t(bestKey as Parameters<typeof t>[0]) : ACTION_LABEL_FALLBACK[bestAction] || bestAction
         return (
           <div className="flex w-full items-center gap-2 pt-2">
             <Badge variant="success">Best: {bestLabel}</Badge>

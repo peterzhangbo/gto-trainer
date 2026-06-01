@@ -82,7 +82,7 @@ export default function FrequencyBar({ strategy, userAction, className }: Freque
           const color = ACTION_COLORS[action] || ACTION_COLORS.fold
           const isUserAction = action === userAction
           const key = ACTION_LABEL_KEYS[action]
-          const label = key ? t(key as any) : ACTION_LABEL_FALLBACK[action] || action
+          const label = key ? t(key as Parameters<typeof t>[0]) : ACTION_LABEL_FALLBACK[action] || action
 
           return (
             <div

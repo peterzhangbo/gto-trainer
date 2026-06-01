@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef, useEffect } from 'react'
+import { useState, useMemo, useCallback, useRef, useEffect, useLayoutEffect } from 'react'
 import { getScenarioData, getAllScenarios, isPreflop, isPostflop, type ScenarioData, type PostflopScenarioData, type PostflopStrategyEntry } from '@/data/index'
 import type { StrategyEntry } from '@/types/poker'
 import { useI18n } from '@/lib/i18n'
@@ -155,6 +155,7 @@ export default function RangeViewerPage() {
   }, [])
 
   // Resolve scenario data
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const data = useMemo<ScenarioData | null>(() => {
     const meta = scenarios.find((s) => s.id === selectedId)
     if (!meta) return null
@@ -164,6 +165,7 @@ export default function RangeViewerPage() {
       villainPosition: meta.villainPosition,
       boardTexture: meta.boardTexture,
     })
+    // eslint-disable-next-line react-hooks/preserve-manual-memoization
   }, [selectedId, scenarios])
 
   const strategy = useMemo<Record<string, StrategyEntry>>(() => {
@@ -202,19 +204,21 @@ export default function RangeViewerPage() {
   }, [])
 
   // Cell click handler
+  /* eslint-disable react-hooks/preserve-manual-memoization */
   const handleCellClick = useCallback(
-    (hand: string, _entry: StrategyEntry | undefined) => {
+    (hand: string) => {
       if (isMobile) {
         // On mobile: tap shows overlay
         setMobileOverlayHand(hand)
         setShowMobileOverlay(true)
       } else {
         // On desktop: click selects detail card
-        setSelectedHand(hand === selectedHand ? null : hand)
+        setSelectedHand((prev) => (hand === prev ? null : hand))
       }
     },
-    [isMobile, selectedHand],
+    [isMobile],
   )
+  /* eslint-enable react-hooks/preserve-manual-memoization */
 
   // Desktop hover handlers
   const handleMouseEnter = useCallback(
@@ -240,11 +244,13 @@ export default function RangeViewerPage() {
   }, [isMobile])
 
   // Select scenario
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const selectScenario = useCallback((id: string) => {
     setSelectedId(id)
     setSelectedHand(null)
-    closeMobileOverlay()
-  }, [closeMobileOverlay])
+    setShowMobileOverlay(false)
+    setMobileOverlayHand(null)
+  }, [])
 
   // Mobile overlay entry
   const overlayEntry = mobileOverlayHand ? strategy[mobileOverlayHand] ?? null : null
@@ -400,7 +406,7 @@ export default function RangeViewerPage() {
                       return (
                         <button
                           key={hand}
-                          onClick={() => handleCellClick(hand, entry)}
+                          onClick={() => handleCellClick(hand)}
                           onMouseEnter={(e) => handleMouseEnter(hand, e)}
                           onMouseMove={handleMouseMove}
                           onMouseLeave={handleMouseLeave}
@@ -586,12 +592,16 @@ interface TooltipProps {
 function Tooltip({ hand, entry, pos, containerRef }: TooltipProps) {
   const tipRef = useRef<HTMLDivElement>(null)
   const { t } = useI18n()
+  const [adjustedPos, setAdjustedPos] = useState(pos)
 
   // Adjust position to stay within the content area
-  const adjustedPos = useMemo(() => {
+  useLayoutEffect(() => {
     const container = containerRef.current
     const tip = tipRef.current
-    if (!container || !tip) return pos
+    if (!container || !tip) {
+      setAdjustedPos(pos)
+      return
+    }
 
     const rect = container.getBoundingClientRect()
     const tipW = tip.offsetWidth
@@ -608,7 +618,7 @@ function Tooltip({ hand, entry, pos, containerRef }: TooltipProps) {
     if (y + tipH > rect.bottom) y = pos.y - tipH - 16
     if (y < rect.top) y = rect.top + 8
 
-    return { x, y }
+    setAdjustedPos({ x, y })
   }, [pos, containerRef])
 
   const foldOnly = isFoldOnly(entry)

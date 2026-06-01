@@ -19,7 +19,7 @@ export default function LoginPage() {
     try {
       await signIn(email, password)
       navigate('/trainer')
-    } catch (err) {
+    } catch {
       setError(t('auth.loginFailed'))
     } finally {
       setLoading(false)

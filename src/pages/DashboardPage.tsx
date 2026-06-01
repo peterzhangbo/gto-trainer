@@ -30,13 +30,10 @@ export default function DashboardPage() {
   const { t } = useI18n()
   const [sessions, setSessions] = useState<SessionRow[]>([])
   const [drills, setDrills] = useState<DrillRow[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(!!user && isSupabaseConfigured)
 
   useEffect(() => {
-    if (!user || !isSupabaseConfigured) {
-      setLoading(false)
-      return
-    }
+    if (!user || !isSupabaseConfigured) return
 
     async function fetchData() {
       const [sessionsRes, drillsRes] = await Promise.all([

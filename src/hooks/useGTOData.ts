@@ -11,7 +11,7 @@ interface GTOData {
   }
 }
 
-function generateMockStrategy(scenarioType: string, _position: string): Record<string, StrategyEntry> {
+function generateMockStrategy(scenarioType: string): Record<string, StrategyEntry> {
   const strategy: Record<string, StrategyEntry> = {}
   const ranks = [...RANKS]
 
@@ -33,7 +33,6 @@ function generateMockStrategy(scenarioType: string, _position: string): Record<s
 
       let raiseFreq = 0
       let callFreq = 0
-      let foldFreq = 0
 
       if (scenarioType === 'rfi') {
         if (strength > 0.7 || (isPair && strength > 0.5)) {
@@ -45,7 +44,6 @@ function generateMockStrategy(scenarioType: string, _position: string): Record<s
         } else {
           raiseFreq = Math.random() * 0.05
         }
-        foldFreq = 1 - raiseFreq
       } else if (scenarioType === '3bet') {
         if (strength > 0.8 || (isPair && i <= 4)) {
           raiseFreq = 0.7 + Math.random() * 0.3
@@ -55,21 +53,17 @@ function generateMockStrategy(scenarioType: string, _position: string): Record<s
           callFreq = 0.3 + Math.random() * 0.2
         } else if (isPair || isSuited) {
           callFreq = 0.3 + Math.random() * 0.3
-        } else {
-          foldFreq = 0.85 + Math.random() * 0.15
         }
-        foldFreq = Math.max(0, 1 - raiseFreq - callFreq)
       } else {
         if (strength > 0.6) {
           raiseFreq = 0.5 + Math.random() * 0.3
           callFreq = 0.2 + Math.random() * 0.2
         } else if (strength > 0.35) {
           callFreq = 0.4 + Math.random() * 0.3
-        } else {
-          foldFreq = 0.7 + Math.random() * 0.3
         }
-        foldFreq = Math.max(0, 1 - raiseFreq - callFreq)
       }
+
+      const foldFreq = Math.max(0, 1 - raiseFreq - callFreq)
 
       const total = raiseFreq + callFreq + foldFreq
       if (total > 0) {
@@ -95,13 +89,14 @@ export function useGTOData(scenarioType: string, params: Record<string, string>)
 
   useEffect(() => {
     let cancelled = false
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true)
     setError(null)
 
     const timeout = setTimeout(() => {
       if (cancelled) return
       try {
-        const strategy = generateMockStrategy(scenarioType, position)
+        const strategy = generateMockStrategy(scenarioType)
         setData({
           strategy,
           metadata: {
