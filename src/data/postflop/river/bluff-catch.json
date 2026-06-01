@@ -1,0 +1,62 @@
+{
+  "scenario": "river",
+  "riverType": "bluff-catch",
+  "exampleBoard": ["Qh", "8d", "5s", "3c", "2h"],
+  "position": "OOP",
+  "stackDepth": 100,
+  "potType": "single-raised",
+  "previousAction": "turn-check-bet-called",
+  "facingBet": "river-bet-75pct",
+  "strategy": {
+    "set": {
+      "call": 0.55,
+      "raise": 0.40,
+      "fold": 0.05
+    },
+    "overpair": {
+      "call": 0.75,
+      "raise": 0.10,
+      "fold": 0.15
+    },
+    "topPair_topKicker": {
+      "call": 0.60,
+      "fold": 0.30,
+      "raise": 0.10
+    },
+    "topPair_weak_kicker": {
+      "call": 0.40,
+      "fold": 0.50,
+      "raise": 0.10
+    },
+    "middlePair": {
+      "fold": 0.65,
+      "call": 0.30,
+      "raise": 0.05
+    },
+    "bottomPair": {
+      "fold": 0.80,
+      "call": 0.18,
+      "raise": 0.02
+    },
+    "missedDraw": {
+      "fold": 0.75,
+      "raise": 0.15,
+      "call": 0.10
+    },
+    "air": {
+      "fold": 0.90,
+      "raise": 0.08,
+      "call": 0.02
+    }
+  },
+  "handClassification": {
+    "set": ["set_or_trips"],
+    "overpair": ["pair_above_top_board"],
+    "topPair_topKicker": ["top_pair_q_or_better_kicker"],
+    "topPair_weak_kicker": ["top_pair_j_or_lower_kicker"],
+    "middlePair": ["second_pair"],
+    "bottomPair": ["third_pair_or_lower"],
+    "missedDraw": ["draw_that_missed_can_bluff_raise"],
+    "air": ["no_pair_no_draw"]
+  }
+}

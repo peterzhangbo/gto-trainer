@@ -71,7 +71,7 @@ export default function ActionButtons({
   const { t } = useI18n()
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 w-full sm:w-auto">
       {actions.map((action) => {
         const isBest = action === bestAction
         const frequency = gtoStrategy?.[action]
@@ -84,7 +84,7 @@ export default function ActionButtons({
             onClick={() => onSelect(action)}
             disabled={disabled}
             className={cn(
-              'relative rounded-lg border px-5 py-3 text-sm font-bold text-white transition-all',
+              'relative rounded-lg border px-5 py-3 text-sm font-bold text-white transition-all w-full sm:w-auto min-h-[44px]',
               getActionBg(action),
               disabled && 'opacity-50 cursor-not-allowed',
               isBest && 'ring-2 ring-yellow-400 ring-offset-2 ring-offset-gray-900'
@@ -105,7 +105,7 @@ export default function ActionButtons({
         const bestLabel = bestKey ? t(bestKey as Parameters<typeof t>[0]) : ACTION_LABEL_FALLBACK[bestAction] || bestAction
         return (
           <div className="flex w-full items-center gap-2 pt-2">
-            <Badge variant="success">Best: {bestLabel}</Badge>
+            <Badge variant="success">{t('action.bestAction')} {bestLabel}</Badge>
           </div>
         )
       })()}

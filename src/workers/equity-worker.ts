@@ -1,7 +1,9 @@
 // Web Worker for Monte Carlo equity calculation
 // Runs in a separate thread to avoid blocking the UI
 
-import { Hand } from 'pokersolver'
+// pokersolver is CJS — use dynamic import (Vite transforms at bundle time)
+const mod: any = await import('pokersolver')
+const Hand = mod.Hand
 
 interface Card {
   rank: string

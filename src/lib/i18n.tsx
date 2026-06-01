@@ -78,6 +78,14 @@ const translations = {
     'range.mainly': '主要',
     'range.exampleBoard': '示例牌面:',
     'range.handCategories': '手牌类别',
+    'range.compareMode': '对比模式',
+    'range.compareModeOff': '退出对比',
+    'range.selectOverlay': '选择对比场景',
+    'range.range1': '范围1',
+    'range.range2': '范围2',
+    'range.legendCombos': '组合',
+    'range.rangeCoverage': '覆盖率',
+    'range.vs': 'vs',
 
     // EV Calculator
     'calc.title': 'EV 计算器',
@@ -187,6 +195,17 @@ const translations = {
 
     // Misc
     'trainer.noStrategyData': '暂无策略数据',
+
+    // Action helpers
+    'action.bestAction': '最佳:',
+    'action.allIn': '全下',
+
+    // Toast messages
+    'toast.sessionSaveFailed': '保存训练会话失败',
+    'toast.sessionUpdateFailed': '更新训练会话失败',
+
+    // GTO label prefix (used in drill details)
+    'drill.gtoLabel': 'GTO',
 
     // Mistake Book
     'nav.mistakes': '错题本',
@@ -328,6 +347,14 @@ const translations = {
     'range.mainly': 'mainly',
     'range.exampleBoard': 'Example board:',
     'range.handCategories': 'hand categories',
+    'range.compareMode': 'Compare',
+    'range.compareModeOff': 'Exit Compare',
+    'range.selectOverlay': 'Select overlay scenario',
+    'range.range1': 'Range 1',
+    'range.range2': 'Range 2',
+    'range.legendCombos': 'combos',
+    'range.rangeCoverage': 'coverage',
+    'range.vs': 'vs',
     'calc.title': 'EV Calculator',
     'calc.hero': 'Hero Hand',
     'calc.villain': 'Villain Hand',
@@ -425,6 +452,17 @@ const translations = {
 
     // Misc
     'trainer.noStrategyData': 'No strategy data',
+
+    // Action helpers
+    'action.bestAction': 'Best:',
+    'action.allIn': 'All In',
+
+    // Toast messages
+    'toast.sessionSaveFailed': 'Failed to save session',
+    'toast.sessionUpdateFailed': 'Failed to update session',
+
+    // GTO label prefix (used in drill details)
+    'drill.gtoLabel': 'GTO',
 
     // Mistake Book
     'nav.mistakes': 'Mistakes',

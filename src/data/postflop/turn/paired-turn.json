@@ -1,0 +1,78 @@
+{
+  "scenario": "turn",
+  "turnType": "paired",
+  "exampleBoard": ["Kh", "7d", "2s", "7c"],
+  "position": "IP",
+  "stackDepth": 100,
+  "potType": "single-raised",
+  "previousAction": "c-bet-called",
+  "strategy": {
+    "set": {
+      "bet_75pct": 0.60,
+      "bet_50pct": 0.25,
+      "check": 0.15
+    },
+    "fullHouse": {
+      "bet_75pct": 0.70,
+      "check": 0.15,
+      "bet_50pct": 0.15
+    },
+    "overpair": {
+      "bet_50pct": 0.40,
+      "check": 0.40,
+      "bet_33pct": 0.20
+    },
+    "topPair_good_kicker": {
+      "bet_50pct": 0.35,
+      "check": 0.50,
+      "bet_33pct": 0.15
+    },
+    "topPair_weak_kicker": {
+      "check": 0.65,
+      "bet_33pct": 0.25,
+      "bet_50pct": 0.10
+    },
+    "middlePair": {
+      "check": 0.80,
+      "bet_33pct": 0.15,
+      "bet_50pct": 0.05
+    },
+    "flushDraw": {
+      "bet_66pct": 0.45,
+      "check": 0.40,
+      "bet_33pct": 0.15
+    },
+    "oesd": {
+      "bet_50pct": 0.35,
+      "check": 0.50,
+      "bet_33pct": 0.15
+    },
+    "gutshot": {
+      "check": 0.65,
+      "bet_33pct": 0.25,
+      "bet_50pct": 0.10
+    },
+    "bluff": {
+      "bet_66pct": 0.25,
+      "check": 0.60,
+      "bet_75pct": 0.15
+    },
+    "air": {
+      "check": 0.90,
+      "bet_50pct": 0.10
+    }
+  },
+  "handClassification": {
+    "set": ["set_on_paired_turn"],
+    "fullHouse": ["full_house_pocket_pair_matches_board_pair"],
+    "overpair": ["pair_above_top_board"],
+    "topPair_good_kicker": ["top_pair_kq_kicker"],
+    "topPair_weak_kicker": ["top_pair_j_or_lower_kicker"],
+    "middlePair": ["second_pair_below_board_pair"],
+    "flushDraw": ["flush_draw_only"],
+    "oesd": ["open_ended_straight_draw"],
+    "gutshot": ["inside_straight_draw_no_other_draw"],
+    "bluff": ["missed_draw_bluffing"],
+    "air": ["no_pair_no_draw"]
+  }
+}

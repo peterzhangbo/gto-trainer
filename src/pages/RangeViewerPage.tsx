@@ -24,6 +24,21 @@ const ACTION_COLORS: Record<string, string> = {
   bet_100pct: '#7c3aed',
 }
 
+const OVERLAY_ACTION_COLORS: Record<string, string> = {
+  raise: '#fbbf24',
+  threeBet: '#f59e0b',
+  '3bet': '#f59e0b',
+  fourBet: '#d97706',
+  '4bet': '#d97706',
+  call: '#06b6d4',
+  check: '#84cc16',
+  fold: '#1a1a1a',
+  bet_33pct: '#f472b6',
+  bet_50pct: '#ec4899',
+  bet_75pct: '#db2777',
+  bet_100pct: '#be185d',
+}
+
 
 const ACTION_LABEL_KEYS: Record<string, string> = {
   raise: 'action.raise',
@@ -102,6 +117,10 @@ function getActionColor(action: string): string {
   return ACTION_COLORS[action] ?? '#6b7280'
 }
 
+function getOverlayActionColor(action: string): string {
+  return OVERLAY_ACTION_COLORS[action] ?? '#84cc16'
+}
+
 function getActionLabel(action: string, t: (key: string) => string): string {
   const key = ACTION_LABEL_KEYS[action]
   if (key) return t(key)
@@ -142,6 +161,8 @@ export default function RangeViewerPage() {
   const [tooltipPos, setTooltipPos] = useState<TooltipPos>({ x: 0, y: 0 })
   const [showMobileOverlay, setShowMobileOverlay] = useState(false)
   const [mobileOverlayHand, setMobileOverlayHand] = useState<string | null>(null)
+  const [overlayMode, setOverlayMode] = useState(false)
+  const [overlayScenarioId, setOverlayScenarioId] = useState<string>('')
   const matrixRef = useRef<HTMLDivElement>(null)
 
   // Detect if we are on a touch / narrow device
@@ -173,6 +194,25 @@ export default function RangeViewerPage() {
     return data.hands as Record<string, StrategyEntry>
   }, [data])
 
+  // Overlay scenario data
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
+  const overlayData = useMemo<ScenarioData | null>(() => {
+    if (!overlayMode || !overlayScenarioId) return null
+    const meta = scenarios.find((s) => s.id === overlayScenarioId)
+    if (!meta) return null
+    return getScenarioData({
+      scenarioType: meta.subCategory,
+      position: meta.position,
+      villainPosition: meta.villainPosition,
+      boardTexture: meta.boardTexture,
+    })
+  }, [overlayMode, overlayScenarioId, scenarios])
+
+  const overlayStrategy = useMemo<Record<string, StrategyEntry>>(() => {
+    if (!overlayData || !isPreflop(overlayData)) return {}
+    return overlayData.hands as Record<string, StrategyEntry>
+  }, [overlayData])
+
   const postflopData = useMemo<PostflopScenarioData | null>(() => {
     if (!data || !isPostflop(data)) return null
     return data
@@ -188,14 +228,34 @@ export default function RangeViewerPage() {
   const selectedEntry = selectedHand ? strategy[selectedHand] ?? null : null
   const hoveredEntry = hoveredHand ? strategy[hoveredHand] ?? null : null
 
-  // Range size
-  const rangeSize = useMemo(() => {
-    let count = 0
-    for (const entry of Object.values(strategy)) {
-      if (!isFoldOnly(entry)) count++
+  // Range size and combo stats
+  const rangeStats = useMemo(() => {
+    let totalHands = 0
+    let totalCombos = 0
+    const actionCombos: Record<string, number> = {}
+
+    for (const [hand, entry] of Object.entries(strategy)) {
+      if (!isFoldOnly(entry)) {
+        totalHands++
+        const combos = getComboCount(hand)
+        totalCombos += combos
+
+        // Count combos per action
+        for (const [action, freq] of Object.entries(entry)) {
+          if (typeof freq === 'number' && freq > 0.005) {
+            actionCombos[action] = (actionCombos[action] ?? 0) + combos * freq
+          }
+        }
+      }
     }
-    return count
+
+    // Total possible combos (1326 = 52*51/2)
+    const coverage = totalCombos / 1326
+
+    return { totalHands, totalCombos, actionCombos, coverage }
   }, [strategy])
+
+  const rangeSize = rangeStats.totalHands
 
   // Close overlay helper
   const closeMobileOverlay = useCallback(() => {
@@ -250,6 +310,8 @@ export default function RangeViewerPage() {
     setSelectedHand(null)
     setShowMobileOverlay(false)
     setMobileOverlayHand(null)
+    setOverlayMode(false)
+    setOverlayScenarioId('')
   }, [])
 
   // Mobile overlay entry
@@ -332,29 +394,148 @@ export default function RangeViewerPage() {
       <main className="flex-1 p-4 md:p-6 overflow-auto relative flex flex-col items-center">
         {/* Header with stats + legend */}
         <div className="mb-4 w-full max-w-4xl">
-          <h1 className="text-xl md:text-2xl font-bold text-white">
-            {scenarios.find((s) => s.id === selectedId)?.name ?? t('range.title')}
-          </h1>
-          <p className="text-xs md:text-sm text-gray-500 mt-1">
-            {scenarios.find((s) => s.id === selectedId)?.description ?? ''}
-            {isPreflopView
-              ? ` · ${t('range.range')}: ${rangeSize}/169 ${t('range.hands')} (${((rangeSize / 169) * 100).toFixed(1)}%)`
-              : ` · ${Object.keys(postflopStrategy).length} ${t('range.handCategories')}`
-            }
-          </p>
-          {/* Legend */}
-          <div className="flex gap-2 md:gap-3 flex-wrap mt-3">
-            {LEGEND_ACTIONS.map((action) => (
-              <div key={action} className="flex items-center gap-1.5">
-                <div
-                  className="w-3 h-3 rounded-sm flex-shrink-0"
-                  style={{ backgroundColor: getActionColor(action) }}
-                />
-                <span className="text-[10px] md:text-xs text-gray-500">
-                  {getActionLabel(action, t)}
-                </span>
+          <div className="flex items-start justify-between gap-3 flex-wrap">
+            <div>
+              <h1 className="text-xl md:text-2xl font-bold text-white">
+                {scenarios.find((s) => s.id === selectedId)?.name ?? t('range.title')}
+                {overlayMode && overlayScenarioId && (
+                  <span className="text-sm md:text-base font-normal text-gray-400 ml-2">
+                    {t('range.vs')} {scenarios.find((s) => s.id === overlayScenarioId)?.name}
+                  </span>
+                )}
+              </h1>
+              <p className="text-xs md:text-sm text-gray-500 mt-1">
+                {scenarios.find((s) => s.id === selectedId)?.description ?? ''}
+                {isPreflopView
+                  ? ` · ${t('range.range')}: ${rangeSize}/169 ${t('range.hands')} (${((rangeSize / 169) * 100).toFixed(1)}%)`
+                  : ` · ${Object.keys(postflopStrategy).length} ${t('range.handCategories')}`
+                }
+              </p>
+            </div>
+
+            {/* Compare mode controls */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {overlayMode && isPreflopView && (
+                <select
+                  value={overlayScenarioId}
+                  onChange={(e) => setOverlayScenarioId(e.target.value)}
+                  className="bg-gray-800 border border-gray-700 text-gray-300 text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-red-500 max-w-[180px]"
+                >
+                  <option value="">{t('range.selectOverlay')}</option>
+                  {preflopScenarios
+                    .filter((s) => s.id !== selectedId)
+                    .map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.position ? `${s.position} ` : ''}{s.name}
+                      </option>
+                    ))}
+                </select>
+              )}
+              {isPreflopView && (
+                <button
+                  onClick={() => {
+                    if (overlayMode) {
+                      setOverlayMode(false)
+                      setOverlayScenarioId('')
+                    } else {
+                      setOverlayMode(true)
+                      if (!overlayScenarioId) {
+                        const otherScenario = preflopScenarios.find((s) => s.id !== selectedId)
+                        if (otherScenario) setOverlayScenarioId(otherScenario.id)
+                      }
+                    }
+                  }}
+                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ${
+                    overlayMode
+                      ? 'bg-red-600 text-white hover:bg-red-700'
+                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white border border-gray-700'
+                  }`}
+                >
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="1" y="1" width="6" height="6" rx="1" />
+                    <rect x="9" y="1" width="6" height="6" rx="1" />
+                    <rect x="1" y="9" width="6" height="6" rx="1" />
+                    <rect x="9" y="9" width="6" height="6" rx="1" />
+                  </svg>
+                  {overlayMode ? t('range.compareModeOff') : t('range.compareMode')}
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Legend - compact with percentages */}
+          <div className="mt-3">
+            {overlayMode ? (
+              <div className="flex flex-col gap-2">
+                {/* Range 1 legend */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[10px] font-semibold text-gray-400 min-w-[36px]">
+                    {t('range.range1')}:
+                  </span>
+                  {LEGEND_ACTIONS.map((action) => {
+                    const count = rangeStats.actionCombos[action] ?? 0
+                    if (count < 0.5) return null
+                    return (
+                      <div key={action} className="flex items-center gap-1">
+                        <div
+                          className="w-2.5 h-2.5 rounded-sm flex-shrink-0"
+                          style={{ backgroundColor: getActionColor(action) }}
+                        />
+                        <span className="text-[10px] text-gray-500">
+                          {getActionLabel(action, t)}
+                        </span>
+                        <span className="text-[10px] text-gray-600 font-mono">
+                          {Math.round(count)}
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+                {/* Range 2 legend */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[10px] font-semibold text-gray-400 min-w-[36px]">
+                    {t('range.range2')}:
+                  </span>
+                  {LEGEND_ACTIONS.map((action) => (
+                    <div key={action} className="flex items-center gap-1">
+                      <div
+                        className="w-2.5 h-2.5 rounded-sm flex-shrink-0"
+                        style={{ backgroundColor: getOverlayActionColor(action) }}
+                      />
+                      <span className="text-[10px] text-gray-500">
+                        {getActionLabel(action, t)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
+            ) : (
+              <div className="flex gap-2 md:gap-3 flex-wrap">
+                {LEGEND_ACTIONS.map((action) => {
+                  const count = rangeStats.actionCombos[action] ?? 0
+                  if (count < 0.5) return null
+                  return (
+                    <div key={action} className="flex items-center gap-1.5">
+                      <div
+                        className="w-3 h-3 rounded-sm flex-shrink-0"
+                        style={{ backgroundColor: getActionColor(action) }}
+                      />
+                      <span className="text-[10px] md:text-xs text-gray-500">
+                        {getActionLabel(action, t)}
+                      </span>
+                      <span className="text-[10px] md:text-xs text-gray-600 font-mono">
+                        {Math.round(count)} {t('range.legendCombos')}
+                      </span>
+                    </div>
+                  )
+                })}
+                <div className="flex items-center gap-1.5 ml-2">
+                  <span className="text-[10px] md:text-xs text-gray-600 font-mono">
+                    {t('range.rangeCoverage')}: {(rangeStats.coverage * 100).toFixed(1)}%
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -384,8 +565,10 @@ export default function RangeViewerPage() {
                     {RANKS.map((_, colIdx) => {
                       const hand = getHandNotation(rowIdx, colIdx)
                       const entry = strategy[hand]
+                      const overlayEntry = overlayMode ? overlayStrategy[hand] : undefined
                       const isSelected = selectedHand === hand
                       const foldOnly = entry ? isFoldOnly(entry) : true
+                      const overlayFoldOnly = overlayEntry ? isFoldOnly(overlayEntry) : true
 
                       // Build sorted action segments: largest freq first, fold always last
                       const segments: { action: string; freq: number }[] = []
@@ -403,6 +586,21 @@ export default function RangeViewerPage() {
                         }
                       }
 
+                      // Overlay segments
+                      const overlaySegments: { action: string; freq: number }[] = []
+                      if (overlayEntry && !overlayFoldOnly && overlayMode) {
+                        for (const [action, freq] of Object.entries(overlayEntry)) {
+                          const f = typeof freq === 'number' ? freq : 0
+                          if (f > 0.005 && action !== 'fold') {
+                            overlaySegments.push({ action, freq: f })
+                          }
+                        }
+                        overlaySegments.sort((a, b) => b.freq - a.freq)
+                        if (overlayEntry.fold && overlayEntry.fold > 0.005) {
+                          overlaySegments.push({ action: 'fold', freq: overlayEntry.fold })
+                        }
+                      }
+
                       return (
                         <button
                           key={hand}
@@ -410,30 +608,69 @@ export default function RangeViewerPage() {
                           onMouseEnter={(e) => handleMouseEnter(hand, e)}
                           onMouseMove={handleMouseMove}
                           onMouseLeave={handleMouseLeave}
-                          className={`w-12 min-w-[48px] min-h-[48px] h-12 m-px rounded-md flex flex-col items-center justify-center transition-all relative select-none bg-gray-900 ${
+                          className={`w-12 min-w-[48px] min-h-[48px] h-12 m-px rounded-md flex flex-col items-center justify-center transition-all relative select-none bg-gray-900 border border-gray-800/50 ${
                             isSelected
-                              ? 'ring-2 ring-white scale-105 z-10'
-                              : 'hover:scale-105 hover:z-10'
+                              ? 'ring-2 ring-red-500 scale-105 z-10 shadow-[0_0_12px_rgba(239,68,68,0.3)]'
+                              : 'hover:scale-105 hover:z-10 hover:shadow-[0_0_8px_rgba(255,255,255,0.15)]'
                           }`}
                         >
                           {/* Stacked bar background */}
-                          {segments.length > 0 && (
+                          {overlayMode && overlaySegments.length > 0 ? (
+                            /* Overlay mode: left/right split */
                             <div className="absolute inset-0 flex overflow-hidden rounded-md">
-                              {segments.map((seg) => (
+                              {/* Left half - range 1 */}
+                              <div className="w-1/2 h-full flex">
+                                {segments.length > 0 ? segments.map((seg) => (
+                                  <div
+                                    key={seg.action}
+                                    className="h-full"
+                                    style={{
+                                      width: `${(seg.freq / segments.reduce((s, x) => s + x.freq, 0)) * 100}%`,
+                                      backgroundColor: getActionColor(seg.action),
+                                      opacity: 0.85,
+                                    }}
+                                  />
+                                )) : (
+                                  <div className="h-full w-full bg-gray-900" />
+                                )}
+                              </div>
+                              {/* Right half - range 2 (overlay) */}
+                              <div className="w-1/2 h-full flex">
+                                {overlaySegments.map((seg) => (
+                                  <div
+                                    key={seg.action}
+                                    className="h-full"
+                                    style={{
+                                      width: `${(seg.freq / overlaySegments.reduce((s, x) => s + x.freq, 0)) * 100}%`,
+                                      backgroundColor: getOverlayActionColor(seg.action),
+                                      opacity: 0.85,
+                                    }}
+                                  />
+                                ))}
+                              </div>
+                              {/* Center divider */}
+                              <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/30" />
+                            </div>
+                          ) : segments.length > 0 ? (
+                            /* Normal mode: gradient fill */
+                            <div className="absolute inset-0 flex overflow-hidden rounded-md">
+                              {segments.map((seg, i) => (
                                 <div
                                   key={seg.action}
                                   className="h-full"
                                   style={{
                                     width: `${seg.freq * 100}%`,
-                                    backgroundColor: getActionColor(seg.action),
+                                    background: i === 0
+                                      ? `linear-gradient(180deg, ${getActionColor(seg.action)}dd 0%, ${getActionColor(seg.action)} 100%)`
+                                      : getActionColor(seg.action),
                                   }}
                                 />
                               ))}
                             </div>
-                          )}
+                          ) : null}
                           {/* Hand notation */}
                           <span
-                            className={`relative z-10 text-[11px] font-bold leading-none ${
+                            className={`relative z-10 text-[10px] font-bold leading-none ${
                               foldOnly ? 'text-gray-600' : 'text-white/90'
                             }`}
                           >
@@ -467,6 +704,10 @@ export default function RangeViewerPage() {
                 hand={selectedHand}
                 entry={selectedEntry}
                 onClose={() => setSelectedHand(null)}
+                overlayMode={overlayMode}
+                overlayEntry={overlayMode ? (overlayStrategy[selectedHand] ?? null) : undefined}
+                overlayScenarioName={overlayScenarioId ? scenarios.find((s) => s.id === overlayScenarioId)?.name : undefined}
+                primaryScenarioName={scenarios.find((s) => s.id === selectedId)?.name}
               />
             )}
           </>
@@ -678,9 +919,13 @@ interface DetailCardProps {
   hand: string
   entry: StrategyEntry | null
   onClose: () => void
+  overlayEntry?: StrategyEntry | null
+  overlayMode?: boolean
+  overlayScenarioName?: string
+  primaryScenarioName?: string
 }
 
-function DetailCard({ hand, entry, onClose }: DetailCardProps) {
+function DetailCard({ hand, entry, onClose, overlayEntry, overlayMode, overlayScenarioName, primaryScenarioName }: DetailCardProps) {
   const combos = getComboCount(hand)
   const { t } = useI18n()
   const typeLabel = hand.length === 2 ? t('range.pair') : hand.endsWith('s') ? t('range.suited') : t('range.offsuit')
@@ -699,8 +944,84 @@ function DetailCard({ hand, entry, onClose }: DetailCardProps) {
           </p>
         </div>
 
-        {/* Right: action bars */}
-        {entry ? (
+        {/* Right: action bars - side by side in overlay mode */}
+        {overlayMode ? (
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Range 1 */}
+            <div>
+              <p className="text-[10px] font-semibold text-gray-400 mb-2">{primaryScenarioName ?? t('range.range1')}</p>
+              {entry ? (
+                <div className="space-y-2">
+                  {Object.entries(entry)
+                    .filter(([, f]) => f > 0.005)
+                    .sort(([, a], [, b]) => b - a)
+                    .map(([action, freq]) => (
+                      <div key={action} className="flex items-center gap-2">
+                        <div
+                          className="w-2.5 h-2.5 rounded-sm flex-shrink-0"
+                          style={{ backgroundColor: getActionColor(action) }}
+                        />
+                        <span className="text-gray-400 text-[11px] w-14 flex-shrink-0">
+                          {getActionLabel(action, t)}
+                        </span>
+                        <div className="flex-1 bg-gray-800 rounded-full h-2 overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-300"
+                            style={{
+                              width: `${freq * 100}%`,
+                              backgroundColor: getActionColor(action),
+                            }}
+                          />
+                        </div>
+                        <span className="text-white font-mono text-[11px] w-10 text-right">
+                          {(freq * 100).toFixed(0)}%
+                        </span>
+                      </div>
+                    ))}
+                </div>
+              ) : (
+                <span className="text-gray-500 text-sm">{t('range.foldFull')}</span>
+              )}
+            </div>
+
+            {/* Range 2 */}
+            <div>
+              <p className="text-[10px] font-semibold text-gray-400 mb-2">{overlayScenarioName ?? t('range.range2')}</p>
+              {overlayEntry ? (
+                <div className="space-y-2">
+                  {Object.entries(overlayEntry)
+                    .filter(([, f]) => f > 0.005)
+                    .sort(([, a], [, b]) => b - a)
+                    .map(([action, freq]) => (
+                      <div key={action} className="flex items-center gap-2">
+                        <div
+                          className="w-2.5 h-2.5 rounded-sm flex-shrink-0"
+                          style={{ backgroundColor: getOverlayActionColor(action) }}
+                        />
+                        <span className="text-gray-400 text-[11px] w-14 flex-shrink-0">
+                          {getActionLabel(action, t)}
+                        </span>
+                        <div className="flex-1 bg-gray-800 rounded-full h-2 overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-300"
+                            style={{
+                              width: `${freq * 100}%`,
+                              backgroundColor: getOverlayActionColor(action),
+                            }}
+                          />
+                        </div>
+                        <span className="text-white font-mono text-[11px] w-10 text-right">
+                          {(freq * 100).toFixed(0)}%
+                        </span>
+                      </div>
+                    ))}
+                </div>
+              ) : (
+                <span className="text-gray-500 text-sm">{t('range.foldFull')}</span>
+              )}
+            </div>
+          </div>
+        ) : entry ? (
           <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
             {Object.entries(entry)
               .filter(([, f]) => f > 0.005)

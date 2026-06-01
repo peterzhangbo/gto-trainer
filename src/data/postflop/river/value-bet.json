@@ -1,0 +1,60 @@
+{
+  "scenario": "river",
+  "riverType": "value-bet",
+  "exampleBoard": ["Kh", "9d", "4s", "2c", "6d"],
+  "position": "IP",
+  "stackDepth": 100,
+  "potType": "single-raised",
+  "previousAction": "turn-bet-called",
+  "strategy": {
+    "set": {
+      "bet_75pct": 0.65,
+      "bet_50pct": 0.20,
+      "check": 0.15
+    },
+    "overpair": {
+      "bet_75pct": 0.50,
+      "bet_50pct": 0.30,
+      "check": 0.20
+    },
+    "topPair_topKicker": {
+      "bet_66pct": 0.45,
+      "bet_50pct": 0.30,
+      "check": 0.25
+    },
+    "topPair_weak_kicker": {
+      "bet_50pct": 0.30,
+      "check": 0.50,
+      "bet_33pct": 0.20
+    },
+    "middlePair": {
+      "check": 0.70,
+      "bet_33pct": 0.20,
+      "bet_50pct": 0.10
+    },
+    "bottomPair": {
+      "check": 0.85,
+      "bet_33pct": 0.15
+    },
+    "missedDraw": {
+      "check": 0.70,
+      "bet_75pct": 0.15,
+      "bet_50pct": 0.15
+    },
+    "air": {
+      "check": 0.85,
+      "bet_75pct": 0.10,
+      "bet_50pct": 0.05
+    }
+  },
+  "handClassification": {
+    "set": ["set_or_trips"],
+    "overpair": ["pair_above_top_board"],
+    "topPair_topKicker": ["top_pair_kq_kicker"],
+    "topPair_weak_kicker": ["top_pair_j_or_lower_kicker"],
+    "middlePair": ["second_pair"],
+    "bottomPair": ["third_pair_or_lower"],
+    "missedDraw": ["draw_that_missed_river"],
+    "air": ["no_pair_no_draw"]
+  }
+}

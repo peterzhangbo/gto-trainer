@@ -674,7 +674,7 @@ export default function TrainerPage() {
         scenario_params: { scenarioId: selectedScenarioId },
       })
       if (error) {
-        showToast('Failed to save session', 'error')
+        showToast(t('toast.sessionSaveFailed'), 'error')
       } else {
         setSessionSaved(true)
       }
@@ -767,7 +767,7 @@ export default function TrainerPage() {
         })
         .eq('id', sessionId)
       if (error) {
-        showToast('Failed to update session', 'error')
+        showToast(t('toast.sessionUpdateFailed'), 'error')
       }
     }
   }

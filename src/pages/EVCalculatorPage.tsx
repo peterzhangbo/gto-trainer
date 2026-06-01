@@ -1,8 +1,8 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import type { Card } from '@/types/poker'
 import CardSelector from '@/components/poker/CardSelector'
 import EquityDisplay from '@/components/poker/EquityDisplay'
-import { calculateEquity } from '@/lib/poker/equity'
+import { useEquity } from '@/hooks/useEquity'
 import { useI18n } from '@/lib/i18n'
 
 export default function EVCalculatorPage() {
@@ -13,8 +13,9 @@ export default function EVCalculatorPage() {
   const [selectingFor, setSelectingFor] = useState<'hero' | 'villain' | 'board'>('hero')
   const [potSize, setPotSize] = useState(100)
   const [betToCall, setBetToCall] = useState(50)
-  const [result, setResult] = useState<{ heroEquity: number; heroWins: number; villainWins: number; tie: number; ev: number } | null>(null)
-  const [calculating, setCalculating] = useState(false)
+  const [evResult, setEvResult] = useState<{ heroEquity: number; ev: number } | null>(null)
+
+  const { calculateEquity, result, calculating, reset: resetEquity } = useEquity()
 
   const allUsed = [...heroCards, ...villainCards, ...boardCards]
 
@@ -26,32 +27,30 @@ export default function EVCalculatorPage() {
     } else if (selectingFor === 'board' && boardCards.length < 5) {
       setBoardCards([...boardCards, card])
     }
-    setResult(null)
+    setEvResult(null)
   }, [selectingFor, heroCards, villainCards, boardCards])
+
+  // Compute EV when equity result arrives
+  useEffect(() => {
+    if (result) {
+      const equity = result.heroEquity / 100
+      const ev = equity * (potSize + betToCall) - (1 - equity) * betToCall
+      setEvResult({ heroEquity: result.heroEquity, ev })
+    }
+  }, [result, potSize, betToCall])
 
   const reset = () => {
     setHeroCards([])
     setVillainCards([])
     setBoardCards([])
-    setResult(null)
+    setEvResult(null)
+    resetEquity()
   }
 
-  const calculate = () => {
+  const handleCalculate = () => {
     if (heroCards.length < 2 || villainCards.length < 2) return
-    setCalculating(true)
-
-    setTimeout(() => {
-      const eq = calculateEquity(heroCards, villainCards, boardCards, 10000)
-      const ev = eq.heroEquity * (potSize + betToCall) - (1 - eq.heroEquity) * betToCall
-      setResult({
-        heroEquity: eq.heroEquity * 100,
-        heroWins: eq.heroWins * 100,
-        villainWins: eq.villainWins * 100,
-        tie: eq.tie * 100,
-        ev,
-      })
-      setCalculating(false)
-    }, 100)
+    setEvResult(null)
+    calculateEquity(heroCards, villainCards, boardCards, 10000)
   }
 
   const potOdds = potSize > 0 ? (betToCall / (potSize + betToCall)) * 100 : 0

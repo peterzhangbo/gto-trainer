@@ -1,18 +1,19 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { useI18n } from '@/lib/i18n'
-import { ErrorBoundary, ToastContainer } from '@/components/ui'
-import LandingPage from '@/pages/LandingPage'
-import LoginPage from '@/pages/LoginPage'
-import SignupPage from '@/pages/SignupPage'
-import TrainerPage from '@/pages/TrainerPage'
-import RangeViewerPage from '@/pages/RangeViewerPage'
-import EVCalculatorPage from '@/pages/EVCalculatorPage'
-import DashboardPage from '@/pages/DashboardPage'
-import SettingsPage from '@/pages/SettingsPage'
-import MistakeBookPage from '@/pages/MistakeBookPage'
-import HistoryPage from '@/pages/HistoryPage'
+import { ErrorBoundary, ToastContainer, Spinner } from '@/components/ui'
+
+const LandingPage = lazy(() => import('@/pages/LandingPage'))
+const LoginPage = lazy(() => import('@/pages/LoginPage'))
+const SignupPage = lazy(() => import('@/pages/SignupPage'))
+const TrainerPage = lazy(() => import('@/pages/TrainerPage'))
+const RangeViewerPage = lazy(() => import('@/pages/RangeViewerPage'))
+const EVCalculatorPage = lazy(() => import('@/pages/EVCalculatorPage'))
+const DashboardPage = lazy(() => import('@/pages/DashboardPage'))
+const SettingsPage = lazy(() => import('@/pages/SettingsPage'))
+const MistakeBookPage = lazy(() => import('@/pages/MistakeBookPage'))
+const HistoryPage = lazy(() => import('@/pages/HistoryPage'))
 
 const NAV_LINK_KEYS = [
   { to: '/trainer', key: 'nav.training' as const },
@@ -33,18 +34,20 @@ export default function App() {
       {showNav && <Navbar />}
       <div className="page-enter" key={location.pathname}>
         <ErrorBoundary>
-          <Routes location={location}>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/trainer" element={<TrainerPage />} />
-            <Route path="/ranges" element={<RangeViewerPage />} />
-            <Route path="/calculator" element={<EVCalculatorPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/mistakes" element={<MistakeBookPage />} />
-            <Route path="/history" element={<HistoryPage />} />
-          </Routes>
+          <Suspense fallback={<div className="flex items-center justify-center min-h-[60vh]"><Spinner size="xl" /></div>}>
+            <Routes location={location}>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/trainer" element={<TrainerPage />} />
+              <Route path="/ranges" element={<RangeViewerPage />} />
+              <Route path="/calculator" element={<EVCalculatorPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/mistakes" element={<MistakeBookPage />} />
+              <Route path="/history" element={<HistoryPage />} />
+            </Routes>
+          </Suspense>
         </ErrorBoundary>
       </div>
     </div>
