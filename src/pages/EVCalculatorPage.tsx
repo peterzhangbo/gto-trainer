@@ -101,7 +101,7 @@ export default function EVCalculatorPage() {
 
             <div className="flex flex-wrap gap-3 mt-4">
               <button
-                onClick={calculate}
+                onClick={handleCalculate}
                 disabled={heroCards.length < 2 || villainCards.length < 2 || calculating}
                 className="min-h-[44px] px-6 py-2 bg-red-600 hover:bg-red-500 disabled:bg-gray-700 text-white rounded-lg font-semibold transition-colors"
               >
@@ -143,7 +143,7 @@ export default function EVCalculatorPage() {
               </div>
             </div>
 
-            {result && (
+            {result && evResult && (
               <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 space-y-4">
                 <h3 className="text-lg font-semibold text-white">{t('calc.results')}</h3>
                 <EquityDisplay
@@ -153,12 +153,12 @@ export default function EVCalculatorPage() {
                 />
                 <div>
                   <div className="text-sm text-gray-400 mb-1">{t('calc.ev')}</div>
-                  <div className={`text-3xl font-bold ${result.ev >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    {result.ev >= 0 ? '+' : ''}{result.ev.toFixed(2)} BB
+                  <div className={`text-3xl font-bold ${evResult.ev >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {evResult.ev >= 0 ? '+' : ''}{evResult.ev.toFixed(2)} BB
                   </div>
                 </div>
                 <div className="text-xs text-gray-600 bg-gray-800 rounded p-2 font-mono">
-                  EV = ({result.heroEquity.toFixed(1)}% × {potSize + betToCall}) − ({(100 - result.heroEquity).toFixed(1)}% × {betToCall}) = {result.ev.toFixed(2)}
+                  EV = ({evResult.heroEquity.toFixed(1)}% × {potSize + betToCall}) − ({(100 - evResult.heroEquity).toFixed(1)}% × {betToCall}) = {evResult.ev.toFixed(2)}
                 </div>
               </div>
             )}

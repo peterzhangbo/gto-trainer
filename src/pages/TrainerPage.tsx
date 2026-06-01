@@ -825,7 +825,10 @@ export default function TrainerPage() {
             {t('trainer.preflopGroup' as Parameters<typeof t>[0])}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-8">
-            {preflopScenarios.map((s) => (
+            {preflopScenarios.map((s) => {
+              const i18nKey = SUBCATEGORY_I18N[s.subCategory]
+              const subCatLabel = i18nKey ? t(i18nKey as Parameters<typeof t>[0]) : s.subCategory
+              return (
               <button
                 key={s.id}
                 onClick={() => setSelectedScenarioId(s.id)}
@@ -835,12 +838,13 @@ export default function TrainerPage() {
                     : 'bg-gray-900 border-gray-800 hover:border-gray-700'
                 }`}
               >
-                <span className="text-xs text-gray-500 uppercase">{s.subCategory}</span>
+                <span className="text-xs text-gray-500 uppercase">{subCatLabel}</span>
                 <h3 className="text-lg font-semibold text-white mt-1">
                   {s.position ? `${s.position} ` : ''}{s.name}
                 </h3>
               </button>
-            ))}
+              )
+            })}
           </div>
 
           {/* Postflop scenarios */}

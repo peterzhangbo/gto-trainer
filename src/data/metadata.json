@@ -224,6 +224,46 @@
       "exampleBoard": ["Kh", "7d", "2s", "3c", "2h"],
       "description": "河牌配对牌面时的GTO策略，引入葫芦的可能性并改变最优下注尺度",
       "filePath": "postflop/river/paired-river.json"
+    },
+    {
+      "id": "turn_paired",
+      "name": "转牌: 配对牌面",
+      "category": "postflop",
+      "subCategory": "turn",
+      "turnType": "paired",
+      "exampleBoard": ["Kh", "7d", "2s", "7c"],
+      "description": "转牌配对牌面时的GTO策略（如K-7-2翻牌后出现7），葫芦和暗三概率增加，改变下注频率",
+      "filePath": "postflop/turn/paired-turn.json"
+    },
+    {
+      "id": "turn_second_barrel",
+      "name": "转牌: 二次开枪",
+      "category": "postflop",
+      "subCategory": "turn",
+      "turnType": "second-barrel",
+      "exampleBoard": ["Ah", "8d", "4s", "6c"],
+      "description": "转牌二次开枪决策的GTO策略，翻牌c-bet被跟注后的第二枪频率和手牌选择",
+      "filePath": "postflop/turn/second-barrel.json"
+    },
+    {
+      "id": "river_value_bet",
+      "name": "河牌: 价值下注",
+      "category": "postflop",
+      "subCategory": "river",
+      "riverType": "value-bet",
+      "exampleBoard": ["Kh", "9d", "4s", "2c", "6d"],
+      "description": "河牌持有强成手牌时的价值下注策略，最大化从更弱手牌中提取价值",
+      "filePath": "postflop/river/value-bet.json"
+    },
+    {
+      "id": "river_bluff_catch",
+      "name": "河牌: 抓诈唬",
+      "category": "postflop",
+      "subCategory": "river",
+      "riverType": "bluff-catch",
+      "exampleBoard": ["Qh", "8d", "5s", "3c", "2h"],
+      "description": "河牌面对下注时的抓诈唬决策，根据对手诈唬频率和手牌强度选择跟注、弃牌或加注",
+      "filePath": "postflop/river/bluff-catch.json"
     }
   ]
 }

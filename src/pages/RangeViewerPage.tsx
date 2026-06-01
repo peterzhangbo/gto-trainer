@@ -98,13 +98,13 @@ function getComboCount(hand: string): number {
   return 12 // offsuit
 }
 
-function getHandDescription(_hand: string, entry: StrategyEntry): string {
+function getHandDescription(_hand: string, entry: StrategyEntry, t: (key: string) => string): string {
   const actions = Object.entries(entry).sort(([, a], [, b]) => b - a)
-  if (actions.length === 0) return '弃牌'
+  if (actions.length === 0) return t('action.fold')
   const [bestAction, bestFreq] = actions[0]
-  const label = ACTION_LABEL_FALLBACK[bestAction] ?? bestAction
+  const label = getActionLabel(bestAction, t)
   if (bestFreq >= 0.9) return `${label} ${(bestFreq * 100).toFixed(0)}%`
-  return `混合策略 - 主要 ${label} ${(bestFreq * 100).toFixed(0)}%`
+  return `${t('range.mixedStrategy')} - ${t('range.mainly')} ${label} ${(bestFreq * 100).toFixed(0)}%`
 }
 
 
@@ -940,7 +940,7 @@ function DetailCard({ hand, entry, onClose, overlayEntry, overlayMode, overlaySc
             {typeLabel} = {combos} {t('range.combos')}
           </p>
           <p className="text-xs text-gray-600 mt-1">
-            {entry ? getHandDescription(hand, entry) : t('range.notInRange')}
+            {entry ? getHandDescription(hand, entry, t) : t('range.notInRange')}
           </p>
         </div>
 

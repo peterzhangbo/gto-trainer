@@ -18,9 +18,13 @@ import brickTurnData from '@/data/postflop/turn/brick-turn.json';
 import flushCompletingTurnData from '@/data/postflop/turn/flush-completing.json';
 import straightCompletingTurnData from '@/data/postflop/turn/straight-completing.json';
 import overcardTurnData from '@/data/postflop/turn/overcard-turn.json';
+import pairedTurnData from '@/data/postflop/turn/paired-turn.json';
+import secondBarrelData from '@/data/postflop/turn/second-barrel.json';
 import blankRiverData from '@/data/postflop/river/blank-river.json';
 import scaryRiverData from '@/data/postflop/river/scary-river.json';
 import pairedRiverData from '@/data/postflop/river/paired-river.json';
+import valueBetRiverData from '@/data/postflop/river/value-bet.json';
+import bluffCatchRiverData from '@/data/postflop/river/bluff-catch.json';
 import metadataJson from '@/data/metadata.json';
 
 // ---------------------------------------------------------------------------
@@ -110,6 +114,10 @@ export const DATA_REGISTRY: Record<string, ScenarioData> = {
   river_blank: blankRiverData as unknown as ScenarioData,
   river_scary: scaryRiverData as unknown as ScenarioData,
   river_paired: pairedRiverData as unknown as ScenarioData,
+  turn_paired: pairedTurnData as unknown as ScenarioData,
+  turn_second_barrel: secondBarrelData as unknown as ScenarioData,
+  river_value_bet: valueBetRiverData as unknown as ScenarioData,
+  river_bluff_catch: bluffCatchRiverData as unknown as ScenarioData,
 };
 
 const METADATA: MetadataIndex = metadataJson as unknown as MetadataIndex;

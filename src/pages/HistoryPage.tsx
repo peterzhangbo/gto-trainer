@@ -280,7 +280,7 @@ export default function HistoryPage() {
                                       </span>
                                       <span className="text-gray-600">{'→'}</span>
                                       <span className="text-sm text-gray-400">
-                                        GTO: <span className="text-green-400">{getActionLabel(drill.gto_action, t)}</span>
+                                        {t('drill.gtoLabel')}: <span className="text-green-400">{getActionLabel(drill.gto_action, t)}</span>
                                       </span>
                                     </div>
 
