@@ -25,7 +25,7 @@ const NAV_LINK_KEYS = [
 
 export default function App() {
   const location = useLocation()
-  const showNav = !['/', '/login', '/signup'].includes(location.pathname)
+  const showNav = !['/login', '/signup'].includes(location.pathname)
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100">
