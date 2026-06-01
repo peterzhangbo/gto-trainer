@@ -136,27 +136,45 @@ export default function LandingPage() {
   const ctaSection = useInView()
 
   return (
-    <div className="min-h-screen bg-gray-950 overflow-hidden">
+    <div className="min-h-screen overflow-hidden" style={{ background: 'linear-gradient(135deg, #0f0f23 0%, #1a0a2e 25%, #16213e 50%, #0f0f23 100%)' }}>
       {/* ---------------------------------------------------------------- */}
       {/* Hero Section                                                      */}
       {/* ---------------------------------------------------------------- */}
-      <section className="relative flex flex-col items-center justify-center min-h-[90vh] px-4 text-center">
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-950 via-gray-950/95 to-gray-950 pointer-events-none" />
-        {/* Subtle radial glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-900/10 rounded-full blur-[120px] pointer-events-none" />
+      <section className="relative flex items-center justify-center min-h-[85vh] px-4">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Large subtle glow spots */}
+          <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-red-600/8 rounded-full blur-[150px]" />
+          <div className="absolute bottom-20 right-1/4 w-[400px] h-[400px] bg-blue-600/8 rounded-full blur-[150px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-900/5 rounded-full blur-[200px]" />
+          {/* Floating card suits */}
+          <div className="absolute top-1/4 left-[15%] text-6xl opacity-[0.03] animate-float" style={{ animationDelay: '0s' }}>♠</div>
+          <div className="absolute top-1/3 right-[10%] text-5xl opacity-[0.03] animate-float" style={{ animationDelay: '1s' }}>♥</div>
+          <div className="absolute bottom-1/4 left-[20%] text-4xl opacity-[0.03] animate-float" style={{ animationDelay: '2s' }}>♦</div>
+          <div className="absolute bottom-1/3 right-[25%] text-6xl opacity-[0.03] animate-float" style={{ animationDelay: '0.5s' }}>♣</div>
+          {/* Grid pattern */}
+          <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        </div>
 
-        <div className="relative z-10 flex flex-col items-center">
-          {/* Spade icon with pulse ring */}
-          <div className="relative mb-8">
-            <div className="text-6xl md:text-7xl animate-float">♠</div>
-            <div className="absolute inset-0 text-6xl md:text-7xl opacity-30 animate-ping">♠</div>
+        <div className="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
+          {/* Badge */}
+          <div className="animate-slide-up mb-6">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-600/10 border border-red-600/20 text-red-400 text-sm font-medium">
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              基于博弈论最优策略
+            </span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-4 animate-fade-in">
-            GTO <span className="text-red-500">Trainer</span>
+          {/* Title */}
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 animate-fade-in tracking-tight">
+            GTO<span className="text-red-500">.</span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl animate-slide-up stagger-2">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white/90 mb-4 animate-fade-in stagger-1">
+            德州扑克训练平台
+          </h2>
+
+          {/* Subtitle */}
+          <p className="text-lg md:text-xl text-gray-400 mb-12 max-w-xl animate-slide-up stagger-2 leading-relaxed">
             {t('landing.subtitle')}
           </p>
 
@@ -164,23 +182,17 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-4 animate-slide-up stagger-3">
             <Link
               to="/trainer"
-              className="group relative min-h-[48px] px-10 py-3.5 bg-red-600 hover:bg-red-500 text-white rounded-xl font-semibold text-lg transition-all hover:shadow-lg hover:shadow-red-600/25 hover:-translate-y-0.5 flex items-center justify-center"
+              className="group min-h-[52px] px-10 py-3.5 bg-red-600 hover:bg-red-500 text-white rounded-xl font-semibold text-lg transition-all hover:shadow-xl hover:shadow-red-600/30 hover:-translate-y-0.5 flex items-center justify-center"
             >
-              <span className="relative z-10">{t('landing.start')}</span>
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-600 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+              {t('landing.start')}
+              <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
             </Link>
             <Link
               to="/ranges"
-              className="group min-h-[48px] px-10 py-3.5 bg-gray-800/80 hover:bg-gray-700 text-white rounded-xl font-semibold text-lg transition-all border border-gray-700 hover:border-gray-600 hover:-translate-y-0.5 flex items-center justify-center backdrop-blur-sm"
+              className="group min-h-[52px] px-10 py-3.5 bg-white/5 hover:bg-white/10 text-white rounded-xl font-semibold text-lg transition-all border border-white/10 hover:border-white/20 hover:-translate-y-0.5 flex items-center justify-center backdrop-blur-sm"
             >
               {t('landing.viewRanges')}
-              <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
             </Link>
-          </div>
-
-          {/* Poker table illustration */}
-          <div className="mt-16 w-full max-w-lg animate-fade-in stagger-5">
-            <PokerTableSVG />
           </div>
         </div>
       </section>
