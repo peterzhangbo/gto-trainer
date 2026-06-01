@@ -8,8 +8,12 @@ export default function SettingsPage() {
   const { user } = useAuth()
   const { t } = useI18n()
   const [displayName, setDisplayName] = useState(user?.displayName ?? '')
-  const [autoAdvance, setAutoAdvance] = useState(false)
-  const [advanceDelay, setAdvanceDelay] = useState(3)
+  const [autoAdvance, setAutoAdvance] = useState(
+    () => localStorage.getItem('gto-auto-advance') === 'true'
+  )
+  const [advanceDelay, setAdvanceDelay] = useState(
+    () => Number(localStorage.getItem('gto-auto-advance-delay') || 3)
+  )
   const [saved, setSaved] = useState(false)
   const [defaultDifficulty, setDefaultDifficulty] = useState<Difficulty>(
     () => (localStorage.getItem('gto-difficulty') as Difficulty) || 'intermediate'
@@ -18,6 +22,8 @@ export default function SettingsPage() {
 
   const handleSave = () => {
     localStorage.setItem('gto-difficulty', defaultDifficulty)
+    localStorage.setItem('gto-auto-advance', String(autoAdvance))
+    localStorage.setItem('gto-auto-advance-delay', String(advanceDelay))
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
   }
