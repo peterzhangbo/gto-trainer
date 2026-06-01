@@ -76,6 +76,46 @@
       "filePath": "preflop/defend/bb_vs_btn.json"
     },
     {
+      "id": "threebet_bb_vs_co",
+      "name": "BB 对 CO 三次加注",
+      "category": "preflop",
+      "subCategory": "threebet",
+      "position": "BB",
+      "villainPosition": "CO",
+      "description": "BB对CO开牌的GTO三次加注和跟注范围",
+      "filePath": "preflop/threebet/bb_vs_co.json"
+    },
+    {
+      "id": "threebet_sb_vs_co",
+      "name": "SB 对 CO 三次加注",
+      "category": "preflop",
+      "subCategory": "threebet",
+      "position": "SB",
+      "villainPosition": "CO",
+      "description": "SB对CO开牌的GTO三次加注范围（纯三次加注或弃牌）",
+      "filePath": "preflop/threebet/sb_vs_co.json"
+    },
+    {
+      "id": "defend_bb_vs_co",
+      "name": "BB 对 CO 防守",
+      "category": "preflop",
+      "subCategory": "defend",
+      "position": "BB",
+      "villainPosition": "CO",
+      "description": "BB对CO开牌的GTO防守范围（跟注和三次加注）",
+      "filePath": "preflop/defend/bb_vs_co.json"
+    },
+    {
+      "id": "defend_bb_vs_utg",
+      "name": "BB 对 UTG 防守",
+      "category": "preflop",
+      "subCategory": "defend",
+      "position": "BB",
+      "villainPosition": "UTG",
+      "description": "BB对UTG开牌的GTO防守范围（最紧的防守范围）",
+      "filePath": "preflop/defend/bb_vs_utg.json"
+    },
+    {
       "id": "cbet_dry_high",
       "name": "持续下注: 干燥高牌面",
       "category": "postflop",

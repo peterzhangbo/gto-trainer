@@ -5,7 +5,11 @@ import btnData from '@/data/preflop/rfi/btn.json';
 import sbData from '@/data/preflop/rfi/sb.json';
 import btnVsCoData from '@/data/preflop/threebet/btn_vs_co.json';
 import sbVsBtnData from '@/data/preflop/threebet/sb_vs_btn.json';
+import bbVsCoThreebetData from '@/data/preflop/threebet/bb_vs_co.json';
+import sbVsCoThreebetData from '@/data/preflop/threebet/sb_vs_co.json';
 import bbVsBtnData from '@/data/preflop/defend/bb_vs_btn.json';
+import bbVsCoDefendData from '@/data/preflop/defend/bb_vs_co.json';
+import bbVsUtgDefendData from '@/data/preflop/defend/bb_vs_utg.json';
 import dryHighData from '@/data/postflop/c-bet/dry-high.json';
 import wetConnectedData from '@/data/postflop/c-bet/wet-connected.json';
 import pairedData from '@/data/postflop/c-bet/paired.json';
@@ -90,7 +94,11 @@ export const DATA_REGISTRY: Record<string, ScenarioData> = {
   rfi_sb: sbData as unknown as ScenarioData,
   threebet_btn_vs_co: btnVsCoData as unknown as ScenarioData,
   threebet_sb_vs_btn: sbVsBtnData as unknown as ScenarioData,
+  threebet_bb_vs_co: bbVsCoThreebetData as unknown as ScenarioData,
+  threebet_sb_vs_co: sbVsCoThreebetData as unknown as ScenarioData,
   defend_bb_vs_btn: bbVsBtnData as unknown as ScenarioData,
+  defend_bb_vs_co: bbVsCoDefendData as unknown as ScenarioData,
+  defend_bb_vs_utg: bbVsUtgDefendData as unknown as ScenarioData,
   cbet_dry_high: dryHighData as unknown as ScenarioData,
   cbet_wet_connected: wetConnectedData as unknown as ScenarioData,
   cbet_paired: pairedData as unknown as ScenarioData,

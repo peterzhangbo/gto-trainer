@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { useI18n } from '@/lib/i18n'
 import { supabase, isSupabaseConfigured } from '@/config/supabase'
+import Spinner, { StatCardSkeleton } from '@/components/ui/Spinner'
+import { showToast } from '@/components/ui/Toast'
 
 interface SessionRow {
   id: string
@@ -49,6 +51,12 @@ export default function DashboardPage() {
           .order('created_at', { ascending: false }),
       ])
 
+      if (sessionsRes.error) {
+        showToast(sessionsRes.error.message || 'Failed to load sessions', 'error')
+      }
+      if (drillsRes.error) {
+        showToast(drillsRes.error.message || 'Failed to load drills', 'error')
+      }
       if (sessionsRes.data) setSessions(sessionsRes.data)
       if (drillsRes.data) setDrills(drillsRes.data)
       setLoading(false)
@@ -121,8 +129,19 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-        <div className="text-gray-400">{t('dash.loading')}</div>
+      <div className="min-h-screen bg-gray-950 p-4 md:p-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="h-8 w-48 bg-gray-800/50 rounded-lg skeleton mb-6 md:mb-8" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+          </div>
+          <div className="flex items-center justify-center py-8">
+            <Spinner size="lg" label={t('loading.default')} />
+          </div>
+        </div>
       </div>
     )
   }

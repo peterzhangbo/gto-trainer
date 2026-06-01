@@ -1,64 +1,372 @@
+import { useState, useEffect, useRef } from 'react'
+/* eslint-disable react-hooks/refs */
 import { Link } from 'react-router-dom'
 import { useI18n } from '@/lib/i18n'
 
-export default function LandingPage() {
-  const { t } = useI18n()
+/* ------------------------------------------------------------------ */
+/* Animated Counter Hook                                               */
+/* ------------------------------------------------------------------ */
 
+function useCountUp(end: number, duration = 2000, startOnView = true) {
+  const [count, setCount] = useState(0)
+  const ref = useRef<HTMLDivElement>(null)
+  const hasAnimated = useRef(false)
+
+  useEffect(() => {
+    if (!startOnView || !ref.current) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated.current) {
+          hasAnimated.current = true
+          const start = performance.now()
+          const step = (now: number) => {
+            const elapsed = now - start
+            const progress = Math.min(elapsed / duration, 1)
+            // Ease out cubic
+            const eased = 1 - Math.pow(1 - progress, 3)
+            setCount(Math.round(eased * end))
+            if (progress < 1) requestAnimationFrame(step)
+          }
+          requestAnimationFrame(step)
+        }
+      },
+      { threshold: 0.3 }
+    )
+    observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [end, duration, startOnView])
+
+  return { count, ref }
+}
+
+/* ------------------------------------------------------------------ */
+/* Intersection Observer Hook for scroll animations                    */
+/* ------------------------------------------------------------------ */
+
+function useInView(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [inView, setInView] = useState(false)
+
+  useEffect(() => {
+    if (!ref.current) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true)
+          observer.disconnect()
+        }
+      },
+      { threshold }
+    )
+    observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [threshold])
+
+  return { ref, inView }
+}
+
+/* ------------------------------------------------------------------ */
+/* Stat Counter Component                                              */
+/* ------------------------------------------------------------------ */
+
+function StatCounter({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const { count, ref } = useCountUp(value)
   return (
-    <div className="min-h-screen bg-gray-950">
-      {/* Hero */}
-      <section className="flex flex-col items-center justify-center min-h-[80vh] px-4 text-center">
-        <div className="text-7xl mb-6">♠</div>
-        <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">
-          GTO <span className="text-red-500">Trainer</span>
-        </h1>
-        <p className="text-xl text-gray-400 mb-8 max-w-2xl">
-          {t('landing.subtitle')}
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Link
-            to="/trainer"
-            className="min-h-[44px] px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold text-base md:text-lg transition-colors flex items-center justify-center"
-          >
-            {t('landing.start')}
-          </Link>
-          <Link
-            to="/ranges"
-            className="min-h-[44px] px-8 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-semibold text-base md:text-lg transition-colors border border-gray-700 flex items-center justify-center"
-          >
-            {t('landing.viewRanges')}
-          </Link>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="max-w-6xl mx-auto px-4 py-12 md:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-        <FeatureCard
-          icon="🎯"
-          title={t('landing.feature1.title')}
-          description={t('landing.feature1.desc')}
-        />
-        <FeatureCard
-          icon="📊"
-          title={t('landing.feature2.title')}
-          description={t('landing.feature2.desc')}
-        />
-        <FeatureCard
-          icon="🧮"
-          title={t('landing.feature3.title')}
-          description={t('landing.feature3.desc')}
-        />
-      </section>
+    <div ref={ref} className="text-center">
+      <div className="text-3xl md:text-4xl font-bold text-white mb-1">
+        {count}{suffix}
+      </div>
+      <div className="text-sm text-gray-400">{label}</div>
     </div>
   )
 }
 
-function FeatureCard({ icon, title, description }: { icon: string; title: string; description: string }) {
+/* ------------------------------------------------------------------ */
+/* Poker Table SVG                                                     */
+/* ------------------------------------------------------------------ */
+
+function PokerTableSVG() {
   return (
-    <div className="bg-gray-900 rounded-xl border border-gray-800 p-6 hover:border-gray-700 transition-colors">
+    <div className="relative w-full max-w-lg mx-auto opacity-20 animate-float" aria-hidden="true">
+      <svg viewBox="0 0 500 300" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+        {/* Table felt */}
+        <ellipse cx="250" cy="150" rx="220" ry="120" fill="#0a3d0a" stroke="#1a5c1a" strokeWidth="3" />
+        <ellipse cx="250" cy="150" rx="200" ry="105" fill="none" stroke="#1a5c1a" strokeWidth="1" strokeDasharray="4 6" />
+
+        {/* Position markers */}
+        {[
+          { x: 250, y: 28, label: 'BTN' },
+          { x: 420, y: 70, label: 'SB' },
+          { x: 460, y: 150, label: 'BB' },
+          { x: 420, y: 230, label: 'UTG' },
+          { x: 250, y: 272, label: 'MP' },
+          { x: 80, y: 230, label: 'CO' },
+          { x: 40, y: 150, label: 'HJ' },
+          { x: 80, y: 70, label: 'LJ' },
+        ].map(({ x, y, label }) => (
+          <g key={label}>
+            <circle cx={x} cy={y} r="16" fill="#1f2937" stroke="#374151" strokeWidth="1.5" />
+            <text x={x} y={y + 1} textAnchor="middle" dominantBaseline="central" fill="#9ca3af" fontSize="8" fontWeight="600" fontFamily="monospace">
+              {label}
+            </text>
+          </g>
+        ))}
+
+        {/* Pot area */}
+        <circle cx="250" cy="150" r="20" fill="none" stroke="#374151" strokeWidth="1" strokeDasharray="3 3" />
+        <text x="250" y="151" textAnchor="middle" dominantBaseline="central" fill="#4b5563" fontSize="9" fontFamily="monospace">POT</text>
+      </svg>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Landing Page                                                        */
+/* ------------------------------------------------------------------ */
+
+export default function LandingPage() {
+  const { t } = useI18n()
+
+  // Scroll animation sections
+  const statsSection = useInView()
+  const featuresSection = useInView()
+  const stepsSection = useInView()
+  const quoteSection = useInView()
+  const ctaSection = useInView()
+
+  return (
+    <div className="min-h-screen bg-gray-950 overflow-hidden">
+      {/* ---------------------------------------------------------------- */}
+      {/* Hero Section                                                      */}
+      {/* ---------------------------------------------------------------- */}
+      <section className="relative flex flex-col items-center justify-center min-h-[90vh] px-4 text-center">
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-950 via-gray-950/95 to-gray-950 pointer-events-none" />
+        {/* Subtle radial glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-900/10 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col items-center">
+          {/* Spade icon with pulse ring */}
+          <div className="relative mb-8">
+            <div className="text-6xl md:text-7xl animate-float">♠</div>
+            <div className="absolute inset-0 text-6xl md:text-7xl opacity-30 animate-ping">♠</div>
+          </div>
+
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-4 animate-fade-in">
+            GTO <span className="text-red-500">Trainer</span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl animate-slide-up stagger-2">
+            {t('landing.subtitle')}
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 animate-slide-up stagger-3">
+            <Link
+              to="/trainer"
+              className="group relative min-h-[48px] px-10 py-3.5 bg-red-600 hover:bg-red-500 text-white rounded-xl font-semibold text-lg transition-all hover:shadow-lg hover:shadow-red-600/25 hover:-translate-y-0.5 flex items-center justify-center"
+            >
+              <span className="relative z-10">{t('landing.start')}</span>
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-600 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </Link>
+            <Link
+              to="/ranges"
+              className="group min-h-[48px] px-10 py-3.5 bg-gray-800/80 hover:bg-gray-700 text-white rounded-xl font-semibold text-lg transition-all border border-gray-700 hover:border-gray-600 hover:-translate-y-0.5 flex items-center justify-center backdrop-blur-sm"
+            >
+              {t('landing.viewRanges')}
+              <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
+            </Link>
+          </div>
+
+          {/* Poker table illustration */}
+          <div className="mt-16 w-full max-w-lg animate-fade-in stagger-5">
+            <PokerTableSVG />
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------- */}
+      {/* Stats Bar                                                         */}
+      {/* ---------------------------------------------------------------- */}
+      <section
+        ref={statsSection.ref}
+        className={`border-y border-gray-800/50 bg-gray-900/30 transition-all duration-700 ${
+          statsSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
+        <div className="max-w-4xl mx-auto px-4 py-10 md:py-12 grid grid-cols-3 gap-4">
+          <StatCounter value={500} suffix="+" label={t('landing.stats.hands')} />
+          <StatCounter value={8} suffix="" label={t('landing.stats.scenarios')} />
+          <div className="text-center">
+            <div className="text-3xl md:text-4xl font-bold text-red-400 mb-1">⚡</div>
+            <div className="text-sm text-gray-400">{t('landing.stats.feedback')}</div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------- */}
+      {/* Features                                                          */}
+      {/* ---------------------------------------------------------------- */}
+      <section
+        ref={featuresSection.ref}
+        className={`max-w-6xl mx-auto px-4 py-16 md:py-24 transition-all duration-700 delay-100 ${
+          featuresSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
+        <h2 className="text-2xl md:text-3xl font-bold text-white text-center mb-12">
+          {t('landing.features')}
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <FeatureCard
+            icon="🎯"
+            title={t('landing.feature1.title')}
+            description={t('landing.feature1.desc')}
+            delay={0}
+            inView={featuresSection.inView}
+          />
+          <FeatureCard
+            icon="📊"
+            title={t('landing.feature2.title')}
+            description={t('landing.feature2.desc')}
+            delay={150}
+            inView={featuresSection.inView}
+          />
+          <FeatureCard
+            icon="🧮"
+            title={t('landing.feature3.title')}
+            description={t('landing.feature3.desc')}
+            delay={300}
+            inView={featuresSection.inView}
+          />
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------- */}
+      {/* Quick Start Steps                                                 */}
+      {/* ---------------------------------------------------------------- */}
+      <section
+        ref={stepsSection.ref}
+        className={`max-w-5xl mx-auto px-4 py-16 md:py-24 transition-all duration-700 ${
+          stepsSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
+        <h2 className="text-2xl md:text-3xl font-bold text-white text-center mb-14">
+          {t('landing.quickStart')}
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          <StepCard
+            number={1}
+            title={t('landing.quickStart.step1.title')}
+            description={t('landing.quickStart.step1.desc')}
+            inView={stepsSection.inView}
+            delay={0}
+          />
+          <StepCard
+            number={2}
+            title={t('landing.quickStart.step2.title')}
+            description={t('landing.quickStart.step2.desc')}
+            inView={stepsSection.inView}
+            delay={200}
+          />
+          <StepCard
+            number={3}
+            title={t('landing.quickStart.step3.title')}
+            description={t('landing.quickStart.step3.desc')}
+            inView={stepsSection.inView}
+            delay={400}
+          />
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------- */}
+      {/* Quote / Testimonial                                               */}
+      {/* ---------------------------------------------------------------- */}
+      <section
+        ref={quoteSection.ref}
+        className={`border-y border-gray-800/50 bg-gray-900/20 transition-all duration-700 ${
+          quoteSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
+        <div className="max-w-3xl mx-auto px-4 py-16 md:py-20 text-center">
+          <div className="text-5xl text-red-500/30 mb-6 font-serif">"</div>
+          <blockquote className="text-xl md:text-2xl text-gray-300 leading-relaxed font-light">
+            {t('landing.quote.text')}
+          </blockquote>
+          <cite className="block mt-6 text-sm text-gray-500 not-italic">
+            {t('landing.quote.author')}
+          </cite>
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------- */}
+      {/* Final CTA                                                         */}
+      {/* ---------------------------------------------------------------- */}
+      <section
+        ref={ctaSection.ref}
+        className={`py-20 md:py-28 transition-all duration-700 ${
+          ctaSection.inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
+        <div className="max-w-2xl mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            {t('landing.cta.title')}
+          </h2>
+          <p className="text-gray-400 mb-8 text-lg">
+            {t('landing.cta.subtitle')}
+          </p>
+          <Link
+            to="/trainer"
+            className="group inline-flex items-center min-h-[52px] px-12 py-4 bg-red-600 hover:bg-red-500 text-white rounded-xl font-bold text-lg transition-all hover:shadow-lg hover:shadow-red-600/25 hover:-translate-y-0.5"
+          >
+            {t('landing.start')}
+            <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* Footer spacer */}
+      <div className="h-8" />
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Sub-components                                                      */
+/* ------------------------------------------------------------------ */
+
+function FeatureCard({ icon, title, description, delay, inView }: { icon: string; title: string; description: string; delay: number; inView: boolean }) {
+  return (
+    <div
+      className={`bg-gray-900/80 rounded-xl border border-gray-800 p-6 hover:border-gray-700 hover:bg-gray-900 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20 ${
+        inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+      }`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
       <div className="text-4xl mb-4">{icon}</div>
       <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
-      <p className="text-gray-400">{description}</p>
+      <p className="text-gray-400 leading-relaxed">{description}</p>
+    </div>
+  )
+}
+
+function StepCard({ number, title, description, inView, delay }: { number: number; title: string; description: string; inView: boolean; delay: number }) {
+  return (
+    <div
+      className={`relative text-center transition-all duration-600 ${
+        inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+      }`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {/* Number circle */}
+      <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-red-600/10 border border-red-600/30 text-red-400 text-2xl font-bold mb-5">
+        {number}
+      </div>
+      <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
+      <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
+      {/* Connecting line (hidden on last card and mobile) */}
+      {number < 3 && (
+        <div className="hidden md:block absolute top-7 left-[calc(50%+40px)] w-[calc(100%-80px)] h-px bg-gradient-to-r from-red-600/30 to-transparent" />
+      )}
     </div>
   )
 }

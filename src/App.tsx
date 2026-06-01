@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { useI18n } from '@/lib/i18n'
+import { ErrorBoundary, ToastContainer } from '@/components/ui'
 import LandingPage from '@/pages/LandingPage'
 import LoginPage from '@/pages/LoginPage'
 import SignupPage from '@/pages/SignupPage'
@@ -10,12 +11,16 @@ import RangeViewerPage from '@/pages/RangeViewerPage'
 import EVCalculatorPage from '@/pages/EVCalculatorPage'
 import DashboardPage from '@/pages/DashboardPage'
 import SettingsPage from '@/pages/SettingsPage'
+import MistakeBookPage from '@/pages/MistakeBookPage'
+import HistoryPage from '@/pages/HistoryPage'
 
 const NAV_LINK_KEYS = [
   { to: '/trainer', key: 'nav.training' as const },
   { to: '/ranges', key: 'nav.ranges' as const },
   { to: '/calculator', key: 'nav.calculator' as const },
   { to: '/dashboard', key: 'nav.dashboard' as const },
+  { to: '/mistakes', key: 'nav.mistakes' as const },
+  { to: '/history', key: 'nav.history' as const },
 ]
 
 export default function App() {
@@ -24,17 +29,24 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100">
+      <ToastContainer />
       {showNav && <Navbar />}
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/trainer" element={<TrainerPage />} />
-        <Route path="/ranges" element={<RangeViewerPage />} />
-        <Route path="/calculator" element={<EVCalculatorPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-      </Routes>
+      <div className="page-enter" key={location.pathname}>
+        <ErrorBoundary>
+          <Routes location={location}>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/trainer" element={<TrainerPage />} />
+            <Route path="/ranges" element={<RangeViewerPage />} />
+            <Route path="/calculator" element={<EVCalculatorPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/mistakes" element={<MistakeBookPage />} />
+            <Route path="/history" element={<HistoryPage />} />
+          </Routes>
+        </ErrorBoundary>
+      </div>
     </div>
   )
 }
@@ -46,9 +58,9 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <nav className="bg-gray-900 border-b border-gray-800">
+    <nav className="bg-gray-900/80 backdrop-blur-navbar border-b border-gray-800/80 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
-        <Link to="/" className="text-xl font-bold text-white flex items-center gap-2">
+        <Link to="/" className="text-xl font-bold text-white flex items-center gap-2 hover:opacity-80 transition-opacity">
           <span className="text-red-500">♠</span> GTO Trainer
         </Link>
 
@@ -58,13 +70,16 @@ function Navbar() {
             <Link
               key={link.to}
               to={link.to}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`relative px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 location.pathname === link.to
                   ? 'bg-gray-800 text-white'
                   : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
               }`}
             >
               {t(link.key)}
+              {location.pathname === link.to && (
+                <span className="absolute -bottom-[13px] left-1/2 -translate-x-1/2 w-5 h-0.5 bg-red-500 rounded-full" />
+              )}
             </Link>
           ))}
         </div>
@@ -110,9 +125,8 @@ function Navbar() {
       </div>
 
       {/* Mobile menu */}
-      {menuOpen && (
-        <div className="md:hidden border-t border-gray-800 bg-gray-900">
-          <div className="px-4 py-3 space-y-1">
+      <div className={`md:hidden border-t border-gray-800 bg-gray-900 overflow-hidden transition-all duration-300 ease-in-out ${menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 border-t-transparent'}`}>
+        <div className="px-4 py-3 space-y-1">
             {NAV_LINK_KEYS.map((link) => (
               <Link
                 key={link.to}
@@ -146,9 +160,8 @@ function Navbar() {
                 {t('nav.login')}
               </Link>
             )}
-          </div>
         </div>
-      )}
+      </div>
     </nav>
   )
 }

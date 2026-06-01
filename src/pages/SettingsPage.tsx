@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { useI18n } from '@/lib/i18n'
 
+type Difficulty = 'beginner' | 'intermediate' | 'advanced' | 'expert'
+
 export default function SettingsPage() {
   const { user } = useAuth()
   const { t } = useI18n()
@@ -9,12 +11,32 @@ export default function SettingsPage() {
   const [autoAdvance, setAutoAdvance] = useState(false)
   const [advanceDelay, setAdvanceDelay] = useState(3)
   const [saved, setSaved] = useState(false)
+  const [defaultDifficulty, setDefaultDifficulty] = useState<Difficulty>(
+    () => (localStorage.getItem('gto-difficulty') as Difficulty) || 'intermediate'
+  )
+  const [dataCleared, setDataCleared] = useState(false)
 
   const handleSave = () => {
-    // TODO: persist to Supabase
+    localStorage.setItem('gto-difficulty', defaultDifficulty)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
   }
+
+  const handleClearData = () => {
+    if (window.confirm(t('settings.clearConfirm'))) {
+      localStorage.removeItem('gto-training-history')
+      localStorage.removeItem('gto-mistakes')
+      setDataCleared(true)
+      setTimeout(() => setDataCleared(false), 3000)
+    }
+  }
+
+  const difficulties: { key: Difficulty; labelKey: string }[] = [
+    { key: 'beginner', labelKey: 'difficulty.beginner' },
+    { key: 'intermediate', labelKey: 'difficulty.intermediate' },
+    { key: 'advanced', labelKey: 'difficulty.advanced' },
+    { key: 'expert', labelKey: 'difficulty.expert' },
+  ]
 
   return (
     <div className="min-h-screen bg-gray-950 p-4 md:p-8">
@@ -46,6 +68,26 @@ export default function SettingsPage() {
           <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
             <h2 className="text-xl font-semibold text-white mb-4">{t('settings.trainingPref')}</h2>
             <div className="space-y-4">
+              {/* Default difficulty */}
+              <div>
+                <label className="block text-sm text-gray-400 mb-2">{t('settings.defaultDifficulty')}</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {difficulties.map((d) => (
+                    <button
+                      key={d.key}
+                      onClick={() => setDefaultDifficulty(d.key)}
+                      className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                        defaultDifficulty === d.key
+                          ? 'bg-red-600 text-white'
+                          : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
+                      }`}
+                    >
+                      {t(d.labelKey as Parameters<typeof t>[0])}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-white">{t('settings.autoAdvance')}</div>
@@ -78,6 +120,18 @@ export default function SettingsPage() {
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Clear training data */}
+          <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+            <h2 className="text-xl font-semibold text-white mb-2">{t('settings.clearData')}</h2>
+            <p className="text-sm text-gray-500 mb-4">{t('settings.clearDataDesc')}</p>
+            <button
+              onClick={handleClearData}
+              className="min-h-[44px] px-6 py-2 bg-red-900/50 hover:bg-red-900/70 border border-red-800 text-red-300 rounded-lg font-medium transition-colors"
+            >
+              {dataCleared ? t('settings.dataCleared') : t('settings.clearData')}
+            </button>
           </div>
 
           {/* Save button */}

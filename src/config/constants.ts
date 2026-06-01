@@ -26,8 +26,10 @@ export const ACTION_COLORS: Record<string, string> = {
   call: '#3b82f6',
   check: '#6b7280',
   '3bet': '#f97316',
+  bet_33pct: '#7c3aed',
   bet_50pct: '#8b5cf6',
   bet_75pct: '#a855f7',
+  bet_100pct: '#c084fc',
 }
 
 export const STACK_DEPTHS = [20, 40, 60, 80, 100, 150, 200] as const

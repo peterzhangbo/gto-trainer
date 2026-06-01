@@ -51,6 +51,15 @@ const translations = {
     'trainer.showStats': '显示统计 ▼',
     'trainer.hideStats': '隐藏统计 ▲',
 
+    // Trainer - postflop
+    'trainer.preflopGroup': '翻前',
+    'trainer.postflopGroup': '翻后',
+    'trainer.board': '公共牌',
+    'trainer.category': '手牌类型',
+    'trainer.bestAction': '最佳操作',
+    'trainer.bestActionShort': '最佳',
+    'trainer.comment': '训练师评语',
+
     // Range viewer
     'range.title': '范围查看器',
     'range.preflop': '翻前',
@@ -178,6 +187,77 @@ const translations = {
 
     // Misc
     'trainer.noStrategyData': '暂无策略数据',
+
+    // Mistake Book
+    'nav.mistakes': '错题本',
+    'mistake.title': '错题本',
+    'mistake.total': '总错题',
+    'mistake.repractice': '重新练习',
+    'mistake.noMistakes': '暂无错题，继续保持！',
+    'mistake.yourAction': '你的选择',
+    'mistake.correctAction': '正确选择',
+    'mistake.frequencies': 'GTO 频率',
+    'mistake.filterAll': '全部',
+    'mistake.accuracy': '正确率',
+    'mistake.date': '日期',
+    'mistake.loginFirst': '请先登录查看错题本',
+
+    // History
+    'nav.history': '历史',
+    'history.title': '训练历史',
+    'history.session': '训练记录',
+    'history.expand': '查看详情',
+    'history.collapse': '收起详情',
+    'history.noSessions': '暂无训练记录',
+    'history.loginFirst': '请先登录查看训练历史',
+    'history.handsPlayed': '手牌数',
+    'history.score': '得分',
+    'history.correct': '正确',
+    'history.wrong': '错误',
+    'history.loading': '加载中...',
+
+    // Difficulty
+    'difficulty.title': '难度选择',
+    'difficulty.beginner': '初级',
+    'difficulty.beginnerDesc': '仅展示强牌和明确弃牌',
+    'difficulty.intermediate': '中级',
+    'difficulty.intermediateDesc': '包含混合策略的标准训练',
+    'difficulty.advanced': '高级',
+    'difficulty.advancedDesc': '展示接近频率的手牌决策',
+    'difficulty.expert': '专家',
+    'difficulty.expertDesc': '训练结束后才显示结果',
+
+    // Settings
+    'settings.defaultDifficulty': '默认难度',
+    'settings.clearData': '清除训练数据',
+    'settings.clearDataDesc': '删除本地保存的所有训练记录',
+    'settings.clearConfirm': '确认清除所有本地训练数据？',
+    'settings.dataCleared': '训练数据已清除',
+
+    // Landing page (polish additions)
+    'landing.stats.hands': '500+ 训练手牌',
+    'landing.stats.scenarios': '8 种训练场景',
+    'landing.stats.feedback': '实时反馈',
+    'landing.quickStart': '快速开始',
+    'landing.quickStart.step1.title': '选择场景',
+    'landing.quickStart.step1.desc': '从翻前加注、3bet、BB防守等场景中选择训练目标。',
+    'landing.quickStart.step2.title': '做出决策',
+    'landing.quickStart.step2.desc': '根据你的判断选择最优操作：弃牌、跟注或加注。',
+    'landing.quickStart.step3.title': '查看反馈',
+    'landing.quickStart.step3.desc': '对比 GTO 最优策略，查看准确率和频率分布。',
+    'landing.quote.text': '"GTO 不是记忆策略，而是理解为什么这个频率是最优的。"',
+    'landing.quote.author': '— 博弈论最优策略的核心理念',
+    'landing.cta.title': '准备好提升你的扑克水平了吗？',
+    'landing.cta.subtitle': '从今天开始，用数据驱动的方式磨练你的 GTO 直觉。',
+
+    // Error boundary
+    'error.title': '出现了问题',
+    'error.message': '发生了意外错误。',
+    'error.tryAgain': '重试',
+    'error.reload': '刷新页面',
+
+    // Loading
+    'loading.default': '加载中...',
   },
   en: {
     'nav.training': 'Training',
@@ -221,6 +301,16 @@ const translations = {
     'trainer.yourChoice': 'Your choice',
     'trainer.showStats': 'Show Stats ▼',
     'trainer.hideStats': 'Hide Stats ▲',
+
+    // Trainer - postflop
+    'trainer.preflopGroup': 'Preflop',
+    'trainer.postflopGroup': 'Postflop',
+    'trainer.board': 'Board',
+    'trainer.category': 'Hand Category',
+    'trainer.bestAction': 'Best Action',
+    'trainer.bestActionShort': 'Best',
+    'trainer.comment': 'Trainer Comment',
+
     'range.title': 'Range Viewer',
     'range.preflop': 'Preflop',
     'range.postflop': 'Postflop',
@@ -335,6 +425,77 @@ const translations = {
 
     // Misc
     'trainer.noStrategyData': 'No strategy data',
+
+    // Mistake Book
+    'nav.mistakes': 'Mistakes',
+    'mistake.title': 'Mistake Book',
+    'mistake.total': 'Total Mistakes',
+    'mistake.repractice': 'Re-practice',
+    'mistake.noMistakes': 'No mistakes yet. Keep it up!',
+    'mistake.yourAction': 'Your Action',
+    'mistake.correctAction': 'Correct Action',
+    'mistake.frequencies': 'GTO Frequencies',
+    'mistake.filterAll': 'All',
+    'mistake.accuracy': 'Accuracy',
+    'mistake.date': 'Date',
+    'mistake.loginFirst': 'Please log in to view your mistake book',
+
+    // History
+    'nav.history': 'History',
+    'history.title': 'Training History',
+    'history.session': 'Session',
+    'history.expand': 'View Details',
+    'history.collapse': 'Hide Details',
+    'history.noSessions': 'No training sessions yet',
+    'history.loginFirst': 'Please log in to view training history',
+    'history.handsPlayed': 'Hands Played',
+    'history.score': 'Score',
+    'history.correct': 'Correct',
+    'history.wrong': 'Wrong',
+    'history.loading': 'Loading...',
+
+    // Difficulty
+    'difficulty.title': 'Difficulty',
+    'difficulty.beginner': 'Beginner',
+    'difficulty.beginnerDesc': 'Only strong hands and clear folds',
+    'difficulty.intermediate': 'Intermediate',
+    'difficulty.intermediateDesc': 'Standard training with mixed strategies',
+    'difficulty.advanced': 'Advanced',
+    'difficulty.advancedDesc': 'Close frequency hands requiring precise decisions',
+    'difficulty.expert': 'Expert',
+    'difficulty.expertDesc': 'No feedback until session ends',
+
+    // Settings
+    'settings.defaultDifficulty': 'Default Difficulty',
+    'settings.clearData': 'Clear Training Data',
+    'settings.clearDataDesc': 'Delete all locally saved training records',
+    'settings.clearConfirm': 'Are you sure you want to clear all local training data?',
+    'settings.dataCleared': 'Training data cleared',
+
+    // Landing page (polish additions)
+    'landing.stats.hands': '500+ Training Hands',
+    'landing.stats.scenarios': '8 Scenarios',
+    'landing.stats.feedback': 'Real-time Feedback',
+    'landing.quickStart': 'Quick Start',
+    'landing.quickStart.step1.title': 'Choose a Scenario',
+    'landing.quickStart.step1.desc': 'Pick from RFI, 3-bet, BB defend and more training scenarios.',
+    'landing.quickStart.step2.title': 'Make Your Decision',
+    'landing.quickStart.step2.desc': 'Choose the optimal action: fold, call, or raise based on your read.',
+    'landing.quickStart.step3.title': 'Review Feedback',
+    'landing.quickStart.step3.desc': 'Compare against GTO optimal strategy with accuracy and frequency breakdown.',
+    'landing.quote.text': '"GTO is not memorizing strategies -- it is understanding why a frequency is optimal."',
+    'landing.quote.author': '— The core philosophy of Game Theory Optimal play',
+    'landing.cta.title': 'Ready to level up your poker game?',
+    'landing.cta.subtitle': 'Start sharpening your GTO intuition today with data-driven practice.',
+
+    // Error boundary
+    'error.title': 'Something went wrong',
+    'error.message': 'An unexpected error occurred.',
+    'error.tryAgain': 'Try Again',
+    'error.reload': 'Reload Page',
+
+    // Loading
+    'loading.default': 'Loading...',
   },
 } as const
 
