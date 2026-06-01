@@ -1,133 +1,234 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useAuth } from '@/hooks/useAuth'
+import { useI18n } from '@/lib/i18n'
+import { supabase, isSupabaseConfigured } from '@/config/supabase'
+
+interface SessionRow {
+  id: string
+  scenario_type: string
+  scenario_params: string
+  started_at: string
+  ended_at: string | null
+  total_hands: number
+  correct_hands: number
+  accuracy: number | null
+}
+
+interface DrillRow {
+  id: string
+  hand: string
+  scenario_type: string
+  user_action: string
+  gto_action: string
+  score: number
+  is_correct: boolean
+  created_at: string
+}
 
 export default function DashboardPage() {
-  // Mock data - will be replaced with real data from Supabase
-  const [stats] = useState({
-    totalDrills: 247,
-    overallAccuracy: 68.4,
-    preflopAccuracy: 72.1,
-    postflopAccuracy: 61.8,
-    currentStreak: 5,
-    longestStreak: 12,
-    bestScenario: 'RFI BTN',
-    worstScenario: 'C-bet Wet',
-    recentSessions: [
-      { date: '2026-05-31', scenario: 'RFI BTN', hands: 50, accuracy: 74 },
-      { date: '2026-05-30', scenario: '3bet SB vs BTN', hands: 30, accuracy: 62 },
-      { date: '2026-05-29', scenario: 'RFI CO', hands: 45, accuracy: 70 },
-      { date: '2026-05-28', scenario: 'C-bet Dry', hands: 25, accuracy: 58 },
-    ],
-  })
+  const { user } = useAuth()
+  const { t } = useI18n()
+  const [sessions, setSessions] = useState<SessionRow[]>([])
+  const [drills, setDrills] = useState<DrillRow[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!user || !isSupabaseConfigured) {
+      setLoading(false)
+      return
+    }
+
+    async function fetchData() {
+      const [sessionsRes, drillsRes] = await Promise.all([
+        supabase
+          .from('training_sessions')
+          .select('*')
+          .eq('user_id', user!.id)
+          .order('started_at', { ascending: false }),
+        supabase
+          .from('drill_results')
+          .select('*')
+          .eq('user_id', user!.id)
+          .order('created_at', { ascending: false }),
+      ])
+
+      if (sessionsRes.data) setSessions(sessionsRes.data)
+      if (drillsRes.data) setDrills(drillsRes.data)
+      setLoading(false)
+    }
+
+    fetchData()
+  }, [user])
+
+  // Compute stats
+  const totalDrills = drills.length
+  const correctDrills = drills.filter((d) => d.is_correct).length
+  const overallAccuracy = totalDrills > 0 ? Math.round((correctDrills / totalDrills) * 100 * 10) / 10 : 0
+
+  // Preflop vs postflop
+  const preflopDrills = drills.filter((d) => ['rfi', 'threeBet', 'defend'].includes(d.scenario_type))
+  const postflopDrills = drills.filter((d) => ['c-bet', 'turn', 'river'].includes(d.scenario_type))
+  const preflopAccuracy = preflopDrills.length > 0
+    ? Math.round((preflopDrills.filter((d) => d.is_correct).length / preflopDrills.length) * 100 * 10) / 10
+    : 0
+  const postflopAccuracy = postflopDrills.length > 0
+    ? Math.round((postflopDrills.filter((d) => d.is_correct).length / postflopDrills.length) * 100 * 10) / 10
+    : 0
+
+  // Current streak
+  let currentStreak = 0
+  for (const d of drills) {
+    if (d.is_correct) currentStreak++
+    else break
+  }
+
+  // Longest streak
+  let longestStreak = 0
+  let streak = 0
+  for (const d of [...drills].reverse()) {
+    if (d.is_correct) {
+      streak++
+      longestStreak = Math.max(longestStreak, streak)
+    } else {
+      streak = 0
+    }
+  }
+
+  // Scenario accuracy
+  const scenarioStats: Record<string, { correct: number; total: number }> = {}
+  for (const d of drills) {
+    if (!scenarioStats[d.scenario_type]) scenarioStats[d.scenario_type] = { correct: 0, total: 0 }
+    scenarioStats[d.scenario_type].total++
+    if (d.is_correct) scenarioStats[d.scenario_type].correct++
+  }
+
+  const scenarioNames: Record<string, string> = {
+    rfi: `${t('scenario.rfi')}`,
+    threeBet: `${t('scenario.threebet')}`,
+    defend: `${t('scenario.defend')}`,
+    'c-bet': `${t('scenario.cbet')}`,
+    turn: `${t('scenario.turn')}`,
+    river: `${t('scenario.river')}`,
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-white mb-4">{t('dash.title')}</h1>
+          <p className="text-gray-400">{t('dash.loginFirst')}</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <div className="text-gray-400">{t('dash.loading')}</div>
+      </div>
+    )
+  }
 
   return (
-    <div className="min-h-screen bg-gray-950 p-8">
+    <div className="min-h-screen bg-gray-950 p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">训练仪表板</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-white mb-6 md:mb-8">{t('dash.title')}</h1>
 
         {/* Stats cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <StatCard label="总训练手数" value={stats.totalDrills} />
-          <StatCard label="整体正确率" value={`${stats.overallAccuracy}%`} />
-          <StatCard label="翻前正确率" value={`${stats.preflopAccuracy}%`} />
-          <StatCard label="翻后正确率" value={`${stats.postflopAccuracy}%`} />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+          <StatCard label={t('dash.total')} value={totalDrills} />
+          <StatCard label={t('dash.overall')} value={`${overallAccuracy}%`} />
+          <StatCard label={t('dash.preflop')} value={preflopDrills.length > 0 ? `${preflopAccuracy}%` : '-'} />
+          <StatCard label={t('dash.postflop')} value={postflopDrills.length > 0 ? `${postflopAccuracy}%` : '-'} />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Streak info */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+          {/* Streak */}
           <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
-            <h2 className="text-xl font-semibold text-white mb-4">连续记录</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">{t('dash.streak')}</h2>
             <div className="flex gap-8">
               <div>
-                <div className="text-4xl font-bold text-orange-400">{stats.currentStreak}</div>
-                <div className="text-sm text-gray-500 mt-1">当前连对</div>
+                <div className="text-2xl md:text-4xl font-bold text-orange-400">{currentStreak}</div>
+                <div className="text-xs md:text-sm text-gray-500 mt-1">{t('dash.current')}</div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-yellow-400">{stats.longestStreak}</div>
-                <div className="text-sm text-gray-500 mt-1">最高连对</div>
+                <div className="text-2xl md:text-4xl font-bold text-yellow-400">{longestStreak}</div>
+                <div className="text-xs md:text-sm text-gray-500 mt-1">{t('dash.longest')}</div>
               </div>
             </div>
           </div>
 
-          {/* Best/Worst scenarios */}
+          {/* Scenario breakdown */}
           <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
-            <h2 className="text-xl font-semibold text-white mb-4">场景表现</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">{t('dash.performance')}</h2>
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-gray-400">最强场景</span>
-                <span className="text-green-400 font-semibold">{stats.bestScenario}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-400">最弱场景</span>
-                <span className="text-red-400 font-semibold">{stats.worstScenario}</span>
-              </div>
+              {Object.entries(scenarioStats).map(([type, stat]) => (
+                <div key={type} className="flex items-center justify-between">
+                  <span className="text-gray-400">{scenarioNames[type] ?? type}</span>
+                  <div className="flex items-center gap-3">
+                    <div className="w-32 bg-gray-800 rounded-full h-2 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full ${
+                          (stat.correct / stat.total) >= 0.7 ? 'bg-green-500' :
+                          (stat.correct / stat.total) >= 0.5 ? 'bg-yellow-500' : 'bg-red-500'
+                        }`}
+                        style={{ width: `${(stat.correct / stat.total) * 100}%` }}
+                      />
+                    </div>
+                    <span className="text-white font-mono text-sm w-16 text-right">
+                      {Math.round((stat.correct / stat.total) * 100)}%
+                    </span>
+                    <span className="text-gray-600 text-xs w-12 text-right">
+                      {stat.total}{t('dash.handsSuffix')}
+                    </span>
+                  </div>
+                </div>
+              ))}
+              {Object.keys(scenarioStats).length === 0 && (
+                <p className="text-gray-500">{t('dash.noData')}</p>
+              )}
             </div>
           </div>
 
           {/* Recent sessions */}
           <div className="lg:col-span-2 bg-gray-900 rounded-xl border border-gray-800 p-6">
-            <h2 className="text-xl font-semibold text-white mb-4">最近训练</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-800">
-                    <th className="text-left py-2 text-sm text-gray-500 font-normal">日期</th>
-                    <th className="text-left py-2 text-sm text-gray-500 font-normal">场景</th>
-                    <th className="text-right py-2 text-sm text-gray-500 font-normal">手数</th>
-                    <th className="text-right py-2 text-sm text-gray-500 font-normal">正确率</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {stats.recentSessions.map((s, i) => (
-                    <tr key={i} className="border-b border-gray-800/50">
-                      <td className="py-3 text-gray-400 text-sm">{s.date}</td>
-                      <td className="py-3 text-white">{s.scenario}</td>
-                      <td className="py-3 text-gray-300 text-right">{s.hands}</td>
-                      <td className="py-3 text-right">
-                        <span className={`font-semibold ${
-                          s.accuracy >= 70 ? 'text-green-400' : s.accuracy >= 60 ? 'text-yellow-400' : 'text-red-400'
-                        }`}>
-                          {s.accuracy}%
-                        </span>
-                      </td>
+            <h2 className="text-xl font-semibold text-white mb-4">{t('dash.recent')}</h2>
+            {sessions.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-gray-800">
+                      <th className="text-left py-2 text-sm text-gray-500 font-normal">{t('dash.date')}</th>
+                      <th className="text-left py-2 text-sm text-gray-500 font-normal">{t('dash.scenario')}</th>
+                      <th className="text-right py-2 text-sm text-gray-500 font-normal">{t('dash.hands')}</th>
+                      <th className="text-right py-2 text-sm text-gray-500 font-normal">{t('dash.accuracy')}</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Activity heatmap placeholder */}
-          <div className="lg:col-span-2 bg-gray-900 rounded-xl border border-gray-800 p-6">
-            <h2 className="text-xl font-semibold text-white mb-4">训练活跃度</h2>
-            <div className="grid grid-cols-7 gap-1">
-              {Array.from({ length: 28 }, (_, i) => {
-                const intensity = Math.random()
-                return (
-                  <div
-                    key={i}
-                    className="w-4 h-4 rounded-sm"
-                    style={{
-                      backgroundColor: intensity > 0.7
-                        ? '#22c55e'
-                        : intensity > 0.4
-                        ? '#15803d'
-                        : intensity > 0.1
-                        ? '#14532d'
-                        : '#1f2937',
-                    }}
-                    title={`${Math.floor(intensity * 50)} 手`}
-                  />
-                )
-              })}
-            </div>
-            <div className="flex justify-end gap-2 mt-2 text-xs text-gray-600">
-              <span>少</span>
-              <div className="w-3 h-3 rounded-sm bg-gray-800" />
-              <div className="w-3 h-3 rounded-sm bg-green-900" />
-              <div className="w-3 h-3 rounded-sm bg-green-700" />
-              <div className="w-3 h-3 rounded-sm bg-green-500" />
-              <span>多</span>
-            </div>
+                  </thead>
+                  <tbody>
+                    {sessions.filter((s) => s.total_hands > 0).map((s) => (
+                      <tr key={s.id} className="border-b border-gray-800/50">
+                        <td className="py-3 text-gray-400 text-sm">
+                          {new Date(s.started_at).toLocaleDateString('zh-CN')}
+                        </td>
+                        <td className="py-3 text-white">{scenarioNames[s.scenario_type] ?? s.scenario_type}</td>
+                        <td className="py-3 text-gray-300 text-right">{s.total_hands}</td>
+                        <td className="py-3 text-right">
+                          <span className={`font-semibold ${
+                            (s.accuracy ?? 0) >= 70 ? 'text-green-400' :
+                            (s.accuracy ?? 0) >= 50 ? 'text-yellow-400' : 'text-red-400'
+                          }`}>
+                            {s.accuracy ?? '-'}%
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="text-gray-500">{t('dash.goTrain')}</p>
+            )}
           </div>
         </div>
       </div>
@@ -137,9 +238,9 @@ export default function DashboardPage() {
 
 function StatCard({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="bg-gray-900 rounded-xl border border-gray-800 p-4">
-      <div className="text-sm text-gray-500 mb-1">{label}</div>
-      <div className="text-2xl font-bold text-white">{value}</div>
+    <div className="bg-gray-900 rounded-xl border border-gray-800 p-3 md:p-4">
+      <div className="text-xs md:text-sm text-gray-500 mb-1">{label}</div>
+      <div className="text-xl md:text-2xl font-bold text-white">{value}</div>
     </div>
   )
 }

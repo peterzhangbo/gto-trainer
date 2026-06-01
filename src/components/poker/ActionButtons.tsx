@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils/cn'
 import type { StrategyEntry } from '@/types'
 import Badge from '@/components/ui/Badge'
-import { ACTION_COLORS } from '@/config/constants'
+import { useI18n } from '@/lib/i18n'
 
 interface ActionButtonsProps {
   actions: string[]
@@ -11,15 +11,26 @@ interface ActionButtonsProps {
   gtoStrategy?: StrategyEntry | null
 }
 
-const actionLabels: Record<string, string> = {
-  fold: 'Fold',
-  call: 'Call',
-  raise: 'Raise',
-  check: 'Check',
-  '3bet': '3-Bet',
-  bet_50pct: 'Bet 50%',
-  bet_75pct: 'Bet 75%',
-  all_in: 'All In',
+const ACTION_LABEL_KEYS: Record<string, string> = {
+  fold: 'action.fold',
+  call: 'action.call',
+  raise: 'action.raise',
+  check: 'action.check',
+  '3bet': 'action.threeBet',
+  bet_50pct: 'action.bet50',
+  bet_75pct: 'action.bet75',
+  all_in: 'action.allIn',
+}
+
+const ACTION_LABEL_FALLBACK: Record<string, string> = {
+  fold: '弃牌',
+  call: '跟注',
+  raise: '加注',
+  check: '过牌',
+  '3bet': '三次加注',
+  bet_50pct: '下注50%',
+  bet_75pct: '下注75%',
+  all_in: '全下',
 }
 
 function getActionBg(action: string): string {
@@ -57,12 +68,15 @@ export default function ActionButtons({
   gtoStrategy = null,
 }: ActionButtonsProps) {
   const bestAction = revealed ? getBestAction(gtoStrategy) : null
+  const { t } = useI18n()
 
   return (
     <div className="flex flex-wrap gap-2">
       {actions.map((action) => {
         const isBest = action === bestAction
         const frequency = gtoStrategy?.[action]
+        const key = ACTION_LABEL_KEYS[action]
+        const label = key ? t(key as any) : ACTION_LABEL_FALLBACK[action] || action
 
         return (
           <button
@@ -76,7 +90,7 @@ export default function ActionButtons({
               isBest && 'ring-2 ring-yellow-400 ring-offset-2 ring-offset-gray-900'
             )}
           >
-            <span>{actionLabels[action] || action}</span>
+            <span>{label}</span>
             {revealed && frequency != null && (
               <span className="ml-2 text-xs text-gray-200/70">
                 {Math.round(frequency * 100)}%
@@ -86,11 +100,15 @@ export default function ActionButtons({
         )
       })}
 
-      {revealed && bestAction && (
-        <div className="flex w-full items-center gap-2 pt-2">
-          <Badge variant="success">Best: {actionLabels[bestAction] || bestAction}</Badge>
-        </div>
-      )}
+      {revealed && bestAction && (() => {
+        const bestKey = ACTION_LABEL_KEYS[bestAction]
+        const bestLabel = bestKey ? t(bestKey as any) : ACTION_LABEL_FALLBACK[bestAction] || bestAction
+        return (
+          <div className="flex w-full items-center gap-2 pt-2">
+            <Badge variant="success">Best: {bestLabel}</Badge>
+          </div>
+        )
+      })()}
     </div>
   )
 }

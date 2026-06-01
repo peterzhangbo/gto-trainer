@@ -3,8 +3,10 @@ import type { Card } from '@/types/poker'
 import CardSelector from '@/components/poker/CardSelector'
 import EquityDisplay from '@/components/poker/EquityDisplay'
 import { calculateEquity } from '@/lib/poker/equity'
+import { useI18n } from '@/lib/i18n'
 
 export default function EVCalculatorPage() {
+  const { t } = useI18n()
   const [heroCards, setHeroCards] = useState<Card[]>([])
   const [villainCards, setVillainCards] = useState<Card[]>([])
   const [boardCards, setBoardCards] = useState<Card[]>([])
@@ -55,24 +57,24 @@ export default function EVCalculatorPage() {
   const potOdds = potSize > 0 ? (betToCall / (potSize + betToCall)) * 100 : 0
 
   return (
-    <div className="min-h-screen bg-gray-950 p-8">
+    <div className="min-h-screen bg-gray-950 p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">EV 计算器</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-white mb-6 md:mb-8">{t('calc.title')}</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
           {/* Card selection */}
           <div className="lg:col-span-2">
-            <div className="flex gap-3 mb-4">
+            <div className="flex flex-wrap gap-2 md:gap-3 mb-4">
               {(['hero', 'villain', 'board'] as const).map((target) => {
                 const count = target === 'hero' ? heroCards.length : target === 'villain' ? villainCards.length : boardCards.length
                 const max = target === 'board' ? 5 : 2
                 const color = target === 'hero' ? 'blue' : target === 'villain' ? 'red' : 'green'
-                const label = target === 'hero' ? 'Hero 手牌' : target === 'villain' ? 'Villain 手牌' : '公共牌'
+                const label = target === 'hero' ? t('calc.hero') : target === 'villain' ? t('calc.villain') : t('calc.board')
                 return (
                   <button
                     key={target}
                     onClick={() => setSelectingFor(target)}
-                    className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                    className={`min-h-[44px] px-3 md:px-4 py-2 rounded-lg font-semibold text-sm md:text-base transition-colors ${
                       selectingFor === target
                         ? `bg-${color}-600 text-white`
                         : 'bg-gray-800 text-gray-400'
@@ -93,24 +95,24 @@ export default function EVCalculatorPage() {
 
             {/* Selected cards display */}
             <div className="mt-4 flex gap-6 flex-wrap">
-              <SelectedCardsDisplay label="Hero" color="text-blue-400" cards={heroCards} />
-              <SelectedCardsDisplay label="Villain" color="text-red-400" cards={villainCards} />
-              {boardCards.length > 0 && <SelectedCardsDisplay label="Board" color="text-green-400" cards={boardCards} />}
+              <SelectedCardsDisplay label={t('calc.hero')} color="text-blue-400" cards={heroCards} />
+              <SelectedCardsDisplay label={t('calc.villain')} color="text-red-400" cards={villainCards} />
+              {boardCards.length > 0 && <SelectedCardsDisplay label={t('calc.board')} color="text-green-400" cards={boardCards} />}
             </div>
 
-            <div className="flex gap-3 mt-4">
+            <div className="flex flex-wrap gap-3 mt-4">
               <button
                 onClick={calculate}
                 disabled={heroCards.length < 2 || villainCards.length < 2 || calculating}
-                className="px-6 py-2 bg-red-600 hover:bg-red-500 disabled:bg-gray-700 text-white rounded-lg font-semibold transition-colors"
+                className="min-h-[44px] px-6 py-2 bg-red-600 hover:bg-red-500 disabled:bg-gray-700 text-white rounded-lg font-semibold transition-colors"
               >
-                {calculating ? '计算中...' : '计算 EV'}
+                {calculating ? t('calc.calculating') : t('calc.calculate')}
               </button>
               <button
                 onClick={reset}
-                className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg transition-colors"
+                className="min-h-[44px] px-6 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg transition-colors"
               >
-                重置
+                {t('calc.reset')}
               </button>
             </div>
           </div>
@@ -118,9 +120,9 @@ export default function EVCalculatorPage() {
           {/* Results */}
           <div className="space-y-6">
             <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 space-y-4">
-              <h3 className="text-lg font-semibold text-white">底池设置</h3>
+              <h3 className="text-lg font-semibold text-white">{t('calc.potSettings')}</h3>
               <div>
-                <label className="block text-sm text-gray-400 mb-1">底池大小</label>
+                <label className="block text-sm text-gray-400 mb-1">{t('calc.potSize')}</label>
                 <input
                   type="number"
                   value={potSize}
@@ -129,7 +131,7 @@ export default function EVCalculatorPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-400 mb-1">需要跟注</label>
+                <label className="block text-sm text-gray-400 mb-1">{t('calc.betToCall')}</label>
                 <input
                   type="number"
                   value={betToCall}
@@ -138,20 +140,20 @@ export default function EVCalculatorPage() {
                 />
               </div>
               <div className="text-sm text-gray-500">
-                底池赔率: {potOdds.toFixed(1)}%
+                {t('calc.potOdds')}: {potOdds.toFixed(1)}%
               </div>
             </div>
 
             {result && (
               <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 space-y-4">
-                <h3 className="text-lg font-semibold text-white">计算结果</h3>
+                <h3 className="text-lg font-semibold text-white">{t('calc.results')}</h3>
                 <EquityDisplay
                   heroWins={result.heroWins}
                   villainWins={result.villainWins}
                   tie={result.tie}
                 />
                 <div>
-                  <div className="text-sm text-gray-400 mb-1">期望值 (EV)</div>
+                  <div className="text-sm text-gray-400 mb-1">{t('calc.ev')}</div>
                   <div className={`text-3xl font-bold ${result.ev >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {result.ev >= 0 ? '+' : ''}{result.ev.toFixed(2)} BB
                   </div>
@@ -171,12 +173,13 @@ export default function EVCalculatorPage() {
 function SelectedCardsDisplay({ label, color, cards }: { label: string; color: string; cards: Card[] }) {
   const SUIT_SYMBOLS: Record<string, string> = { s: '♠', h: '♥', d: '♦', c: '♣' }
   const SUIT_COLORS: Record<string, string> = { s: 'text-gray-900', h: 'text-red-600', d: 'text-red-600', c: 'text-gray-900' }
+  const { t } = useI18n()
 
   return (
     <div>
       <span className={`text-sm font-semibold ${color}`}>{label}: </span>
       {cards.length === 0 ? (
-        <span className="text-gray-600">未选择</span>
+        <span className="text-gray-600">{t('calc.unselected')}</span>
       ) : (
         cards.map((c, i) => (
           <span key={i} className="inline-block bg-white rounded px-2 py-1 mx-0.5 text-sm font-bold">

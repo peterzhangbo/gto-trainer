@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom'
+import { useI18n } from '@/lib/i18n'
 
 export default function LandingPage() {
+  const { t } = useI18n()
+
   return (
     <div className="min-h-screen bg-gray-950">
       {/* Hero */}
@@ -10,41 +13,40 @@ export default function LandingPage() {
           GTO <span className="text-red-500">Trainer</span>
         </h1>
         <p className="text-xl text-gray-400 mb-8 max-w-2xl">
-          德州扑克 Game Theory Optimal 策略训练平台。
-          掌握最优决策，提升你的胜率。
+          {t('landing.subtitle')}
         </p>
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-4">
           <Link
             to="/trainer"
-            className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold text-lg transition-colors"
+            className="min-h-[44px] px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold text-base md:text-lg transition-colors flex items-center justify-center"
           >
-            开始训练
+            {t('landing.start')}
           </Link>
           <Link
             to="/ranges"
-            className="px-8 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-semibold text-lg transition-colors border border-gray-700"
+            className="min-h-[44px] px-8 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg font-semibold text-base md:text-lg transition-colors border border-gray-700 flex items-center justify-center"
           >
-            查看范围
+            {t('landing.viewRanges')}
           </Link>
         </div>
       </section>
 
       {/* Features */}
-      <section className="max-w-6xl mx-auto px-4 py-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section className="max-w-6xl mx-auto px-4 py-12 md:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         <FeatureCard
           icon="🎯"
-          title="GTO 手牌训练"
-          description="根据最优策略频率进行手牌决策训练，实时反馈你的准确率。"
+          title={t('landing.feature1.title')}
+          description={t('landing.feature1.desc')}
         />
         <FeatureCard
           icon="📊"
-          title="范围矩阵查看器"
-          description="13×13 手牌矩阵可视化，查看各位置的开牌、3bet、防守范围。"
+          title={t('landing.feature2.title')}
+          description={t('landing.feature2.desc')}
         />
         <FeatureCard
           icon="🧮"
-          title="EV 计算器"
-          description="Monte Carlo 股权模拟，计算期望值和底池赔率。"
+          title={t('landing.feature3.title')}
+          description={t('landing.feature3.desc')}
         />
       </section>
     </div>

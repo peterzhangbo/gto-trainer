@@ -41,29 +41,13 @@ function generateMockStrategy(handNotation: string): StrategyEntry {
   const strength = 1 - (Math.min(r1, r2) / 12)
 
   if (strength > 0.7) {
-    return {
-      actions: { raise: 0.8, call: 0.15, fold: 0.05 },
-      ev: 1.5 + Math.random() * 2,
-      frequency: 1.0,
-    }
+    return { raise: 0.8, call: 0.15, fold: 0.05 }
   } else if (strength > 0.4) {
-    return {
-      actions: { raise: 0.3, call: 0.5, fold: 0.2 },
-      ev: 0.2 + Math.random(),
-      frequency: 0.8,
-    }
+    return { raise: 0.3, call: 0.5, fold: 0.2 }
   } else if (strength > 0.2) {
-    return {
-      actions: { raise: 0.1, call: 0.2, fold: 0.7 },
-      ev: -0.5 + Math.random() * 0.3,
-      frequency: 0.5,
-    }
+    return { raise: 0.1, call: 0.2, fold: 0.7 }
   } else {
-    return {
-      actions: { fold: 0.9, raise: 0.05, call: 0.05 },
-      ev: -2 + Math.random() * 0.5,
-      frequency: 0.2,
-    }
+    return { fold: 0.9, raise: 0.05, call: 0.05 }
   }
 }
 
@@ -91,7 +75,7 @@ export const useTrainingStore = create<TrainingState>((set, get) => ({
   generateDrill: () => {
     const config = get().config ?? DEFAULT_SESSION_CONFIG
     const deck = shuffleDeck(generateDeck())
-    const { hand, remaining } = getRandomHand(deck)
+    const { hand } = getRandomHand(deck)
     const notation = handToNotation(hand[0], hand[1])
     const gtoStrategy = generateMockStrategy(notation)
 
@@ -118,10 +102,6 @@ export const useTrainingStore = create<TrainingState>((set, get) => ({
     }
 
     const drillId = crypto.randomUUID()
-    const actions = Object.keys(gtoStrategy.actions)
-    const primaryAction = actions.reduce((a, b) =>
-      gtoStrategy.actions[a] >= gtoStrategy.actions[b] ? a : b
-    )
 
     const drill: Drill = {
       id: drillId,

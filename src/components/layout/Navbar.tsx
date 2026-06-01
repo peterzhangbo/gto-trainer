@@ -1,18 +1,20 @@
 import { Link, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils/cn'
 import { useAuthStore } from '@/stores/auth-store'
+import { useI18n } from '@/lib/i18n'
 
-const NAV_LINKS = [
-  { to: '/training', label: 'Training' },
-  { to: '/ranges', label: 'Ranges' },
-  { to: '/calculator', label: 'Calculator' },
-  { to: '/dashboard', label: 'Dashboard' },
+const NAV_LINKS_KEYS = [
+  { to: '/training', labelKey: 'nav.training' as const },
+  { to: '/ranges', labelKey: 'nav.ranges' as const },
+  { to: '/calculator', labelKey: 'nav.calculator' as const },
+  { to: '/dashboard', labelKey: 'nav.dashboard' as const },
 ] as const
 
 export default function Navbar() {
   const location = useLocation()
   const user = useAuthStore((s) => s.user)
   const signOut = useAuthStore((s) => s.signOut)
+  const { t } = useI18n()
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-gray-800 bg-gray-900/95 backdrop-blur-sm">
@@ -24,7 +26,7 @@ export default function Navbar() {
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex">
-            {NAV_LINKS.map((link) => {
+            {NAV_LINKS_KEYS.map((link) => {
               const isActive = location.pathname.startsWith(link.to)
               return (
                 <Link
@@ -37,7 +39,7 @@ export default function Navbar() {
                       : 'text-gray-400 hover:bg-gray-800/50 hover:text-gray-200'
                   )}
                 >
-                  {link.label}
+                  {t(link.labelKey)}
                 </Link>
               )
             })}
@@ -59,7 +61,7 @@ export default function Navbar() {
                 onClick={() => void signOut()}
                 className="rounded-lg px-3 py-1.5 text-sm text-gray-400 hover:bg-gray-800 hover:text-gray-200 transition-colors"
               >
-                Sign Out
+                {t('navbar.signOut')}
               </button>
             </div>
           ) : (
@@ -67,7 +69,7 @@ export default function Navbar() {
               to="/login"
               className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
             >
-              Sign In
+              {t('navbar.signIn')}
             </Link>
           )}
         </div>

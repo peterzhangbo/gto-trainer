@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils/cn'
 import CardDisplay from './CardDisplay'
 import type { Card } from '@/types'
-import { SUIT_SYMBOLS, RANKS } from '@/lib/poker/cards'
+import { SUIT_SYMBOLS } from '@/lib/poker/cards'
 
 interface HandDisplayProps {
   hand: { card1: Card; card2: Card } | Card[] | string
@@ -9,8 +9,6 @@ interface HandDisplayProps {
   className?: string
   compact?: boolean
 }
-
-const SUITS_ARRAY = ['s', 'h', 'd', 'c'] as const
 
 function notationToCards(notation: string): { rank: string; display: string }[] {
   const rank1 = notation[0]
@@ -40,7 +38,6 @@ function notationToCards(notation: string): { rank: string; display: string }[] 
 export default function HandDisplay({ hand, size = 'md', className, compact = false }: HandDisplayProps) {
   if (typeof hand === 'string') {
     if (compact) {
-      const cards = notationToCards(hand)
       return (
         <span className={cn('inline-flex items-center gap-0.5', className)}>
           <span className="font-semibold text-gray-100">{hand}</span>

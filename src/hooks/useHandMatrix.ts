@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import type { MatrixCell } from '@/types/poker'
 import { RANKS_13, getPrimaryAction, expandRangeToMatrix } from '@/lib/poker/range'
 
 interface StrategyEntry {

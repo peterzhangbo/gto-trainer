@@ -71,7 +71,6 @@ function pickRandomHand(): { hand: string; strategy: Record<string, number> } {
   // Weight by raise frequency - more likely to see hands that are raised more
   const weighted: [string, Record<string, number>][] = []
   for (const [hand, strat] of entries) {
-    const raiseFreq = strat.raise ?? 0
     // Include hands proportional to their appearance frequency in a real game
     weighted.push([hand, strat])
   }

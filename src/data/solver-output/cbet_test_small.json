@@ -1,0 +1,1480 @@
+{
+  "scenario": "cbet_btn_dry-high_100",
+  "position": "BTN",
+  "stack_depth": 100.0,
+  "board": [
+    "Td",
+    "9d",
+    "6h"
+  ],
+  "board_texture": "dry-high",
+  "solver_meta": {
+    "iterations": 50,
+    "exploitability": 34.04568099975586,
+    "compute_time_secs": 2477.278455917
+  },
+  "hands": {
+    "33": {
+      "check": 0.997,
+      "bet_375": 0.003
+    },
+    "A3o": {
+      "check": 1.0
+    },
+    "T7s": {
+      "bet_375": 0.102,
+      "check": 0.898
+    },
+    "86s": {
+      "bet_375": 0.09,
+      "check": 0.91
+    },
+    "T8s": {
+      "bet_375": 0.056,
+      "check": 0.944
+    },
+    "Q7s": {
+      "check": 0.997,
+      "bet_375": 0.003
+    },
+    "J4s": {
+      "check": 1.0
+    },
+    "A4o": {
+      "check": 1.0
+    },
+    "K9o": {
+      "bet_375": 0.003,
+      "check": 0.997
+    },
+    "AJs": {
+      "check": 1.0
+    },
+    "AQo": {
+      "check": 1.0
+    },
+    "QJo": {
+      "check": 0.853,
+      "bet_375": 0.147
+    },
+    "A7s": {
+      "check": 0.999
+    },
+    "K5s": {
+      "check": 1.0
+    },
+    "AA": {
+      "bet_375": 0.274,
+      "check": 0.724,
+      "allin_10000": 0.001
+    },
+    "65s": {
+      "check": 0.955,
+      "bet_375": 0.045
+    },
+    "75s": {
+      "check": 0.999
+    },
+    "T9o": {
+      "check": 0.739,
+      "bet_375": 0.261
+    },
+    "KK": {
+      "bet_375": 0.107,
+      "check": 0.893
+    },
+    "K2s": {
+      "check": 1.0
+    },
+    "ATs": {
+      "bet_375": 0.098,
+      "check": 0.902
+    },
+    "K7o": {
+      "check": 1.0
+    },
+    "A7o": {
+      "bet_375": 0.003,
+      "check": 0.997
+    },
+    "KJs": {
+      "check": 0.794,
+      "bet_375": 0.206
+    },
+    "A2s": {
+      "check": 1.0
+    },
+    "Q7o": {
+      "check": 0.994,
+      "bet_375": 0.006
+    },
+    "55": {
+      "check": 1.0
+    },
+    "96s": {
+      "check": 0.744,
+      "bet_375": 0.256
+    },
+    "A6s": {
+      "check": 1.0
+    },
+    "87s": {
+      "bet_375": 0.273,
+      "allin_10000": 0.021,
+      "check": 0.706
+    },
+    "98s": {
+      "check": 0.837,
+      "bet_375": 0.163
+    },
+    "Q8o": {
+      "check": 0.775,
+      "bet_375": 0.225
+    },
+    "AKs": {
+      "check": 1.0
+    },
+    "J9s": {
+      "bet_375": 0.16,
+      "check": 0.84
+    },
+    "99": {
+      "bet_375": 0.273,
+      "check": 0.727
+    },
+    "TT": {
+      "check": 0.953,
+      "bet_375": 0.047
+    },
+    "22": {
+      "check": 1.0
+    },
+    "85s": {
+      "check": 0.988,
+      "bet_375": 0.012
+    },
+    "54s": {
+      "check": 1.0
+    },
+    "K8s": {
+      "check": 1.0
+    },
+    "Q5s": {
+      "check": 1.0
+    },
+    "K9s": {
+      "check": 0.998,
+      "bet_375": 0.002
+    },
+    "JJ": {
+      "check": 0.927,
+      "bet_375": 0.073
+    },
+    "KQo": {
+      "bet_375": 0.254,
+      "check": 0.746
+    },
+    "A6o": {
+      "check": 1.0
+    },
+    "JTs": {
+      "check": 0.922,
+      "bet_375": 0.078
+    },
+    "T6s": {
+      "bet_375": 0.076,
+      "check": 0.924
+    },
+    "J3s": {
+      "check": 1.0
+    },
+    "T8o": {
+      "check": 0.963,
+      "bet_375": 0.037
+    },
+    "JTo": {
+      "bet_375": 0.033,
+      "check": 0.967
+    },
+    "76o": {
+      "bet_375": 0.136,
+      "check": 0.864
+    },
+    "J8s": {
+      "check": 0.819,
+      "bet_375": 0.181
+    },
+    "Q8s": {
+      "check": 0.803,
+      "bet_375": 0.197
+    },
+    "KTs": {
+      "bet_375": 0.049,
+      "check": 0.951
+    },
+    "KTo": {
+      "check": 0.958,
+      "bet_375": 0.042
+    },
+    "87o": {
+      "bet_375": 0.254,
+      "allin_10000": 0.017,
+      "check": 0.729
+    },
+    "K4s": {
+      "check": 1.0
+    },
+    "A3s": {
+      "check": 1.0
+    },
+    "K7s": {
+      "check": 1.0
+    },
+    "A9o": {
+      "bet_375": 0.001,
+      "check": 0.999
+    },
+    "66": {
+      "check": 0.862,
+      "bet_375": 0.138
+    },
+    "J6s": {
+      "check": 0.92,
+      "bet_375": 0.08
+    },
+    "97s": {
+      "check": 1.0
+    },
+    "ATo": {
+      "bet_375": 0.041,
+      "check": 0.959
+    },
+    "QJs": {
+      "check": 0.834,
+      "bet_375": 0.166
+    },
+    "44": {
+      "check": 1.0
+    },
+    "Q4s": {
+      "check": 1.0
+    },
+    "T9s": {
+      "check": 0.762,
+      "bet_375": 0.238
+    },
+    "J8o": {
+      "check": 0.814,
+      "bet_375": 0.186
+    },
+    "A8o": {
+      "check": 0.854,
+      "bet_375": 0.146
+    },
+    "A2o": {
+      "check": 1.0
+    },
+    "98o": {
+      "check": 0.774,
+      "bet_375": 0.226
+    },
+    "A5o": {
+      "check": 1.0
+    },
+    "A5s": {
+      "check": 1.0
+    },
+    "J5s": {
+      "check": 1.0
+    },
+    "76s": {
+      "bet_375": 0.083,
+      "check": 0.917
+    },
+    "Q9o": {
+      "bet_375": 0.062,
+      "check": 0.938
+    },
+    "QTo": {
+      "bet_375": 0.007,
+      "check": 0.993
+    },
+    "K6o": {
+      "check": 0.999,
+      "bet_375": 0.001
+    },
+    "77": {
+      "check": 1.0
+    },
+    "K5o": {
+      "check": 1.0
+    },
+    "K3s": {
+      "check": 1.0
+    },
+    "Q3s": {
+      "check": 1.0
+    },
+    "J2s": {
+      "check": 1.0
+    },
+    "K8o": {
+      "check": 0.992,
+      "bet_375": 0.008
+    },
+    "AJo": {
+      "check": 0.999,
+      "bet_375": 0.001
+    },
+    "QQ": {
+      "bet_375": 0.151,
+      "check": 0.849
+    },
+    "Q6s": {
+      "check": 0.999
+    },
+    "A4s": {
+      "check": 1.0
+    },
+    "K6s": {
+      "check": 1.0
+    },
+    "J7s": {
+      "check": 0.914,
+      "bet_375": 0.086
+    },
+    "A8s": {
+      "check": 0.945,
+      "bet_375": 0.055
+    },
+    "J9o": {
+      "check": 0.828,
+      "bet_375": 0.172
+    },
+    "Q2s": {
+      "check": 1.0
+    },
+    "Q9s": {
+      "check": 0.971,
+      "bet_375": 0.029
+    },
+    "A9s": {
+      "check": 0.998,
+      "bet_375": 0.002
+    },
+    "QTs": {
+      "check": 0.988,
+      "bet_375": 0.012
+    },
+    "KJo": {
+      "check": 0.733,
+      "bet_375": 0.267
+    },
+    "KQs": {
+      "check": 0.807,
+      "bet_375": 0.193
+    },
+    "AQs": {
+      "check": 1.0
+    },
+    "AKo": {
+      "check": 1.0
+    },
+    "88": {
+      "check": 0.881,
+      "bet_375": 0.119
+    }
+  },
+  "ev": {
+    "A2s": 148.58361078603468,
+    "K5o": 24.133784838488502,
+    "A8s": 229.4803966865456,
+    "J5s": 83.63636837293156,
+    "Q8o": 124.25315926715778,
+    "Q7s": 141.094293684789,
+    "ATo": 294.71303842359805,
+    "K9s": 136.97456494636342,
+    "QTo": 214.46337482762667,
+    "A3o": 27.24074399029767,
+    "A5o": 27.934016803175282,
+    "86s": 297.20582137569306,
+    "76s": 268.62748375288936,
+    "QJs": 374.11170344254964,
+    "K7s": 165.40132400434788,
+    "J7s": 153.1981585605539,
+    "JTs": 200.25556437174478,
+    "K2s": 106.80077023129805,
+    "T8o": 230.11014932485728,
+    "QJo": 258.9275557108391,
+    "ATs": 289.9677953063718,
+    "76o": 127.74940600148236,
+    "77": 91.33489734516179,
+    "A3s": 149.1307621678954,
+    "AKs": 186.954393083198,
+    "Q6s": 218.1688435872396,
+    "K6s": 242.96218872070312,
+    "K3s": 107.54393124148778,
+    "TT": 1416.4951578776042,
+    "AJo": 55.799529413306786,
+    "K5s": 105.24367065651795,
+    "Q3s": 88.15967576940538,
+    "AA": 517.8450340337818,
+    "A8o": 76.94962630781518,
+    "K8o": 64.12727202958658,
+    "88": 120.67382588916355,
+    "87o": 1270.8128060234917,
+    "KJo": 107.88260108988305,
+    "87s": 1330.8308274541205,
+    "KTs": 236.27004767043388,
+    "T9s": 719.2308553059896,
+    "J8o": 161.35098673209023,
+    "A4s": 148.51060098829527,
+    "AQs": 188.19978961030705,
+    "QTs": 215.14980702265072,
+    "85s": 121.78981298022359,
+    "QQ": 361.67632100706186,
+    "T9o": 699.4153442382812,
+    "K8s": 175.17815765849673,
+    "65s": 200.40595499674478,
+    "54s": 74.64672852609775,
+    "JJ": 316.4584452311198,
+    "A7s": 213.62103303760443,
+    "T6s": 626.63916015625,
+    "A6s": 291.5701904296875,
+    "K7o": 53.69774248169213,
+    "Q7o": 56.067957817883176,
+    "A4o": 27.61442199266197,
+    "T7s": 224.1432889326978,
+    "66": 1156.8092447916667,
+    "A7o": 63.95154711061267,
+    "T8s": 237.73917643229166,
+    "J2s": 85.07243633270264,
+    "A5s": 147.38635444085844,
+    "KQo": 114.10044459913392,
+    "Q2s": 87.55321684995481,
+    "AKo": 58.967466205988025,
+    "J9o": 107.92952982584636,
+    "KTo": 235.73817585466523,
+    "J8s": 283.682317544402,
+    "A6o": 91.27969388005032,
+    "A2o": 26.68977435279833,
+    "98s": 170.9913330078125,
+    "Q9o": 118.3549105748181,
+    "99": 1289.3530680338542,
+    "J4s": 85.01088809967041,
+    "Q8s": 242.0779645762133,
+    "98o": 162.18576180762471,
+    "33": 51.90751075744629,
+    "J3s": 85.6761417388916,
+    "A9s": 166.80187706342204,
+    "55": 58.16784008223767,
+    "A9o": 171.60235901498763,
+    "KK": 427.3815784641052,
+    "96s": 610.289306640625,
+    "JTo": 196.42094930013022,
+    "AQo": 55.18438414898439,
+    "Q9s": 122.80578112916898,
+    "K4s": 106.71299852247938,
+    "AJs": 193.9680073129108,
+    "22": 51.61039606730143,
+    "J6s": 211.0778554280599,
+    "J9s": 115.77318318684895,
+    "KQs": 228.14321623482329,
+    "Q5s": 86.14707449811688,
+    "K9o": 134.81258466716707,
+    "75s": 121.12444340746075,
+    "K6o": 78.29117265226,
+    "44": 55.953145345052086,
+    "KJs": 235.63018714250174,
+    "97s": 154.10764829668568,
+    "Q4s": 87.27076879929353
+  },
+  "equity": {
+    "Q8s": 0.4496142850274489,
+    "Q9s": 0.5625867692347105,
+    "A3o": 0.275340547921784,
+    "J8s": 0.44173352220933215,
+    "J3s": 0.23492316156625748,
+    "AA": 0.7563348667391915,
+    "KQo": 0.41309618804026116,
+    "ATs": 0.6653943361058409,
+    "A7s": 0.4393077344897887,
+    "A6s": 0.5371770064036051,
+    "A5s": 0.34134944097791003,
+    "76o": 0.5256905568146537,
+    "K9s": 0.5712838923265486,
+    "KTs": 0.6584447685040926,
+    "AJo": 0.37464865707983036,
+    "J6s": 0.5408425331115723,
+    "Q2s": 0.24109669762362093,
+    "QTs": 0.6494724477833582,
+    "K8s": 0.40112721191851347,
+    "K7s": 0.39366052878502944,
+    "TT": 0.8833524584770203,
+    "K2s": 0.27978992436261907,
+    "K4s": 0.28330509067014586,
+    "66": 0.8692020972569784,
+    "K6s": 0.5377447009086609,
+    "JJ": 0.6929308076699575,
+    "QQ": 0.7147174965837824,
+    "K5o": 0.2214510018010499,
+    "QJs": 0.49236172885720986,
+    "A5o": 0.2801411898756839,
+    "Q5s": 0.24678920892648823,
+    "85s": 0.31478542236098794,
+    "AQs": 0.442951553479597,
+    "K5s": 0.2857097105992066,
+    "99": 0.8725124398867289,
+    "T7s": 0.6360795825090609,
+    "K3s": 0.2818613331832375,
+    "A8s": 0.4541656483065585,
+    "KQs": 0.45834778792799163,
+    "54s": 0.21412338002462786,
+    "87s": 0.8837817364947618,
+    "A2s": 0.3351176411755097,
+    "44": 0.3615642686684926,
+    "97s": 0.5659032643642169,
+    "KK": 0.7387996504197472,
+    "Q7o": 0.2975510905876709,
+    "T8s": 0.646311342716217,
+    "A4o": 0.2772892855793332,
+    "AKs": 0.4580203161403606,
+    "75s": 0.3150188790244239,
+    "87o": 0.8789420906316351,
+    "98s": 0.5786818067232767,
+    "K6o": 0.48564202343761725,
+    "J2s": 0.23285390436649323,
+    "KJs": 0.4471303768110891,
+    "J8o": 0.3951630347505563,
+    "88": 0.5357751227363392,
+    "T9o": 0.7828943332036337,
+    "A3s": 0.33718904997454785,
+    "ATo": 0.6715929225373823,
+    "86s": 0.5806176972279351,
+    "JTs": 0.638817032178243,
+    "T8o": 0.6486787631725653,
+    "K7o": 0.34087572463167437,
+    "98o": 0.58051976317265,
+    "J9o": 0.555964834160275,
+    "96s": 0.7464878559112549,
+    "A9o": 0.5853318166878066,
+    "AJs": 0.4271710840426527,
+    "Q9o": 0.5674538153526988,
+    "Q4s": 0.24449946249232574,
+    "A4s": 0.33879352113693284,
+    "A9s": 0.5790380955952679,
+    "Q6s": 0.5381117264429728,
+    "AQo": 0.39368362509055826,
+    "76s": 0.5711903544740939,
+    "QTo": 0.6542464831854659,
+    "J9s": 0.553442100683848,
+    "22": 0.3306463956832886,
+    "J5s": 0.2382609299721687,
+    "AKo": 0.4107683017842245,
+    "Q7s": 0.3524762729847196,
+    "KJo": 0.39895180304483113,
+    "Q8o": 0.40440958159627005,
+    "Q3s": 0.24316809897747357,
+    "JTo": 0.6412270334031847,
+    "K9o": 0.576854182847384,
+    "65s": 0.5008103052775065,
+    "KTo": 0.6639237412318482,
+    "K8o": 0.3493785983952312,
+    "A7o": 0.38853409022303564,
+    "55": 0.3792447717787748,
+    "J4s": 0.23621855676174164,
+    "A6o": 0.482067598551994,
+    "T6s": 0.7576003670692444,
+    "A8o": 0.4052323116288846,
+    "T9s": 0.7856020530064901,
+    "J7s": 0.34194645615790387,
+    "QJo": 0.45052613733207625,
+    "77": 0.5072048708357425,
+    "A2o": 0.2730724102964242,
+    "33": 0.34670065840085346
+  },
+  "strategy": {
+    "88": {
+      "action": "check",
+      "frequency": 0.881,
+      "all_actions": {
+        "check": 0.881,
+        "bet_375": 0.119
+      }
+    },
+    "Q6s": {
+      "action": "check",
+      "frequency": 0.999,
+      "all_actions": {
+        "check": 0.999
+      }
+    },
+    "75s": {
+      "action": "check",
+      "frequency": 0.999,
+      "all_actions": {
+        "check": 0.999
+      }
+    },
+    "A3o": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "A6s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "K8o": {
+      "action": "check",
+      "frequency": 0.992,
+      "all_actions": {
+        "check": 0.992,
+        "bet_375": 0.008
+      }
+    },
+    "KK": {
+      "action": "check",
+      "frequency": 0.893,
+      "all_actions": {
+        "bet_375": 0.107,
+        "check": 0.893
+      }
+    },
+    "AKo": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "A7s": {
+      "action": "check",
+      "frequency": 0.999,
+      "all_actions": {
+        "check": 0.999
+      }
+    },
+    "T8s": {
+      "action": "check",
+      "frequency": 0.944,
+      "all_actions": {
+        "bet_375": 0.056,
+        "check": 0.944
+      }
+    },
+    "99": {
+      "action": "check",
+      "frequency": 0.727,
+      "all_actions": {
+        "bet_375": 0.273,
+        "check": 0.727
+      }
+    },
+    "KTo": {
+      "action": "check",
+      "frequency": 0.958,
+      "all_actions": {
+        "check": 0.958,
+        "bet_375": 0.042
+      }
+    },
+    "K3s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "QQ": {
+      "action": "check",
+      "frequency": 0.849,
+      "all_actions": {
+        "bet_375": 0.151,
+        "check": 0.849
+      }
+    },
+    "K9o": {
+      "action": "check",
+      "frequency": 0.997,
+      "all_actions": {
+        "bet_375": 0.003,
+        "check": 0.997
+      }
+    },
+    "A6o": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "76s": {
+      "action": "check",
+      "frequency": 0.917,
+      "all_actions": {
+        "bet_375": 0.083,
+        "check": 0.917
+      }
+    },
+    "66": {
+      "action": "check",
+      "frequency": 0.862,
+      "all_actions": {
+        "check": 0.862,
+        "bet_375": 0.138
+      }
+    },
+    "J5s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "J4s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "J8o": {
+      "action": "check",
+      "frequency": 0.814,
+      "all_actions": {
+        "check": 0.814,
+        "bet_375": 0.186
+      }
+    },
+    "AJo": {
+      "action": "check",
+      "frequency": 0.999,
+      "all_actions": {
+        "check": 0.999,
+        "bet_375": 0.001
+      }
+    },
+    "87s": {
+      "action": "check",
+      "frequency": 0.706,
+      "all_actions": {
+        "bet_375": 0.273,
+        "allin_10000": 0.021,
+        "check": 0.706
+      }
+    },
+    "AKs": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "54s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "98s": {
+      "action": "check",
+      "frequency": 0.837,
+      "all_actions": {
+        "check": 0.837,
+        "bet_375": 0.163
+      }
+    },
+    "Q3s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "A3s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "86s": {
+      "action": "check",
+      "frequency": 0.91,
+      "all_actions": {
+        "bet_375": 0.09,
+        "check": 0.91
+      }
+    },
+    "QJs": {
+      "action": "check",
+      "frequency": 0.834,
+      "all_actions": {
+        "check": 0.834,
+        "bet_375": 0.166
+      }
+    },
+    "A9s": {
+      "action": "check",
+      "frequency": 0.998,
+      "all_actions": {
+        "check": 0.998,
+        "bet_375": 0.002
+      }
+    },
+    "K7o": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "Q8s": {
+      "action": "check",
+      "frequency": 0.803,
+      "all_actions": {
+        "check": 0.803,
+        "bet_375": 0.197
+      }
+    },
+    "76o": {
+      "action": "check",
+      "frequency": 0.864,
+      "all_actions": {
+        "bet_375": 0.136,
+        "check": 0.864
+      }
+    },
+    "ATs": {
+      "action": "check",
+      "frequency": 0.902,
+      "all_actions": {
+        "bet_375": 0.098,
+        "check": 0.902
+      }
+    },
+    "Q8o": {
+      "action": "check",
+      "frequency": 0.775,
+      "all_actions": {
+        "check": 0.775,
+        "bet_375": 0.225
+      }
+    },
+    "AJs": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "TT": {
+      "action": "check",
+      "frequency": 0.953,
+      "all_actions": {
+        "check": 0.953,
+        "bet_375": 0.047
+      }
+    },
+    "A8s": {
+      "action": "check",
+      "frequency": 0.945,
+      "all_actions": {
+        "check": 0.945,
+        "bet_375": 0.055
+      }
+    },
+    "K2s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "Q9s": {
+      "action": "check",
+      "frequency": 0.971,
+      "all_actions": {
+        "check": 0.971,
+        "bet_375": 0.029
+      }
+    },
+    "T7s": {
+      "action": "check",
+      "frequency": 0.898,
+      "all_actions": {
+        "bet_375": 0.102,
+        "check": 0.898
+      }
+    },
+    "Q2s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "QTs": {
+      "action": "check",
+      "frequency": 0.988,
+      "all_actions": {
+        "check": 0.988,
+        "bet_375": 0.012
+      }
+    },
+    "QJo": {
+      "action": "check",
+      "frequency": 0.853,
+      "all_actions": {
+        "check": 0.853,
+        "bet_375": 0.147
+      }
+    },
+    "Q4s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "33": {
+      "action": "check",
+      "frequency": 0.997,
+      "all_actions": {
+        "check": 0.997,
+        "bet_375": 0.003
+      }
+    },
+    "AA": {
+      "action": "check",
+      "frequency": 0.724,
+      "all_actions": {
+        "bet_375": 0.274,
+        "check": 0.724,
+        "allin_10000": 0.001
+      }
+    },
+    "98o": {
+      "action": "check",
+      "frequency": 0.774,
+      "all_actions": {
+        "check": 0.774,
+        "bet_375": 0.226
+      }
+    },
+    "A5s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "KQo": {
+      "action": "check",
+      "frequency": 0.746,
+      "all_actions": {
+        "bet_375": 0.254,
+        "check": 0.746
+      }
+    },
+    "96s": {
+      "action": "check",
+      "frequency": 0.744,
+      "all_actions": {
+        "check": 0.744,
+        "bet_375": 0.256
+      }
+    },
+    "J7s": {
+      "action": "check",
+      "frequency": 0.914,
+      "all_actions": {
+        "check": 0.914,
+        "bet_375": 0.086
+      }
+    },
+    "97s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "T9s": {
+      "action": "check",
+      "frequency": 0.762,
+      "all_actions": {
+        "check": 0.762,
+        "bet_375": 0.238
+      }
+    },
+    "ATo": {
+      "action": "check",
+      "frequency": 0.959,
+      "all_actions": {
+        "bet_375": 0.041,
+        "check": 0.959
+      }
+    },
+    "Q7o": {
+      "action": "check",
+      "frequency": 0.994,
+      "all_actions": {
+        "check": 0.994,
+        "bet_375": 0.006
+      }
+    },
+    "A7o": {
+      "action": "check",
+      "frequency": 0.997,
+      "all_actions": {
+        "bet_375": 0.003,
+        "check": 0.997
+      }
+    },
+    "A2s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "JTs": {
+      "action": "check",
+      "frequency": 0.922,
+      "all_actions": {
+        "check": 0.922,
+        "bet_375": 0.078
+      }
+    },
+    "44": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "AQs": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "A5o": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "J9s": {
+      "action": "check",
+      "frequency": 0.84,
+      "all_actions": {
+        "bet_375": 0.16,
+        "check": 0.84
+      }
+    },
+    "Q5s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "A2o": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "77": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "J2s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "Q7s": {
+      "action": "check",
+      "frequency": 0.997,
+      "all_actions": {
+        "check": 0.997,
+        "bet_375": 0.003
+      }
+    },
+    "K8s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "J6s": {
+      "action": "check",
+      "frequency": 0.92,
+      "all_actions": {
+        "check": 0.92,
+        "bet_375": 0.08
+      }
+    },
+    "55": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "A4s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "J9o": {
+      "action": "check",
+      "frequency": 0.828,
+      "all_actions": {
+        "check": 0.828,
+        "bet_375": 0.172
+      }
+    },
+    "KQs": {
+      "action": "check",
+      "frequency": 0.807,
+      "all_actions": {
+        "check": 0.807,
+        "bet_375": 0.193
+      }
+    },
+    "T8o": {
+      "action": "check",
+      "frequency": 0.963,
+      "all_actions": {
+        "check": 0.963,
+        "bet_375": 0.037
+      }
+    },
+    "22": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "JJ": {
+      "action": "check",
+      "frequency": 0.927,
+      "all_actions": {
+        "check": 0.927,
+        "bet_375": 0.073
+      }
+    },
+    "J8s": {
+      "action": "check",
+      "frequency": 0.819,
+      "all_actions": {
+        "check": 0.819,
+        "bet_375": 0.181
+      }
+    },
+    "KTs": {
+      "action": "check",
+      "frequency": 0.951,
+      "all_actions": {
+        "bet_375": 0.049,
+        "check": 0.951
+      }
+    },
+    "A8o": {
+      "action": "check",
+      "frequency": 0.854,
+      "all_actions": {
+        "check": 0.854,
+        "bet_375": 0.146
+      }
+    },
+    "KJs": {
+      "action": "check",
+      "frequency": 0.794,
+      "all_actions": {
+        "check": 0.794,
+        "bet_375": 0.206
+      }
+    },
+    "87o": {
+      "action": "check",
+      "frequency": 0.729,
+      "all_actions": {
+        "bet_375": 0.254,
+        "allin_10000": 0.017,
+        "check": 0.729
+      }
+    },
+    "A9o": {
+      "action": "check",
+      "frequency": 0.999,
+      "all_actions": {
+        "bet_375": 0.001,
+        "check": 0.999
+      }
+    },
+    "JTo": {
+      "action": "check",
+      "frequency": 0.967,
+      "all_actions": {
+        "bet_375": 0.033,
+        "check": 0.967
+      }
+    },
+    "65s": {
+      "action": "check",
+      "frequency": 0.955,
+      "all_actions": {
+        "check": 0.955,
+        "bet_375": 0.045
+      }
+    },
+    "T6s": {
+      "action": "check",
+      "frequency": 0.924,
+      "all_actions": {
+        "bet_375": 0.076,
+        "check": 0.924
+      }
+    },
+    "J3s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "Q9o": {
+      "action": "check",
+      "frequency": 0.938,
+      "all_actions": {
+        "bet_375": 0.062,
+        "check": 0.938
+      }
+    },
+    "QTo": {
+      "action": "check",
+      "frequency": 0.993,
+      "all_actions": {
+        "bet_375": 0.007,
+        "check": 0.993
+      }
+    },
+    "AQo": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "A4o": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "85s": {
+      "action": "check",
+      "frequency": 0.988,
+      "all_actions": {
+        "check": 0.988,
+        "bet_375": 0.012
+      }
+    },
+    "K5o": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "K5s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "K6s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "K6o": {
+      "action": "check",
+      "frequency": 0.999,
+      "all_actions": {
+        "check": 0.999,
+        "bet_375": 0.001
+      }
+    },
+    "K7s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "KJo": {
+      "action": "check",
+      "frequency": 0.733,
+      "all_actions": {
+        "check": 0.733,
+        "bet_375": 0.267
+      }
+    },
+    "T9o": {
+      "action": "check",
+      "frequency": 0.739,
+      "all_actions": {
+        "check": 0.739,
+        "bet_375": 0.261
+      }
+    },
+    "K4s": {
+      "action": "check",
+      "frequency": 1.0,
+      "all_actions": {
+        "check": 1.0
+      }
+    },
+    "K9s": {
+      "action": "check",
+      "frequency": 0.998,
+      "all_actions": {
+        "check": 0.998,
+        "bet_375": 0.002
+      }
+    }
+  },
+  "hand_classification": {
+    "AKs": "call",
+    "QJo": "call",
+    "J5s": "call",
+    "33": "call",
+    "JTs": "call",
+    "J8o": "call",
+    "44": "call",
+    "Q7s": "call",
+    "K9o": "call",
+    "99": "call",
+    "86s": "call",
+    "87s": "call",
+    "A7o": "call",
+    "KTo": "call",
+    "A4s": "call",
+    "A4o": "call",
+    "K5s": "call",
+    "KQo": "call",
+    "97s": "call",
+    "ATs": "call",
+    "98s": "call",
+    "JJ": "call",
+    "A6o": "call",
+    "66": "call",
+    "Q2s": "call",
+    "T9o": "call",
+    "K7s": "call",
+    "T8s": "call",
+    "KJs": "call",
+    "Q8o": "call",
+    "A8o": "call",
+    "Q5s": "call",
+    "22": "call",
+    "K8o": "call",
+    "AJo": "call",
+    "K7o": "call",
+    "K3s": "call",
+    "J9o": "call",
+    "98o": "call",
+    "Q9s": "call",
+    "A6s": "call",
+    "AKo": "call",
+    "A7s": "call",
+    "KJo": "call",
+    "Q9o": "call",
+    "K5o": "call",
+    "54s": "call",
+    "J3s": "call",
+    "J2s": "call",
+    "T8o": "call",
+    "K9s": "call",
+    "K4s": "call",
+    "J6s": "call",
+    "K2s": "call",
+    "Q8s": "call",
+    "96s": "call",
+    "A5s": "call",
+    "J7s": "call",
+    "AA": "call",
+    "J9s": "call",
+    "A2o": "call",
+    "A8s": "call",
+    "A9s": "call",
+    "QTs": "call",
+    "A3s": "call",
+    "55": "call",
+    "76s": "call",
+    "85s": "call",
+    "AQs": "call",
+    "QJs": "call",
+    "T9s": "call",
+    "76o": "call",
+    "Q4s": "call",
+    "J4s": "call",
+    "A5o": "call",
+    "K8s": "call",
+    "QTo": "call",
+    "65s": "call",
+    "QQ": "call",
+    "88": "call",
+    "75s": "call",
+    "Q7o": "call",
+    "Q6s": "call",
+    "87o": "call",
+    "A9o": "call",
+    "KQs": "call",
+    "A2s": "call",
+    "J8s": "call",
+    "KTs": "call",
+    "T7s": "call",
+    "K6s": "call",
+    "AJs": "call",
+    "TT": "call",
+    "KK": "call",
+    "T6s": "call",
+    "A3o": "call",
+    "JTo": "call",
+    "AQo": "call",
+    "K6o": "call",
+    "ATo": "call",
+    "77": "call",
+    "Q3s": "call"
+  }
+}

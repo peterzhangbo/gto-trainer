@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils/cn'
+import { useI18n } from '@/lib/i18n'
 
 interface EquityDisplayProps {
   heroWins: number
@@ -8,6 +9,7 @@ interface EquityDisplayProps {
 }
 
 export default function EquityDisplay({ heroWins, villainWins, tie, className }: EquityDisplayProps) {
+  const { t } = useI18n()
   const total = heroWins + villainWins + tie
   const heroPct = total > 0 ? heroWins : 0
   const villainPct = total > 0 ? villainWins : 0
@@ -52,21 +54,21 @@ export default function EquityDisplay({ heroWins, villainWins, tie, className }:
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-sm bg-green-500" />
           <span className="text-sm text-gray-300">
-            Hero <span className="font-semibold text-green-400">{heroPct.toFixed(1)}%</span>
+            {t('equity.hero')} <span className="font-semibold text-green-400">{heroPct.toFixed(1)}%</span>
           </span>
         </div>
         {tiePct > 0.5 && (
           <div className="flex items-center gap-2">
             <div className="h-3 w-3 rounded-sm bg-gray-500" />
             <span className="text-sm text-gray-300">
-              Tie <span className="font-semibold text-gray-400">{tiePct.toFixed(1)}%</span>
+              {t('equity.tie')} <span className="font-semibold text-gray-400">{tiePct.toFixed(1)}%</span>
             </span>
           </div>
         )}
         <div className="flex items-center gap-2">
           <div className="h-3 w-3 rounded-sm bg-red-500" />
           <span className="text-sm text-gray-300">
-            Villain <span className="font-semibold text-red-400">{villainPct.toFixed(1)}%</span>
+            {t('equity.villain')} <span className="font-semibold text-red-400">{villainPct.toFixed(1)}%</span>
           </span>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils/cn'
 import type { Card, Rank, Suit } from '@/types'
-import { RANKS, SUITS, SUIT_SYMBOLS, isRedSuit } from '@/lib/poker/cards'
+import { RANKS, SUIT_SYMBOLS, isRedSuit } from '@/lib/poker/cards'
 
 interface CardSelectorProps {
   selectedCards: Card[]

@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils/cn'
-import { type Card, isRedSuit, SUIT_SYMBOLS, parseCard, type Rank, type Suit } from '@/lib/poker/cards'
+import type { Card, Suit } from '@/types/poker'
+import { isRedSuit, SUIT_SYMBOLS, parseCard } from '@/lib/poker/cards'
 
 interface CardDisplayProps {
   card: Card | string

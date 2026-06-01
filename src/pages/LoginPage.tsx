@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
+import { useI18n } from '@/lib/i18n'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -8,6 +9,7 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { signIn } = useAuth()
+  const { t } = useI18n()
   const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,7 +20,7 @@ export default function LoginPage() {
       await signIn(email, password)
       navigate('/trainer')
     } catch (err) {
-      setError('登录失败，请检查邮箱和密码')
+      setError(t('auth.loginFailed'))
     } finally {
       setLoading(false)
     }
@@ -29,8 +31,8 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="text-5xl mb-4">♠</div>
-          <h1 className="text-3xl font-bold text-white">登录</h1>
-          <p className="text-gray-400 mt-2">登录以保存训练记录</p>
+          <h1 className="text-3xl font-bold text-white">{t('auth.login')}</h1>
+          <p className="text-gray-400 mt-2">{t('auth.loginDesc')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-gray-900 rounded-xl border border-gray-800 p-6 space-y-4">
@@ -41,45 +43,45 @@ export default function LoginPage() {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">邮箱</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1">{t('auth.email')}</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-red-500"
-              placeholder="your@email.com"
+              className="w-full min-h-[44px] px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-red-500"
+              placeholder={t('auth.placeholder')}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">密码</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1">{t('auth.password')}</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-red-500"
-              placeholder="••••••••"
+              className="w-full min-h-[44px] px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-red-500"
+              placeholder={t('auth.passwordPlaceholder')}
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white rounded-lg font-semibold transition-colors"
+            className="w-full min-h-[44px] py-2 bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white rounded-lg font-semibold transition-colors"
           >
-            {loading ? '登录中...' : '登录'}
+            {loading ? t('auth.loggingIn') : t('auth.login')}
           </button>
 
           <p className="text-center text-gray-400 text-sm">
-            还没有账号？{' '}
-            <Link to="/signup" className="text-red-400 hover:text-red-300">注册</Link>
+            {t('auth.noAccount')}{' '}
+            <Link to="/signup" className="text-red-400 hover:text-red-300">{t('auth.goSignup')}</Link>
           </p>
         </form>
 
         <p className="text-center mt-4">
-          <Link to="/" className="text-gray-500 hover:text-gray-400 text-sm">← 返回首页</Link>
+          <Link to="/" className="text-gray-500 hover:text-gray-400 text-sm">{t('auth.backHome')}</Link>
         </p>
       </div>
     </div>
