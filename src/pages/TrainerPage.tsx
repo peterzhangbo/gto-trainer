@@ -114,21 +114,27 @@ function generateRandomHand(strategy: Record<string, Record<string, number>>, di
   const entries = Object.entries(strategy)
   const filterFn = DIFFICULTY_CONFIG[difficulty].filterHand
   const weighted: [string, Record<string, number>][] = []
+
   for (const [hand, strat] of entries) {
     if (!filterFn(strat)) continue
     const actions = Object.keys(strat)
-    if (actions.length === 1 && actions[0] === 'fold') {
-      if (Math.random() < 0.15) weighted.push([hand, strat])
+    const isFoldOnly = actions.length === 1 && actions[0] === 'fold' && strat.fold === 1
+    if (isFoldOnly) {
+      // Fold-only hands: 40% chance to appear (tests fold decisions)
+      if (Math.random() < 0.40) weighted.push([hand, strat])
     } else {
+      // In-range hands: always include
       weighted.push([hand, strat])
     }
   }
-  // Fallback: if no hands match the difficulty filter, use all hands
+
+  // Fallback: if filter removed everything, use all hands
   if (weighted.length === 0) {
     for (const [hand, strat] of entries) {
       const actions = Object.keys(strat)
-      if (actions.length === 1 && actions[0] === 'fold') {
-        if (Math.random() < 0.15) weighted.push([hand, strat])
+      const isFoldOnly = actions.length === 1 && actions[0] === 'fold' && strat.fold === 1
+      if (isFoldOnly) {
+        if (Math.random() < 0.40) weighted.push([hand, strat])
       } else {
         weighted.push([hand, strat])
       }
