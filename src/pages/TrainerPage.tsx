@@ -674,7 +674,8 @@ export default function TrainerPage() {
         scenario_params: { scenarioId: selectedScenarioId },
       })
       if (error) {
-        showToast(t('toast.sessionSaveFailed'), 'error')
+        console.error('[Training] Session save error:', error)
+        showToast(`${t('toast.sessionSaveFailed')}: ${error.message}`, 'error')
       } else {
         setSessionSaved(true)
       }
