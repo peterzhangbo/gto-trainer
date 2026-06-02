@@ -35,7 +35,8 @@ const DIFFICULTY_CONFIG: Record<Difficulty, { filterHand: (strat: Record<string,
     filterHand: (strat) => {
       const sorted = Object.values(strat).sort((a, b) => b - a)
       if (sorted.length < 2) return false
-      return sorted[0] - sorted[1] < 0.3
+      // Only hands where the gap between top 2 actions is ≤ 15% — truly difficult decisions
+      return sorted[0] - sorted[1] <= 0.15
     },
     showFeedback: true,
   },
