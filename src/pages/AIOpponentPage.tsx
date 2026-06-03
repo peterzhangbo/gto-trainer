@@ -446,6 +446,7 @@ export default function AIOpponentPage() {
     }
 
     return { fold: 0.5, call: 0.3, raise: 0.2 }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scenarioData, selectedMeta, isPreflopScenario, gameState?.villainHand])
 
   const handleHeroAction = useCallback((action: string) => {
@@ -641,7 +642,8 @@ export default function AIOpponentPage() {
       lastVillainAction: villainAction,
       allIn: newAllIn,
     } : null)
-  }, [gameState, scenarioData, selectedMeta, isPreflopScenario, isPostflop, getVillainStrategy])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameState, scenarioData, selectedMeta, isPreflopScenario, getVillainStrategy])
 
   const handleProceedStreet = useCallback(() => {
     if (!gameState) return
@@ -678,6 +680,8 @@ export default function AIOpponentPage() {
       heroStack,
       villainStack,
     } : null)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState, scenarioData, isPostflop])
 
   const handleEndSession = () => {
