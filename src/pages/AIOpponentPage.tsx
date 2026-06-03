@@ -446,7 +446,6 @@ export default function AIOpponentPage() {
     }
 
     return { fold: 0.5, call: 0.3, raise: 0.2 }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scenarioData, selectedMeta, isPreflopScenario, gameState?.villainHand])
 
   const handleHeroAction = useCallback((action: string) => {
@@ -680,9 +679,7 @@ export default function AIOpponentPage() {
       heroStack,
       villainStack,
     } : null)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameState, scenarioData, isPostflop])
+  }, [gameState, scenarioData])
 
   const handleEndSession = () => {
     setSessionActive(false)
