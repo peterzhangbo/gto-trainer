@@ -1,7 +1,12 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 /* eslint-disable react-hooks/refs */
 import { Link } from 'react-router-dom'
 import { useI18n } from '@/lib/i18n'
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
+}
 
 /* ------------------------------------------------------------------ */
 /* Animated Counter Hook                                               */
@@ -94,6 +99,24 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
 export default function LandingPage() {
   const { t } = useI18n()
 
+  // PWA install prompt
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
+  useEffect(() => {
+    const handler = (e: BeforeInstallPromptEvent) => {
+      e.preventDefault()
+      setDeferredPrompt(e)
+    }
+    window.addEventListener('beforeinstallprompt', handler as EventListener)
+    return () => window.removeEventListener('beforeinstallprompt', handler as EventListener)
+  }, [])
+
+  const handleInstall = useCallback(async () => {
+    if (!deferredPrompt) return
+    deferredPrompt.prompt()
+    await deferredPrompt.userChoice
+    setDeferredPrompt(null)
+  }, [deferredPrompt])
+
   // Scroll animation sections
   const statsSection = useInView()
   const featuresSection = useInView()
@@ -159,6 +182,14 @@ export default function LandingPage() {
             >
               {t('landing.viewRanges')}
             </Link>
+            {deferredPrompt && (
+              <button
+                onClick={handleInstall}
+                className="group min-h-[52px] px-10 py-3.5 bg-white/5 hover:bg-white/10 text-white rounded-xl font-semibold text-lg transition-all border border-red-600/30 hover:border-red-500/50 hover:-translate-y-0.5 flex items-center justify-center backdrop-blur-sm"
+              >
+                {t('hh.install')}
+              </button>
+            )}
           </div>
         </div>
       </section>

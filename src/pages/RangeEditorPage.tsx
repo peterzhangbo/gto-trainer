@@ -97,7 +97,14 @@ export default function RangeEditorPage() {
   const { t } = useI18n()
   const matrixRef = useRef<HTMLDivElement>(null)
 
-  const [rangeMap, setRangeMap] = useState<Record<string, string>>({})
+  const [rangeMap, setRangeMap] = useState<Record<string, string>>(() => {
+    const hash = window.location.hash.slice(1)
+    if (hash) {
+      const decoded = decodeRangeFromHash(hash)
+      if (decoded) return decoded
+    }
+    return {}
+  })
   const [selectedAction, setSelectedAction] = useState<Action>('raise')
   const [rangeName, setRangeName] = useState('')
   const [savedRanges, setSavedRanges] = useState<SavedRange[]>(loadSavedRanges)
@@ -106,17 +113,6 @@ export default function RangeEditorPage() {
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState<{ row: number; col: number } | null>(null)
   const [dragEnd, setDragEnd] = useState<{ row: number; col: number } | null>(null)
-
-  // Load range from URL hash on mount
-  useEffect(() => {
-    const hash = window.location.hash.slice(1)
-    if (hash) {
-      const decoded = decodeRangeFromHash(hash)
-      if (decoded) {
-        setRangeMap(decoded)
-      }
-    }
-  }, [])
 
   // Calculate range stats
   const rangeStats = useMemo(() => {
@@ -305,13 +301,11 @@ export default function RangeEditorPage() {
     )
   }
 
-  // Clear range from URL on range change (keep URL clean)
+  // Clear range from URL on mount (keep URL clean after loading from hash)
   useEffect(() => {
     if (window.location.hash) {
       window.history.replaceState(null, '', window.location.pathname + window.location.search)
     }
-    // We only want to do this once on initial load
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -342,7 +336,7 @@ export default function RangeEditorPage() {
                       : ACTION_COLORS[action] + '44',
                 }}
               >
-                {t(ACTION_I18N_KEYS[action])}
+                {t(ACTION_I18N_KEYS[action] as Parameters<typeof t>[0])}
               </button>
             ))}
           </div>
@@ -372,7 +366,7 @@ export default function RangeEditorPage() {
                     style={{ backgroundColor: ACTION_COLORS[action] }}
                   />
                   <span className="text-xs text-gray-400">
-                    {t(ACTION_I18N_KEYS[action])}
+                    {t(ACTION_I18N_KEYS[action] as Parameters<typeof t>[0])}
                   </span>
                   <span className="text-xs text-white font-mono ml-auto">{count}</span>
                 </div>

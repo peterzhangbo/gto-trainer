@@ -16,6 +16,10 @@ const SettingsPage = lazy(() => import('@/pages/SettingsPage'))
 const MistakeBookPage = lazy(() => import('@/pages/MistakeBookPage'))
 const HistoryPage = lazy(() => import('@/pages/HistoryPage'))
 const HandHistoryPage = lazy(() => import('@/pages/HandHistoryPage'))
+const RangeEditorPage = lazy(() => import('@/pages/RangeEditorPage'))
+const TournamentPage = lazy(() => import('@/pages/TournamentPage'))
+const AIOpponentPage = lazy(() => import('@/pages/AIOpponentPage'))
+const QuizPage = lazy(() => import('@/pages/QuizPage'))
 
 const NAV_LINK_KEYS = [
   { to: '/trainer', key: 'nav.training' as const },
@@ -25,6 +29,10 @@ const NAV_LINK_KEYS = [
   { to: '/mistakes', key: 'nav.mistakes' as const },
   { to: '/history', key: 'nav.history' as const },
   { to: '/history-import', key: 'nav.handHistory' as const },
+  { to: '/range-editor', key: 'nav.rangeEditor' as const },
+  { to: '/tournament', key: 'nav.tournament' as const },
+  { to: '/ai-opponent', key: 'nav.aiOpponent' as const },
+  { to: '/quiz', key: 'nav.quiz' as const },
 ]
 
 export default function App() {
@@ -50,6 +58,10 @@ export default function App() {
               <Route path="/mistakes" element={<MistakeBookPage />} />
               <Route path="/history" element={<HistoryPage />} />
               <Route path="/history-import" element={<HandHistoryPage />} />
+              <Route path="/range-editor" element={<RangeEditorPage />} />
+              <Route path="/tournament" element={<TournamentPage />} />
+              <Route path="/ai-opponent" element={<AIOpponentPage />} />
+              <Route path="/quiz" element={<QuizPage />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>

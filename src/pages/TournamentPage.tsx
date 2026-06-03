@@ -65,28 +65,10 @@ function calculateICMPressure(
 // Hand / Card helpers
 // ---------------------------------------------------------------------------
 
-const RANKS: Rank[] = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2']
 const SUITS_ARR: Suit[] = ['s', 'h', 'd', 'c']
 
 function pickRandom<T>(arr: readonly T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]
-}
-
-function randomRankExcluding(...excluded: Rank[]): Rank {
-  const pool = RANKS.filter((r) => !excluded.includes(r))
-  return pickRandom(pool)
-}
-
-function randomHighRank(): Rank {
-  return pickRandom(['A', 'K', 'Q', 'J'] as const)
-}
-
-function randomMidRank(): Rank {
-  return pickRandom(['T', '9', '8', '7'] as const)
-}
-
-function randomLowRank(): Rank {
-  return pickRandom(['6', '5', '4', '3', '2'] as const)
 }
 
 function handToCards(hand: string): Card[] {
@@ -113,30 +95,6 @@ function handToCards(hand: string): Card[] {
     { rank: r1, suit: s1 },
     { rank: r2, suit: s2 },
   ]
-}
-
-function generateBoardByTexture(numCards: number): Card[] {
-  const high = randomHighRank()
-  const low1 = randomLowRank()
-  const low2 = randomLowRank()
-  const shuffled = [...SUITS_ARR].sort(() => Math.random() - 0.5)
-  const flop: Card[] = [
-    { rank: high, suit: shuffled[0] },
-    { rank: low1, suit: shuffled[1] },
-    { rank: low2, suit: shuffled[2] },
-  ]
-  const board: Card[] = [...flop]
-  if (numCards >= 4) {
-    const usedRanks = board.map((c) => c.rank)
-    const r = randomRankExcluding(...usedRanks)
-    board.push({ rank: r, suit: pickRandom(SUITS_ARR) })
-  }
-  if (numCards >= 5) {
-    const usedRanks = board.map((c) => c.rank)
-    const r = randomRankExcluding(...usedRanks)
-    board.push({ rank: r, suit: pickRandom(SUITS_ARR) })
-  }
-  return board
 }
 
 function isFoldOnly(entry: Record<string, number>): boolean {
@@ -252,7 +210,6 @@ export default function TournamentPage() {
   const [results, setResults] = useState<{ isCorrect: boolean }[]>([])
   const [streak, setStreak] = useState(0)
   const [bestStreak, setBestStreak] = useState(0)
-  const [boardCards, setBoardCards] = useState<Card[]>([])
   const [showMobileStats, setShowMobileStats] = useState(false)
 
   // Auto-advance
@@ -288,7 +245,6 @@ export default function TournamentPage() {
     setCurrentCards(handToCards(hand))
     setOriginalStrategy(origStrategy)
     setCurrentStrategy(adjustedStrategy)
-    setBoardCards([])
     setDrillState('awaiting')
     setLastResult(null)
   }, [scenarioData, tightening])
