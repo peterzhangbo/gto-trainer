@@ -111,3 +111,113 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
+
+/* ------------------------------------------------------------------ */
+/* Light Theme Overrides                                               */
+/* ------------------------------------------------------------------ */
+
+.light {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f4f6;
+  --bg-tertiary: #e5e7eb;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --border: #e5e7eb;
+  --border-strong: #d1d5db;
+}
+
+.light body,
+.light .bg-gray-950 {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.light .bg-gray-900 {
+  background-color: var(--bg-secondary) !important;
+}
+
+.light .bg-gray-800 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.light .text-white,
+.light .text-gray-100 {
+  color: var(--text-primary) !important;
+}
+
+.light .text-gray-300,
+.light .text-gray-400 {
+  color: var(--text-secondary) !important;
+}
+
+.light .text-gray-500 {
+  color: var(--text-muted) !important;
+}
+
+.light .border-gray-800,
+.light .border-gray-800\/80 {
+  border-color: var(--border) !important;
+}
+
+.light .border-gray-700 {
+  border-color: var(--border-strong) !important;
+}
+
+.light .bg-gray-900\/80 {
+  background-color: rgba(243, 244, 246, 0.9) !important;
+}
+
+.light .hover\:bg-gray-700:hover,
+.light .hover\:bg-gray-800\/50:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.light .hover\:text-white:hover {
+  color: var(--text-primary) !important;
+}
+
+.light nav {
+  background-color: rgba(243, 244, 246, 0.9) !important;
+  border-bottom-color: var(--border) !important;
+}
+
+.light .bg-red-600 {
+  background-color: #dc2626 !important;
+}
+
+.light .hover\:bg-red-700:hover {
+  background-color: #b91c1c !important;
+}
+
+.light .text-red-500 {
+  color: #ef4444 !important;
+}
+
+.light .bg-red-600:focus,
+.light .focus\:border-red-500:focus {
+  border-color: #ef4444 !important;
+}
+
+.light input,
+.light select {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-strong) !important;
+}
+
+.light .bg-red-900\/50 {
+  background-color: rgba(254, 226, 226, 0.5) !important;
+}
+
+.light .border-red-800 {
+  border-color: #fca5a5 !important;
+}
+
+.light .text-red-300 {
+  color: #ef4444 !important;
+}
+
+.light .hover\:bg-red-900\/70:hover {
+  background-color: rgba(254, 202, 202, 0.7) !important;
+}

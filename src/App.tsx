@@ -2,6 +2,7 @@ import { useState, lazy, Suspense } from 'react'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { useI18n } from '@/lib/i18n'
+import { useTheme } from '@/lib/theme'
 import { ErrorBoundary, ToastContainer, Spinner } from '@/components/ui'
 
 const LandingPage = lazy(() => import('@/pages/LandingPage'))
@@ -14,6 +15,7 @@ const DashboardPage = lazy(() => import('@/pages/DashboardPage'))
 const SettingsPage = lazy(() => import('@/pages/SettingsPage'))
 const MistakeBookPage = lazy(() => import('@/pages/MistakeBookPage'))
 const HistoryPage = lazy(() => import('@/pages/HistoryPage'))
+const HandHistoryPage = lazy(() => import('@/pages/HandHistoryPage'))
 
 const NAV_LINK_KEYS = [
   { to: '/trainer', key: 'nav.training' as const },
@@ -22,6 +24,7 @@ const NAV_LINK_KEYS = [
   { to: '/dashboard', key: 'nav.dashboard' as const },
   { to: '/mistakes', key: 'nav.mistakes' as const },
   { to: '/history', key: 'nav.history' as const },
+  { to: '/history-import', key: 'nav.handHistory' as const },
 ]
 
 export default function App() {
@@ -46,6 +49,7 @@ export default function App() {
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/mistakes" element={<MistakeBookPage />} />
               <Route path="/history" element={<HistoryPage />} />
+              <Route path="/history-import" element={<HandHistoryPage />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>
@@ -58,6 +62,7 @@ function Navbar() {
   const location = useLocation()
   const { user, signOut } = useAuth()
   const { t, lang, setLang } = useI18n()
+  const { theme, toggleTheme } = useTheme()
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -93,6 +98,13 @@ function Navbar() {
             className="px-2 py-1 text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 rounded transition-colors"
           >
             {lang === 'zh' ? 'EN' : '中'}
+          </button>
+          <button
+            onClick={toggleTheme}
+            className="px-2 py-1 text-sm bg-gray-800 hover:bg-gray-700 text-gray-300 rounded transition-colors"
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
           </button>
           <Link to="/settings" className="text-gray-500 hover:text-gray-300 text-sm">⚙</Link>
           {user ? (
