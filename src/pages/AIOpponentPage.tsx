@@ -109,14 +109,31 @@ function handToCards(hand: string): Card[] {
   ]
 }
 
-function generateRandomPreflopHand(hands: Record<string, Record<string, number>>): string {
-  const entries = Object.entries(hands)
-  const inRange = entries.filter(([, strat]) => {
-    const actions = Object.keys(strat)
-    return !(actions.length === 1 && actions[0] === 'fold' && strat.fold === 1)
-  })
-  const pool = inRange.length > 0 ? inRange : entries.slice(0, 20)
-  return pool[Math.floor(Math.random() * pool.length)][0]
+const RANKS_CARD: Rank[] = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2']
+
+function cardToHandNotation(c1: Card, c2: Card): string {
+  const i1 = RANKS_CARD.indexOf(c1.rank)
+  const i2 = RANKS_CARD.indexOf(c2.rank)
+  if (i1 === i2) return `${c1.rank}${c2.rank}`
+  if (i1 < i2) return `${c1.rank}${c2.rank}${c1.suit === c2.suit ? 's' : 'o'}`
+  return `${c2.rank}${c1.rank}${c1.suit === c2.suit ? 's' : 'o'}`
+}
+
+function dealRandomHands(): { hero: Card[]; villain: Card[] } {
+  // Create and shuffle a full 52-card deck
+  const RANKS_ALL: Rank[] = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2']
+  const SUITS_ALL: Suit[] = ['s', 'h', 'd', 'c']
+  const deck: Card[] = []
+  for (const r of RANKS_ALL) for (const s of SUITS_ALL) deck.push({ rank: r, suit: s })
+  // Fisher-Yates shuffle
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[deck[i], deck[j]] = [deck[j], deck[i]]
+  }
+  return {
+    hero: [deck[0], deck[1]],
+    villain: [deck[2], deck[3]],
+  }
 }
 
 function generateRandomBoard(numCards: number, texture?: string): Card[] {
@@ -364,23 +381,15 @@ export default function AIOpponentPage() {
     let initialBoard: Card[] = []
 
     if (isPreflopScenario && isPreflop(scenarioData)) {
-      const data = scenarioData as PreflopScenarioData
-      const heroHandStr = generateRandomPreflopHand(data.hands)
-      heroHand = handToCards(heroHandStr)
-      // Villain gets a random hand from full range
-      const allHands = Object.keys(data.hands)
-      const villainHandStr = allHands[Math.floor(Math.random() * allHands.length)]
-      villainHand = handToCards(villainHandStr)
+      // Both players get truly random hands from a shuffled deck
+      const dealt = dealRandomHands()
+      heroHand = dealt.hero
+      villainHand = dealt.villain
     } else {
-      // Postflop: deal random hands
-      heroHand = [
-        { rank: randomHighRank(), suit: pickRandom(SUITS_ARR) },
-        { rank: randomRankExcluding(heroHand?.[0]?.rank ?? 'A' as Rank), suit: pickRandom(SUITS_ARR) },
-      ]
-      villainHand = [
-        { rank: randomHighRank(), suit: pickRandom(SUITS_ARR) },
-        { rank: randomRankExcluding(villainHand?.[0]?.rank ?? 'A' as Rank), suit: pickRandom(SUITS_ARR) },
-      ]
+      // Postflop: deal random hands from shuffled deck
+      const dealt = dealRandomHands()
+      heroHand = dealt.hero
+      villainHand = dealt.villain
       if (isPostflop(scenarioData)) {
         const pfData = scenarioData as PostflopScenarioData
         initialBoard = [...pfData.exampleBoard.map((s) => {
@@ -426,10 +435,13 @@ export default function AIOpponentPage() {
 
     if (isPreflopScenario && isPreflop(scenarioData)) {
       const data = scenarioData as PreflopScenarioData
-      // Villain strategy from data
-      const allHands = Object.keys(data.hands)
-      const randomHand = allHands[Math.floor(Math.random() * allHands.length)]
-      return data.hands[randomHand] ?? { fold: 1 }
+      // Use villain's ACTUAL hand to look up GTO strategy
+      const villainHand = gameState?.villainHand
+      if (villainHand && villainHand.length === 2) {
+        const handStr = cardToHandNotation(villainHand[0], villainHand[1])
+        return data.hands[handStr] ?? { fold: 1 }
+      }
+      return { fold: 1 }
     }
 
     if (isPostflop(scenarioData)) {
