@@ -80,34 +80,6 @@ function randomLowRank(): Rank {
   return pickRandom(['6', '5', '4', '3', '2'] as const)
 }
 
-function handToCards(hand: string): Card[] {
-  const r1 = hand[0] as Rank
-  const r2 = hand[1] as Rank
-  if (hand.length === 2) {
-    const s1 = pickRandom(SUITS_ARR)
-    let s2: Suit
-    do { s2 = pickRandom(SUITS_ARR) } while (s2 === s1)
-    return [
-      { rank: r1, suit: s1 },
-      { rank: r2, suit: s2 },
-    ]
-  }
-  const suited = hand[2] === 's'
-  if (suited) {
-    const s = pickRandom(SUITS_ARR)
-    return [
-      { rank: r1, suit: s },
-      { rank: r2, suit: s },
-    ]
-  }
-  const s1 = pickRandom(SUITS_ARR)
-  let s2: Suit
-  do { s2 = pickRandom(SUITS_ARR) } while (s2 === s1)
-  return [
-    { rank: r1, suit: s1 },
-    { rank: r2, suit: s2 },
-  ]
-}
 
 const RANKS_CARD: Rank[] = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2']
 
