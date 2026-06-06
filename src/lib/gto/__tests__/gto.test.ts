@@ -12,6 +12,9 @@ import {
   calculatePotOdds,
   isProfitableCall,
   calculateBreakEvenEquity,
+  potAfterCall,
+  betFromFraction,
+  betAsFractionOfPot,
 } from '../ev-calc'
 
 describe('lookup.ts', () => {
@@ -160,6 +163,88 @@ describe('lookup.ts', () => {
       expect(result.found).toBe(false)
       expect(result.bestAction).toBe('check')
       expect(result.bestActionFrequency).toBe(1.0)
+    })
+  })
+
+  describe('lookupGTO edge cases', () => {
+    it('should return fold 100% for completely invalid hand notation', () => {
+      const result = lookupGTO(
+        { scenarioType: 'rfi', position: 'UTG' },
+        'ZZZZ',
+      )
+      expect(result.found).toBe(false)
+      expect(result.bestAction).toBe('fold')
+      expect(result.bestActionFrequency).toBe(1.0)
+    })
+
+    it('should return fold 100% for empty string hand', () => {
+      const result = lookupGTO(
+        { scenarioType: 'rfi', position: 'UTG' },
+        '',
+      )
+      expect(result.found).toBe(false)
+      expect(result.bestAction).toBe('fold')
+    })
+
+    it('should return check 100% for invalid hand in postflop scenario', () => {
+      const result = lookupGTO(
+        {
+          scenarioType: 'c-bet',
+          boardTexture: 'dry-high',
+          handCategory: 'nonexistentCategory',
+        },
+        'nonexistentCategory',
+      )
+      expect(result.found).toBe(false)
+      expect(result.bestAction).toBe('check')
+      expect(result.bestActionFrequency).toBe(1.0)
+      expect(result.frequencies.check).toBe(1.0)
+    })
+
+    it('should return fold 100% for invalid position in threeBet scenario', () => {
+      const result = lookupGTO(
+        {
+          scenarioType: 'threeBet',
+          position: 'XX' as string,
+          villainPosition: 'YY' as string,
+        },
+        'AA',
+      )
+      expect(result.found).toBe(false)
+      expect(result.bestAction).toBe('fold')
+      expect(result.bestActionFrequency).toBe(1.0)
+    })
+
+    it('should return fold 100% for invalid defend scenario', () => {
+      const result = lookupGTO(
+        {
+          scenarioType: 'defend',
+          position: 'ZZ' as string,
+          villainPosition: 'WW' as string,
+        },
+        'KK',
+      )
+      expect(result.found).toBe(false)
+      expect(result.bestAction).toBe('fold')
+      expect(result.bestActionFrequency).toBe(1.0)
+    })
+
+    it('should handle single character hand gracefully', () => {
+      const result = lookupGTO(
+        { scenarioType: 'rfi', position: 'UTG' },
+        'A',
+      )
+      expect(result.found).toBe(false)
+      expect(result.bestAction).toBe('fold')
+    })
+
+    it('should handle special characters in hand notation', () => {
+      const result = lookupGTO(
+        { scenarioType: 'rfi', position: 'CO' },
+        '!@#',
+      )
+      expect(result.found).toBe(false)
+      expect(result.bestAction).toBe('fold')
     })
   })
 
@@ -368,6 +453,112 @@ describe('ev-calc.ts', () => {
 
     it('should return 0 when betToCall is 0', () => {
       expect(calculateBreakEvenEquity(100, 0)).toBe(0)
+    })
+  })
+
+  describe('calculateEV edge cases', () => {
+    it('should return 0 for zero pot with non-zero bet and equity', () => {
+      // EV = 0.5 * (0 + 50) - 0.5 * 50 = 25 - 25 = 0
+      expect(calculateEV(0, 50, 0.5)).toBe(0)
+    })
+
+    it('should return 0 for zero equity with non-zero pot and bet', () => {
+      // EV = 0 * (100 + 50) - 1 * 50 = -50
+      expect(calculateEV(100, 50, 0)).toBe(-50)
+    })
+
+    it('should return 0 for all zeros', () => {
+      expect(calculateEV(0, 0, 0)).toBe(0)
+    })
+
+    it('should return full pot value for 100% equity', () => {
+      // EV = 1 * (200 + 100) - 0 * 100 = 300
+      expect(calculateEV(200, 100, 1.0)).toBe(300)
+    })
+
+    it('should handle very small equity values', () => {
+      // EV = 0.01 * (100 + 50) - 0.99 * 50 = 1.5 - 49.5 = -48
+      expect(calculateEV(100, 50, 0.01)).toBe(-48)
+    })
+
+    it('should handle very large pot sizes', () => {
+      // EV = 0.5 * (10000 + 5000) - 0.5 * 5000 = 7500 - 2500 = 5000
+      expect(calculateEV(10000, 5000, 0.5)).toBe(5000)
+    })
+  })
+
+  describe('calculatePotOdds edge cases', () => {
+    it('should return 0 for zero pot and zero bet', () => {
+      expect(calculatePotOdds(0, 0)).toBe(0)
+    })
+
+    it('should return 100 for bet into zero pot', () => {
+      // 100/(0+100)*100 = 100 (need 100% equity when pot is 0)
+      expect(calculatePotOdds(0, 100)).toBe(100)
+    })
+
+    it('should handle very small bet relative to pot', () => {
+      // 1/(1000+1)*100 ≈ 0.1
+      expect(calculatePotOdds(1000, 1)).toBeCloseTo(0.1, 1)
+    })
+
+    it('should handle very large bet relative to pot', () => {
+      // 1000/(1+1000)*100 ≈ 99.9
+      expect(calculatePotOdds(1, 1000)).toBeCloseTo(99.9, 1)
+    })
+  })
+
+  describe('potAfterCall', () => {
+    it('should calculate pot after call correctly', () => {
+      expect(potAfterCall(100, 50)).toBe(200)
+    })
+
+    it('should handle zero bet', () => {
+      expect(potAfterCall(100, 0)).toBe(100)
+    })
+
+    it('should handle zero pot', () => {
+      expect(potAfterCall(0, 50)).toBe(100)
+    })
+  })
+
+  describe('betFromFraction', () => {
+    it('should calculate 50% pot bet', () => {
+      expect(betFromFraction(200, 0.5)).toBe(100)
+    })
+
+    it('should calculate 75% pot bet', () => {
+      expect(betFromFraction(200, 0.75)).toBe(150)
+    })
+
+    it('should calculate 33% pot bet', () => {
+      expect(betFromFraction(90, 0.33)).toBeCloseTo(29.7, 1)
+    })
+
+    it('should return 0 for zero pot', () => {
+      expect(betFromFraction(0, 0.5)).toBe(0)
+    })
+
+    it('should return 0 for zero fraction', () => {
+      expect(betFromFraction(200, 0)).toBe(0)
+    })
+  })
+
+  describe('betAsFractionOfPot', () => {
+    it('should calculate fraction correctly', () => {
+      expect(betAsFractionOfPot(100, 200)).toBe(0.5)
+    })
+
+    it('should return 0 for zero pot', () => {
+      expect(betAsFractionOfPot(50, 0)).toBe(0)
+    })
+
+    it('should handle pot-sized bet', () => {
+      expect(betAsFractionOfPot(200, 200)).toBe(1)
+    })
+
+    it('should handle overbet', () => {
+      expect(betAsFractionOfPot(400, 200)).toBe(2)
     })
   })
 })

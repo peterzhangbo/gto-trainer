@@ -1,6 +1,12 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest'
 import metadata from '../metadata.json'
+import {
+  DATA_REGISTRY,
+  isPreflop,
+  isPostflop,
+  getScenarioById,
+} from '../index'
 
 // All preflop data files (imported statically via @/data/index.ts in app, but here we test the JSON directly)
 import utgData from '../preflop/rfi/utg.json'
@@ -73,6 +79,21 @@ const POSTFLOP_FILES: Array<{ name: string; data: Record<string, unknown> }> = [
   { name: 'river/bluff-catch', data: bluffCatchRiverData },
 ]
 
+// Valid postflop action names (bet sizing actions + check)
+const VALID_POSTFLOP_ACTIONS = new Set([
+  'check',
+  'bet_25pct',
+  'bet_33pct',
+  'bet_50pct',
+  'bet_66pct',
+  'bet_75pct',
+  'bet_100pct',
+  'bet_150pct',
+  'raise',
+  'call',
+  'fold',
+])
+
 // ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
@@ -95,6 +116,42 @@ describe('Preflop data integrity', () => {
       for (const freqs of Object.values(hands)) {
         const total = Object.values(freqs).reduce((a, b) => a + b, 0)
         expect(total).toBeCloseTo(1.0, 4)
+      }
+    },
+  )
+
+  it.each(PREFLOP_FILES)(
+    '$name should have frequencies between 0 and 1.01 (no negatives, no overflows)',
+    ({ data }) => {
+      const hands = (data as {
+        hands: Record<string, Record<string, number>>
+      }).hands
+      for (const [hand, freqs] of Object.entries(hands)) {
+        const total = Object.values(freqs).reduce((a, b) => a + b, 0)
+        expect(total).toBeGreaterThanOrEqual(0.99)
+        expect(total).toBeLessThanOrEqual(1.01)
+        // No negative frequencies
+        for (const [action, freq] of Object.entries(freqs)) {
+          expect(freq, `${hand}.${action} should be non-negative`).toBeGreaterThanOrEqual(0)
+        }
+      }
+    },
+  )
+
+  it.each(PREFLOP_FILES)(
+    '$name should have valid action names (raise, fold, call, threeBet)',
+    ({ data }) => {
+      const validActions = new Set(['raise', 'fold', 'call', 'threeBet'])
+      const hands = (data as {
+        hands: Record<string, Record<string, number>>
+      }).hands
+      for (const [hand, freqs] of Object.entries(hands)) {
+        for (const action of Object.keys(freqs)) {
+          expect(
+            validActions.has(action),
+            `${hand} has invalid action: "${action}"`,
+          ).toBe(true)
+        }
       }
     },
   )
@@ -121,6 +178,41 @@ describe('Postflop data integrity', () => {
       for (const freqs of Object.values(strategy)) {
         const total = Object.values(freqs).reduce((a, b) => a + b, 0)
         expect(total).toBeCloseTo(1.0, 4)
+      }
+    },
+  )
+
+  it.each(POSTFLOP_FILES)(
+    '$name should have frequencies between 0 and 1.01',
+    ({ data }) => {
+      const strategy = (data as {
+        strategy: Record<string, Record<string, number>>
+      }).strategy
+      for (const [category, freqs] of Object.entries(strategy)) {
+        const total = Object.values(freqs).reduce((a, b) => a + b, 0)
+        expect(total).toBeGreaterThanOrEqual(0.99)
+        expect(total).toBeLessThanOrEqual(1.01)
+        // No negative frequencies
+        for (const [action, freq] of Object.entries(freqs)) {
+          expect(freq, `${category}.${action} should be non-negative`).toBeGreaterThanOrEqual(0)
+        }
+      }
+    },
+  )
+
+  it.each(POSTFLOP_FILES)(
+    '$name should have valid action names',
+    ({ data }) => {
+      const strategy = (data as {
+        strategy: Record<string, Record<string, number>>
+      }).strategy
+      for (const [category, freqs] of Object.entries(strategy)) {
+        for (const action of Object.keys(freqs)) {
+          expect(
+            VALID_POSTFLOP_ACTIONS.has(action),
+            `${category} has invalid action: "${action}"`,
+          ).toBe(true)
+        }
       }
     },
   )
@@ -157,5 +249,55 @@ describe('metadata.json', () => {
 
   it('should have exactly 27 scenario entries', () => {
     expect(scenarios).toHaveLength(27)
+  })
+
+  it('should have all scenario IDs match DATA_REGISTRY keys', () => {
+    for (const scenario of scenarios) {
+      expect(
+        DATA_REGISTRY[scenario.id],
+        `metadata id "${scenario.id}" should exist in DATA_REGISTRY`,
+      ).toBeDefined()
+    }
+  })
+
+  it('should have all DATA_REGISTRY keys present in metadata', () => {
+    const metadataIds = new Set(scenarios.map((s) => s.id))
+    for (const key of Object.keys(DATA_REGISTRY)) {
+      expect(
+        metadataIds.has(key),
+        `DATA_REGISTRY key "${key}" should have a metadata entry`,
+      ).toBe(true)
+    }
+  })
+
+  it('should have getScenarioById return data for every metadata ID', () => {
+    for (const scenario of scenarios) {
+      const data = getScenarioById(scenario.id)
+      expect(data, `getScenarioById("${scenario.id}") should not be null`).not.toBeNull()
+    }
+  })
+
+  it('should have preflop scenarios detected by isPreflop', () => {
+    const preflopIds = scenarios
+      .filter((s) => s.category === 'preflop')
+      .map((s) => s.id)
+    expect(preflopIds.length).toBeGreaterThan(0)
+    for (const id of preflopIds) {
+      const data = getScenarioById(id)
+      expect(data).not.toBeNull()
+      expect(isPreflop(data!), `Scenario "${id}" should be preflop`).toBe(true)
+    }
+  })
+
+  it('should have postflop scenarios detected by isPostflop', () => {
+    const postflopIds = scenarios
+      .filter((s) => s.category === 'postflop')
+      .map((s) => s.id)
+    expect(postflopIds.length).toBeGreaterThan(0)
+    for (const id of postflopIds) {
+      const data = getScenarioById(id)
+      expect(data).not.toBeNull()
+      expect(isPostflop(data!), `Scenario "${id}" should be postflop`).toBe(true)
+    }
   })
 })

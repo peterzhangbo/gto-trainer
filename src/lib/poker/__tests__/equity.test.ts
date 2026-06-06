@@ -77,6 +77,78 @@ describe('equity.ts (detailed)', () => {
     })
   })
 
+  describe('AA vs AA (identical hands)', () => {
+    it('should be approximately 50/50 with high tie rate', () => {
+      const hero: Card[] = [
+        { rank: 'A', suit: 's' },
+        { rank: 'A', suit: 'h' },
+      ]
+      const villain: Card[] = [
+        { rank: 'A', suit: 'd' },
+        { rank: 'A', suit: 'c' },
+      ]
+
+      const result = calculateEquity(hero, villain, [], 8000)
+
+      // AA vs AA should have very high tie rate (~95%+), each wins ~2-3%
+      expect(result.tie).toBeGreaterThan(0.9)
+      expect(result.heroEquity).toBeGreaterThan(0.48)
+      expect(result.heroEquity).toBeLessThan(0.52)
+      expect(result.heroWins + result.villainWins + result.tie).toBeCloseTo(
+        1.0,
+        4,
+      )
+    })
+  })
+
+  describe('Pocket pair vs two overcards (TT vs AK)', () => {
+    it('should be approximately 55/45 in favor of the pocket pair', () => {
+      const hero: Card[] = [
+        { rank: 'T', suit: 's' },
+        { rank: 'T', suit: 'h' },
+      ]
+      const villain: Card[] = [
+        { rank: 'A', suit: 's' },
+        { rank: 'K', suit: 'h' },
+      ]
+
+      const result = calculateEquity(hero, villain, [], 8000)
+
+      // TT vs AKo is approximately 55% for TT preflop
+      expect(result.heroEquity).toBeGreaterThan(0.48)
+      expect(result.heroEquity).toBeLessThan(0.62)
+      expect(result.heroWins + result.villainWins + result.tie).toBeCloseTo(
+        1.0,
+        4,
+      )
+    })
+  })
+
+  describe('Dominated hand (AQ vs AA)', () => {
+    it('should have very low equity for the dominated hand', () => {
+      const hero: Card[] = [
+        { rank: 'A', suit: 's' },
+        { rank: 'Q', suit: 'h' },
+      ]
+      const villain: Card[] = [
+        { rank: 'A', suit: 'd' },
+        { rank: 'A', suit: 'c' },
+      ]
+
+      const result = calculateEquity(hero, villain, [], 8000)
+
+      // AQ vs AA: hero can only win with a Q kicker or runner-runner
+      // Equity is roughly 7-10%
+      expect(result.heroEquity).toBeGreaterThan(0.03)
+      expect(result.heroEquity).toBeLessThan(0.18)
+      expect(result.villainWins).toBeGreaterThan(0.8)
+      expect(result.heroWins + result.villainWins + result.tie).toBeCloseTo(
+        1.0,
+        4,
+      )
+    })
+  })
+
   describe('Board texture classification (equity integration)', () => {
     it('monotone board should classify correctly', () => {
       const board: [Card, Card, Card] = [

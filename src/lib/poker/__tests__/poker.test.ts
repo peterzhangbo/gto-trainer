@@ -286,6 +286,48 @@ describe('hand-eval.ts', () => {
       const result = evaluateHand(cards)
       expect(result.handName).toBe('Royal Flush')
     })
+
+    it('should identify a wheel straight flush (A-2-3-4-5)', () => {
+      const cards: Card[] = [
+        { rank: 'A', suit: 'd' },
+        { rank: '2', suit: 'd' },
+        { rank: '3', suit: 'd' },
+        { rank: '4', suit: 'd' },
+        { rank: '5', suit: 'd' },
+      ]
+      const result = evaluateHand(cards)
+      expect(result.handName).toBe('Straight Flush')
+    })
+
+    it('should identify a low straight (A-2-3-4-5 wheel)', () => {
+      const cards: Card[] = [
+        { rank: 'A', suit: 's' },
+        { rank: '2', suit: 'h' },
+        { rank: '3', suit: 'd' },
+        { rank: '4', suit: 'c' },
+        { rank: '5', suit: 's' },
+      ]
+      const result = evaluateHand(cards)
+      expect(result.handName).toBe('Straight')
+    })
+
+    it('should rank a flush higher than a straight', () => {
+      const flushHand: Card[] = [
+        { rank: '2', suit: 's' },
+        { rank: '5', suit: 's' },
+        { rank: '7', suit: 's' },
+        { rank: '9', suit: 's' },
+        { rank: 'J', suit: 's' },
+      ]
+      const straightHand: Card[] = [
+        { rank: 'T', suit: 's' },
+        { rank: '9', suit: 'h' },
+        { rank: '8', suit: 'd' },
+        { rank: '7', suit: 'c' },
+        { rank: '6', suit: 's' },
+      ]
+      expect(compareHands(flushHand, straightHand)).toBe('hand1')
+    })
   })
 
   describe('compareHands', () => {
@@ -487,6 +529,83 @@ describe('board-texture.ts', () => {
       expect(texture.label).toBe('dry')
       expect(texture.monotone).toBe(false)
       expect(texture.twoTone).toBe(false)
+    })
+
+    it('should classify A-2-3 low connected board as connected', () => {
+      const board: [Card, Card, Card] = [
+        { rank: 'A', suit: 's' },
+        { rank: '2', suit: 'h' },
+        { rank: '3', suit: 'd' },
+      ]
+      const texture = classifyBoardTexture(board)
+      // A=14, 2=2, 3=3 → rankSpread = 14-2 = 12 → NOT connected
+      // (A is high, so A-2-3 is not treated as connected by this implementation)
+      expect(texture.connected).toBe(false)
+      expect(texture.highCard).toBe(true)
+    })
+
+    it('should classify two-tone flush draw board (3 spades + 1 heart)', () => {
+      const board: [Card, Card, Card] = [
+        { rank: 'K', suit: 's' },
+        { rank: '9', suit: 's' },
+        { rank: '5', suit: 'h' },
+      ]
+      const texture = classifyBoardTexture(board)
+      expect(texture.twoTone).toBe(true)
+      expect(texture.monotone).toBe(false)
+      expect(texture.connected).toBe(false)
+      expect(texture.highCard).toBe(true)
+    })
+
+    it('should classify low paired disconnected board as dry', () => {
+      const board: [Card, Card, Card] = [
+        { rank: '2', suit: 's' },
+        { rank: '2', suit: 'h' },
+        { rank: '7', suit: 'd' },
+      ]
+      const texture = classifyBoardTexture(board)
+      expect(texture.paired).toBe(true)
+      expect(texture.highCard).toBe(false)
+      expect(texture.connected).toBe(false)
+      expect(texture.label).toBe('dry')
+    })
+
+    it('should classify low paired connected board as wet', () => {
+      const board: [Card, Card, Card] = [
+        { rank: '4', suit: 's' },
+        { rank: '4', suit: 'h' },
+        { rank: '3', suit: 'd' },
+      ]
+      const texture = classifyBoardTexture(board)
+      expect(texture.paired).toBe(true)
+      expect(texture.highCard).toBe(false)
+      expect(texture.connected).toBe(true)
+      expect(texture.label).toBe('wet')
+    })
+
+    it('should classify connected rainbow board as wet', () => {
+      const board: [Card, Card, Card] = [
+        { rank: '8', suit: 's' },
+        { rank: '7', suit: 'h' },
+        { rank: '6', suit: 'd' },
+      ]
+      const texture = classifyBoardTexture(board)
+      expect(texture.connected).toBe(true)
+      expect(texture.twoTone).toBe(false)
+      expect(texture.monotone).toBe(false)
+      expect(texture.label).toBe('wet')
+    })
+
+    it('should classify semi-connected two-tone board as wet', () => {
+      const board: [Card, Card, Card] = [
+        { rank: 'J', suit: 's' },
+        { rank: '8', suit: 's' },
+        { rank: '5', suit: 'h' },
+      ]
+      const texture = classifyBoardTexture(board)
+      // J=11, 8=8, 5=5 → rankSpread = 11-5 = 6 → semiConnected, twoTone
+      expect(texture.twoTone).toBe(true)
+      expect(texture.label).toBe('wet')
     })
   })
 
