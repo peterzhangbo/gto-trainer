@@ -939,7 +939,7 @@ export default function TrainerPage() {
         )}
 
         {drillState === 'revealed' && lastResult && (
-          <div className="text-center max-w-lg w-full px-2">
+          <div className="text-center max-w-lg w-full px-2" aria-live="polite" role="status">
             <div className={`text-xl md:text-2xl font-bold mb-4 ${lastResult.isCorrect ? 'text-green-400' : 'text-red-400'}`}>
               {lastResult.isCorrect ? t('trainer.correct') : t('trainer.wrong')}
             </div>

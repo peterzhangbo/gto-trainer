@@ -219,7 +219,7 @@ describe('Postflop data integrity', () => {
 })
 
 describe('metadata.json', () => {
-  const scenarios = (metadata as { scenarios: Array<{ id: string; filePath: string }> }).scenarios
+  const scenarios = (metadata as { scenarios: Array<{ id: string; filePath: string; category: string }> }).scenarios
 
   it('should have entries for all preflop data files', () => {
     const preflopPaths = PREFLOP_FILES.map(

@@ -160,6 +160,9 @@ export default function SettingsPage() {
                 </div>
                 <button
                   onClick={() => setAutoAdvance(!autoAdvance)}
+                  role="switch"
+                  aria-checked={autoAdvance}
+                  aria-label={t('settings.autoAdvance')}
                   className={`w-12 h-7 rounded-full transition-colors relative ${
                     autoAdvance ? 'bg-red-600' : 'bg-gray-700'
                   }`}
@@ -196,6 +199,9 @@ export default function SettingsPage() {
                 <div className="text-white">{t('notification.enable')}</div>
                 <button
                   onClick={handleToggleReminder}
+                  role="switch"
+                  aria-checked={reminderEnabled}
+                  aria-label={t('notification.enable')}
                   className={`w-12 h-7 rounded-full transition-colors relative ${
                     reminderEnabled ? 'bg-red-600' : 'bg-gray-700'
                   }`}

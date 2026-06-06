@@ -41,7 +41,7 @@ export interface HandFrequencies {
 
 export interface PreflopScenarioData {
   scenario: string;
-  position: string;
+  position?: string;
   heroPosition?: string;
   villainPosition?: string;
   stackDepth: number;

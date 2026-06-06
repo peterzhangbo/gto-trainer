@@ -66,22 +66,15 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   signUp: async (email: string, password: string, displayName: string) => {
-    console.log('[Auth] Attempting signup...', { email, isSupabaseConfigured })
     if (isSupabaseConfigured) {
-      try {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { data: { display_name: displayName } },
-        })
-        console.log('[Auth] Supabase response:', { data: !!data, error })
-        if (error) throw new Error(error.message)
-        if (!data.user) throw new Error('注册失败')
-        set({ user: mapUser(data.user), loading: false })
-      } catch (e) {
-        console.error('[Auth] Signup error:', e)
-        throw e
-      }
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { display_name: displayName } },
+      })
+      if (error) throw new Error(error.message)
+      if (!data.user) throw new Error('注册失败')
+      set({ user: mapUser(data.user), loading: false })
     } else {
       // localStorage fallback
       const users: User[] = JSON.parse(localStorage.getItem('gto-users') ?? '[]')

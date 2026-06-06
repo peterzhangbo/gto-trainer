@@ -2,12 +2,10 @@
 import { describe, it, expect } from 'vitest'
 import {
   DATA_REGISTRY,
-  getScenarioData,
   getScenarioById,
   getAllScenarios,
   isPreflop,
   isPostflop,
-  type ScenarioData,
 } from '@/data/index'
 import {
   lookupGTO,
@@ -15,7 +13,6 @@ import {
   type LookupParams,
 } from '@/lib/gto/lookup'
 import { scoreAction } from '@/lib/gto/scoring'
-import metadata from '@/data/metadata.json'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -23,21 +20,6 @@ import metadata from '@/data/metadata.json'
 
 /** Get all 169 preflop hands */
 const PREFLOP_HANDS = ALL_169_HANDS
-
-/** Common postflop hand categories found across most scenarios */
-const COMMON_POSTFLOP_CATEGORIES = [
-  'overpair',
-  'topPair_topKicker',
-  'topPair_goodKicker',
-  'topPair_weakKicker',
-  'middlePair',
-  'bottomPair',
-  'overcards',
-  'flushDraw',
-  'straightDraw',
-  'set',
-  'air',
-]
 
 function isPreflopScenario(meta: { category: string }): boolean {
   return meta.category === 'preflop'

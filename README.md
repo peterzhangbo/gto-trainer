@@ -122,7 +122,7 @@ npm run dev          # 开发服务器
 npm run build        # 生产构建
 npm run preview      # 预览生产构建
 npm run lint         # ESLint 检查
-npx vitest run       # 运行测试（150 个测试用例）
+npx vitest run       # 运行测试（157 个测试用例）
 ```
 
 ---

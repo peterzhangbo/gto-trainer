@@ -386,7 +386,7 @@ export default function QuizPage() {
     return { data, meta }
   }, [selectedScenarioId])
 
-  const generateQuestion = useCallback((): QuizQuestion | null => {
+  const generateQuestionAsync = useCallback(async (): Promise<QuizQuestion | null> => {
     const result = getRandomScenario()
     if (!result) return null
     const { data, meta } = result
@@ -446,9 +446,8 @@ export default function QuizPage() {
     setLastResult(null)
     setShowingFeedback(false)
 
-    const q = generateQuestion()
-    setCurrentQuestion(q)
-  }, [timeLimit, generateQuestion])
+    generateQuestionAsync().then(q => setCurrentQuestion(q))
+  }, [timeLimit, generateQuestionAsync])
 
   // Timer
   useEffect(() => {
@@ -507,10 +506,9 @@ export default function QuizPage() {
     feedbackTimerRef.current = setTimeout(() => {
       setShowingFeedback(false)
       setLastResult(null)
-      const q = generateQuestion()
-      setCurrentQuestion(q)
+      generateQuestionAsync().then(q => setCurrentQuestion(q))
     }, 800)
-  }, [currentQuestion, showingFeedback, questionCount, correctCount, streak, bestStreak, generateQuestion])
+  }, [currentQuestion, showingFeedback, questionCount, correctCount, streak, bestStreak, generateQuestionAsync])
 
   const getAvailableActions = useCallback((question: QuizQuestion): string[] => {
     if (question.isPostflop) {

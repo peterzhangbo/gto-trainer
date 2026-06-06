@@ -7,9 +7,6 @@ export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey)
 
 if (!isSupabaseConfigured) {
   console.warn('[Supabase] Not configured - running in local mode')
-} else {
-  console.log('[Supabase] URL:', supabaseUrl)
-  console.log('[Supabase] Key exists:', !!supabaseAnonKey, 'length:', supabaseAnonKey?.length)
 }
 
 export const supabase = createClient(supabaseUrl ?? '', supabaseAnonKey ?? '', {
