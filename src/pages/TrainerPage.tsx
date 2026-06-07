@@ -555,7 +555,7 @@ export default function TrainerPage() {
   const [currentStrategy, setCurrentStrategy] = useState<Record<string, number>>({})
   const [drillState, setDrillState] = useState<'awaiting' | 'revealed'>('awaiting')
   const [lastResult, setLastResult] = useState<{ userAction: string; bestAction: string; bestFreq: number; score: number; isCorrect: boolean } | null>(null)
-  const [results, setResults] = useState<{ isCorrect: boolean }[]>([])
+  const [results, setResults] = useState<{ isCorrect: boolean; score: number }[]>([])
   const [streak, setStreak] = useState(0)
   const [bestStreak, setBestStreak] = useState(0)
   const [sessionId] = useState(() => crypto.randomUUID())
@@ -691,11 +691,12 @@ export default function TrainerPage() {
     const bestAction = bestEntry[0]
     const bestFreq = bestEntry[1]
     const isCorrect = action === bestAction
-    const score = actionFreq * 100
+    // Frequency deviation scoring: score = GTO frequency of chosen action × 100
+    const score = Math.round(actionFreq * 100)
 
     const result = { userAction: action, bestAction, bestFreq, score, isCorrect }
     setLastResult(result)
-    setResults((prev) => [...prev, { isCorrect }])
+    setResults((prev) => [...prev, { isCorrect, score }])
 
     if (isCorrect) {
       setStreak((s) => {
@@ -777,6 +778,7 @@ export default function TrainerPage() {
   const totalHands = results.length
   const correctHands = results.filter((r) => r.isCorrect).length
   const accuracy = totalHands > 0 ? (correctHands / totalHands) * 100 : 0
+  const avgFreqScore = totalHands > 0 ? Math.round(results.reduce((s, r) => s + r.score, 0) / totalHands) : 0
 
   // Build available actions based on scenario type
   const allActionSet = isPostflopDrill
@@ -938,36 +940,56 @@ export default function TrainerPage() {
           />
         )}
 
-        {drillState === 'revealed' && lastResult && (
-          <div className="text-center max-w-lg w-full px-2" aria-live="polite" role="status">
-            <div className={`text-xl md:text-2xl font-bold mb-4 ${lastResult.isCorrect ? 'text-green-400' : 'text-red-400'}`}>
-              {lastResult.isCorrect ? t('trainer.correct') : t('trainer.wrong')}
-            </div>
-            <div className="text-sm md:text-base text-gray-300 mb-4">
-              {t('trainer.yourChoice')}: <span className="text-white font-bold">{getActionLabel(lastResult.userAction, t)}</span>
-              {' -> '} {t('trainer.score')}: <span className="text-white">{lastResult.score.toFixed(0)}</span>/100
-            </div>
+        {drillState === 'revealed' && lastResult && (() => {
+          const freqScore = lastResult.score
+          let feedbackLabel: string
+          let feedbackColor: string
+          if (freqScore >= 50) {
+            feedbackLabel = t('freq.excellent')
+            feedbackColor = 'text-green-400'
+          } else if (freqScore >= 25) {
+            feedbackLabel = t('freq.acceptable')
+            feedbackColor = 'text-yellow-400'
+          } else if (freqScore >= 1) {
+            feedbackLabel = t('freq.highDeviation')
+            feedbackColor = 'text-orange-400'
+          } else {
+            feedbackLabel = t('freq.error')
+            feedbackColor = 'text-red-400'
+          }
 
-            {/* Best action display */}
-            <div className="mb-4 text-sm text-gray-400">
-              {t('trainer.bestAction' as Parameters<typeof t>[0])}:{' '}
-              <span className="text-green-400 font-bold">{getActionLabel(lastResult.bestAction, t)}</span>
-              {' '}({Math.round(lastResult.bestFreq * 100)}%)
-            </div>
+          const gtoDisplay = Object.entries(currentStrategy)
+            .sort((a, b) => b[1] - a[1])
+            .map(([act, freq]) => `${getActionLabel(act, t)} ${Math.round(freq * 100)}%`)
+            .join(' / ')
 
-            <div className="mb-6">
-              <div className="text-sm text-gray-500 mb-2">{t('trainer.gto')}</div>
-              <FrequencyBar strategy={currentStrategy} userAction={lastResult.userAction} />
-            </div>
+          return (
+            <div className="text-center max-w-lg w-full px-2" aria-live="polite" role="status">
+              <div className={`text-xl md:text-2xl font-bold mb-2 ${feedbackColor}`}>
+                {feedbackLabel}
+              </div>
+              <div className="text-sm md:text-base text-gray-300 mb-2">
+                {t('trainer.yourChoice')}: <span className="text-white font-bold">{getActionLabel(lastResult.userAction, t)}</span>
+                {' '}({lastResult.score}%)
+              </div>
+              <div className="text-xs text-gray-500 mb-4">
+                {t('freq.gtoOptimal')}: {gtoDisplay}
+              </div>
 
-            <button
-              onClick={generateDrill}
-              className="min-h-[44px] px-8 py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg font-semibold transition-colors"
-            >
-              {t('trainer.next')}
-            </button>
-          </div>
-        )}
+              <div className="mb-6">
+                <div className="text-sm text-gray-500 mb-2">{t('trainer.gto')}</div>
+                <FrequencyBar strategy={currentStrategy} userAction={lastResult.userAction} />
+              </div>
+
+              <button
+                onClick={generateDrill}
+                className="min-h-[44px] px-8 py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg font-semibold transition-colors"
+              >
+                {t('trainer.next')}
+              </button>
+            </div>
+          )
+        })()}
 
         {/* Mobile stats toggle */}
         <button
@@ -983,6 +1005,7 @@ export default function TrainerPage() {
             <h3 className="text-lg font-semibold text-white mb-4">{t('trainer.stats')}</h3>
             <div className="grid grid-cols-2 gap-4">
               <StatItem label={t('trainer.hands')} value={totalHands} />
+              <StatItem label={t('freq.avgScore' as Parameters<typeof t>[0])} value={`${avgFreqScore}%`} />
               <StatItem label={t('trainer.accuracy')} value={`${accuracy.toFixed(1)}%`} />
               <StatItem label={t('trainer.streak')} value={streak} highlight="orange" />
               <StatItem label={t('trainer.bestStreak')} value={bestStreak} highlight="yellow" />
@@ -1002,6 +1025,7 @@ export default function TrainerPage() {
         <h3 className="text-lg font-semibold text-white mb-6">{t('trainer.stats')}</h3>
         <div className="space-y-4">
           <StatItem label={t('trainer.hands')} value={totalHands} />
+          <StatItem label={t('freq.avgScore' as Parameters<typeof t>[0])} value={`${avgFreqScore}%`} />
           <StatItem label={t('trainer.accuracy')} value={`${accuracy.toFixed(1)}%`} />
           <StatItem label={t('trainer.streak')} value={streak} highlight="orange" />
           <StatItem label={t('trainer.bestStreak')} value={bestStreak} highlight="yellow" />

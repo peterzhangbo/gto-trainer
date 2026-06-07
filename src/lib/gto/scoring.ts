@@ -55,15 +55,16 @@ export interface SessionScore {
 /**
  * Score a user's chosen action against the GTO strategy for a hand.
  *
- * Scoring methodology:
- *   - If the user picked the highest-frequency action => score 100
- *   - If the user picked any non-zero-frequency action => score proportional
- *     to that action's frequency, scaled so the best action is 100.
- *     Formula: (userFreq / bestFreq) * 100
- *   - If the user picked a 0-frequency action => score 0
+ * Frequency deviation scoring:
+ *   - The score IS the GTO frequency of the chosen action × 100
+ *   - E.g. GTO says { raise: 0.55, call: 0.25, fold: 0.20 }
+ *     - pick "raise" → score 55 (primary action)
+ *     - pick "call" → score 25 (valid secondary)
+ *     - pick "fold" → score 20 (low-frequency but valid)
+ *     - pick nonexistent action → score 0 (error)
  *
  * The `isCorrect` flag is true only when the user's action is exactly
- * the highest-frequency action (not merely one of several equal actions).
+ * the highest-frequency action.
  *
  * @param userAction   - The action the user chose (e.g. "raise", "fold", "bet_75pct")
  * @param gtoStrategy  - Frequency map from the GTO data (e.g. { raise: 0.8, fold: 0.2 })
@@ -102,15 +103,8 @@ export function scoreAction(
   const userFrequency = normalisedStrategy[normalisedAction] ?? 0;
   const isCorrect = normalisedAction === bestAction;
 
-  let score: number;
-  if (isCorrect) {
-    score = 100;
-  } else if (userFrequency > 0) {
-    // Scale proportionally: picking a 50% freq action when best is 80% = (50/80)*100 = 62.5
-    score = Math.round((userFrequency / bestFrequency) * 100);
-  } else {
-    score = 0;
-  }
+  // Frequency deviation scoring: score = GTO frequency of chosen action × 100
+  const score = Math.round(userFrequency * 100);
 
   return {
     score,

@@ -20,6 +20,9 @@ const RangeEditorPage = lazy(() => import('@/pages/RangeEditorPage'))
 const TournamentPage = lazy(() => import('@/pages/TournamentPage'))
 const AIOpponentPage = lazy(() => import('@/pages/AIOpponentPage'))
 const QuizPage = lazy(() => import('@/pages/QuizPage'))
+const BetSizingPage = lazy(() => import('@/pages/BetSizingPage'))
+const ExploitPage = lazy(() => import('@/pages/ExploitPage'))
+const ChainDrillPage = lazy(() => import('@/pages/ChainDrillPage'))
 
 const NAV_LINK_KEYS = [
   { to: '/trainer', key: 'nav.training' as const },
@@ -33,6 +36,9 @@ const NAV_LINK_KEYS = [
   { to: '/tournament', key: 'nav.tournament' as const },
   { to: '/ai-opponent', key: 'nav.aiOpponent' as const },
   { to: '/quiz', key: 'nav.quiz' as const },
+  { to: '/bet-sizing', key: 'nav.betSizing' as const },
+  { to: '/exploit', key: 'nav.exploit' as const },
+  { to: '/chain-drill', key: 'nav.chainDrill' as const },
 ]
 
 export default function App() {
@@ -62,6 +68,9 @@ export default function App() {
               <Route path="/tournament" element={<TournamentPage />} />
               <Route path="/ai-opponent" element={<AIOpponentPage />} />
               <Route path="/quiz" element={<QuizPage />} />
+              <Route path="/bet-sizing" element={<BetSizingPage />} />
+              <Route path="/chain-drill" element={<ChainDrillPage />} />
+              <Route path="/exploit" element={<ExploitPage />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>
