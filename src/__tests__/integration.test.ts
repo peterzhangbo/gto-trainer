@@ -25,7 +25,7 @@ function isPreflopScenario(meta: { category: string }): boolean {
   return meta.category === 'preflop'
 }
 
-function buildLookupParams(meta: Record<string, unknown>): LookupParams | null {
+function buildLookupParams(meta: Record<string, any>): LookupParams | null {
   const sub = meta.subCategory as string
   const pos = meta.position as string | undefined
   const vp = meta.villainPosition as string | undefined
@@ -59,19 +59,19 @@ describe('Integration: All scenario data files load correctly', () => {
 
   it.each(scenarios.map((s) => [s.id, s]))(
     'should load scenario "%s" with valid data',
-    (id: string, scenario: Record<string, unknown>) => {
+    (id: string, scenario: any) => {
       const data = getScenarioById(id as string)
       expect(data).not.toBeNull()
 
       if (isPreflopScenario(scenario)) {
         expect(isPreflop(data!)).toBe(true)
-        const pf = data as unknown as { hands: Record<string, unknown>; position?: string; heroPosition?: string }
+        const pf = data as unknown as { hands: Record<string, any>; position?: string; heroPosition?: string }
         expect(Object.keys(pf.hands).length).toBe(169)
         // rfi uses 'position', threebet/defend use 'heroPosition'
         expect(pf.position ?? pf.heroPosition).toBeDefined()
       } else {
         expect(isPostflop(data!)).toBe(true)
-        const pof = data as unknown as { strategy: Record<string, unknown>; exampleBoard: string[] }
+        const pof = data as unknown as { strategy: Record<string, any>; exampleBoard: string[] }
         expect(Object.keys(pof.strategy).length).toBeGreaterThan(0)
         expect(pof.exampleBoard.length).toBeGreaterThanOrEqual(3)
       }
@@ -88,7 +88,7 @@ describe('Integration: GTO lookup returns valid results for every preflop scenar
 
   it.each(scenarios.map((s) => [s.id, s]))(
     'should return valid results for all 169 hands in "%s"',
-    (id: string, scenario: Record<string, unknown>) => {
+    (_id: string, scenario: any) => {
       const params = buildLookupParams(scenario)
       expect(params).not.toBeNull()
 
@@ -123,14 +123,14 @@ describe('Integration: GTO lookup returns valid results for every postflop scena
 
   it.each(scenarios.map((s) => [s.id, s]))(
     'should return valid results for common categories in "%s"',
-    (id: string, scenario: Record<string, unknown>) => {
+    (id: string, scenario: any) => {
       const params = buildLookupParams(scenario)
       if (!params) return // Skip if we can't build params
 
       const data = getScenarioById(id as string)
       if (!data || !isPostflop(data)) return
       const strategyKeys = Object.keys(
-        (data as unknown as { strategy: Record<string, unknown> }).strategy,
+        (data as unknown as { strategy: Record<string, any> }).strategy,
       )
 
       // Test the categories that actually exist in this scenario
@@ -175,7 +175,7 @@ describe('Integration: Scoring function returns values between 0 and 100', () =>
 
   it.each(scenarios.map((s) => [s.id, s]))(
     'should score between 0 and 100 for every hand in "%s"',
-    (id: string, scenario: Record<string, unknown>) => {
+    (id: string, scenario: any) => {
       const params = buildLookupParams(scenario)
       if (!params) return
 

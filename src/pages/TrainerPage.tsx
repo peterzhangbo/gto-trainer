@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
+type Difficulty = 'beginner' | 'intermediate' | 'advanced' | 'expert'
 import {
   getScenarioData,
   getScenarioById,
@@ -17,7 +18,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { useI18n } from '@/lib/i18n'
 import { showToast } from '@/components/ui/Toast'
 
-type Difficulty = 'beginner' | 'intermediate' | 'advanced' | 'expert'
+
 
 const DIFFICULTY_CONFIG: Record<Difficulty, { filterHand: (strat: Record<string, number>) => boolean; showFeedback: boolean }> = {
   beginner: {
@@ -565,6 +566,7 @@ export default function TrainerPage() {
   const [boardCards, setBoardCards] = useState<Card[]>([])
   const [handCategory, setHandCategory] = useState('')
   const [isPostflopDrill, setIsPostflopDrill] = useState(false)
+  const [showRangeContext, setShowRangeContext] = useState(false)
 
   // Auto-advance settings from localStorage
   const [autoAdvance] = useState(() => localStorage.getItem('gto-auto-advance') === 'true')
@@ -598,6 +600,7 @@ export default function TrainerPage() {
     setIsPostflopDrill(false)
     setDrillState('awaiting')
     setLastResult(null)
+    setShowRangeContext(false)
   }, [difficulty])
 
   const generatePostflopDrill = useCallback(
@@ -980,6 +983,30 @@ export default function TrainerPage() {
                 <div className="text-sm text-gray-500 mb-2">{t('trainer.gto')}</div>
                 <FrequencyBar strategy={currentStrategy} userAction={lastResult.userAction} />
               </div>
+
+              {isPostflopDrill && (
+                <button
+                  onClick={() => setShowRangeContext((v) => !v)}
+                  className="mb-4 min-h-[44px] px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm rounded-lg transition-colors w-full"
+                >
+                  {showRangeContext ? t('rangeContext.hideRange') : t('rangeContext.showRange')}
+                </button>
+              )}
+
+              {showRangeContext && isPostflopDrill && (
+                <div className="mb-4 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+                  <div className="text-sm text-gray-400 mb-2">{t('rangeContext.title')}</div>
+                  <div className="text-white text-sm">
+                    {handCategory && (
+                      <span className="inline-block px-2 py-1 bg-gray-700 rounded text-xs mr-2">
+                        {getCategoryLabel(handCategory)}
+                      </span>
+                    )}
+                    <span className="text-gray-500">{t('rangeContext.boardType')}: </span>
+                    <span className="text-gray-300">{boardCards.map(c => `${c.rank}${c.suit === 's' ? '♠' : c.suit === 'h' ? '♥' : c.suit === 'd' ? '♦' : '♣'}`).join(' ')}</span>
+                  </div>
+                </div>
+              )}
 
               <button
                 onClick={generateDrill}

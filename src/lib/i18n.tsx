@@ -564,6 +564,8 @@ const translations = {
     'rangeContext.matrixTitle': '对手防守范围矩阵',
     'rangeContext.defendFreq': '防守频率',
     'rangeContext.showRange': '显示范围',
+    'rangeContext.title': '范围对抗信息',
+    'rangeContext.boardType': '牌面',
     'rangeContext.hideRange': '隐藏范围',
   },
   en: {
@@ -1109,6 +1111,8 @@ const translations = {
     'rangeContext.matrixTitle': 'Opponent Defending Range Matrix',
     'rangeContext.defendFreq': 'Defend Frequency',
     'rangeContext.showRange': 'Show Range',
+    'rangeContext.title': 'Range Context',
+    'rangeContext.boardType': 'Board',
     'rangeContext.hideRange': 'Hide Range',
   },
 } as const
