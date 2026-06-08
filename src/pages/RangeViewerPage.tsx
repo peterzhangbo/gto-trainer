@@ -280,7 +280,6 @@ const MatrixCell = React.memo(function MatrixCell({
 // ---------------------------------------------------------------------------
 
 export default function RangeViewerPage() {
-  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const scenarios = useMemo(() => getAllScenarios(), [])
   const preflopScenarios = useMemo(() => scenarios.filter((s) => s.category === 'preflop'), [scenarios])
   const postflopScenarios = useMemo(() => scenarios.filter((s) => s.category === 'postflop'), [scenarios])
@@ -307,7 +306,6 @@ export default function RangeViewerPage() {
   }, [])
 
   // Resolve scenario data
-  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const data = useMemo<ScenarioData | null>(() => {
     const meta = scenarios.find((s) => s.id === selectedId)
     if (!meta) return null
@@ -317,7 +315,6 @@ export default function RangeViewerPage() {
       villainPosition: meta.villainPosition,
       boardTexture: meta.boardTexture,
     })
-    // eslint-disable-next-line react-hooks/preserve-manual-memoization
   }, [selectedId, scenarios])
 
   const strategy = useMemo<Record<string, StrategyEntry>>(() => {
@@ -326,7 +323,6 @@ export default function RangeViewerPage() {
   }, [data])
 
   // Overlay scenario data
-  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const overlayData = useMemo<ScenarioData | null>(() => {
     if (!overlayMode || !overlayScenarioId) return null
     const meta = scenarios.find((s) => s.id === overlayScenarioId)
@@ -337,7 +333,6 @@ export default function RangeViewerPage() {
       villainPosition: meta.villainPosition,
       boardTexture: meta.boardTexture,
     })
-    // eslint-disable-next-line react-hooks/preserve-manual-memoization
   }, [overlayMode, overlayScenarioId, scenarios])
 
   const overlayStrategy = useMemo<Record<string, StrategyEntry>>(() => {
@@ -396,7 +391,6 @@ export default function RangeViewerPage() {
   }, [])
 
   // Cell click handler
-  /* eslint-disable react-hooks/preserve-manual-memoization */
   const handleCellClick = useCallback(
     (hand: string) => {
       if (isMobile) {
@@ -410,7 +404,6 @@ export default function RangeViewerPage() {
     },
     [isMobile],
   )
-  /* eslint-enable react-hooks/preserve-manual-memoization */
 
   // Desktop hover handlers
   const handleMouseEnter = useCallback(
@@ -436,7 +429,6 @@ export default function RangeViewerPage() {
   }, [isMobile])
 
   // Select scenario
-  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const selectScenario = useCallback((id: string) => {
     setSelectedId(id)
     setSelectedHand(null)
