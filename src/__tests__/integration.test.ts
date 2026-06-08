@@ -41,6 +41,17 @@ function buildLookupParams(meta: Record<string, any>): LookupParams | null {
   if (sub === 'defend' && pos) {
     return { scenarioType: 'defend', position: pos, villainPosition: vp! }
   }
+  if (sub === 'coldcall' && pos) {
+    return { scenarioType: 'coldcall', position: pos, villainPosition: vp }
+  }
+  if (sub === 'squeeze' && pos) {
+    return {
+      scenarioType: 'squeeze',
+      position: pos,
+      openerPosition: meta.openerPosition as string,
+      callerPosition: meta.callerPosition as string,
+    }
+  }
   if (sub === 'c-bet' && bt) {
     return { scenarioType: 'c-bet', boardTexture: bt, handCategory: '' }
   }
@@ -55,10 +66,16 @@ describe('Integration: All scenario data files load correctly', () => {
   const scenarios = getAllScenarios()
 
   it('should load all scenarios from metadata into DATA_REGISTRY', () => {
-    expect(Object.keys(DATA_REGISTRY).length).toBe(scenarios.length)
+    // Exclude educational-only scenarios that have no hands data
+    const SKIP_IDS = new Set(['blockers_notes'])
+    const dataScenarios = scenarios.filter((s) => !SKIP_IDS.has(s.id))
+    expect(Object.keys(DATA_REGISTRY).length).toBe(dataScenarios.length)
   })
 
-  it.each(scenarios.map((s) => [s.id, s]))(
+  // Skip educational/non-hand scenarios
+  const SKIP_SCENARIOS = new Set(['blockers_notes'])
+
+  it.each(scenarios.filter((s) => !SKIP_SCENARIOS.has(s.id)).map((s) => [s.id, s]))(
     'should load scenario "%s" with valid data',
     (id: string, scenario: any) => {
       const data = getScenarioById(id as string)
@@ -85,7 +102,8 @@ describe('Integration: All scenario data files load correctly', () => {
 // ---------------------------------------------------------------------------
 
 describe('Integration: GTO lookup returns valid results for every preflop scenario', () => {
-  const scenarios = getAllScenarios().filter(isPreflopScenario)
+  const SKIP_SCENARIOS = new Set(['blockers_notes'])
+  const scenarios = getAllScenarios().filter(isPreflopScenario).filter((s) => !SKIP_SCENARIOS.has(s.id))
 
   it.each(scenarios.map((s) => [s.id, s]))(
     'should return valid results for all 169 hands in "%s"',

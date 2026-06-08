@@ -25,9 +25,11 @@ export interface GTOLookupResult {
 }
 
 export interface PreflopLookupParams {
-  scenarioType: 'rfi' | 'threeBet' | 'defend';
+  scenarioType: 'rfi' | 'threeBet' | 'defend' | 'coldcall' | 'squeeze';
   position: string;
   villainPosition?: string;
+  openerPosition?: string;
+  callerPosition?: string;
 }
 
 export interface PostflopLookupParams {
@@ -167,11 +169,13 @@ export function lookupGTO(
   params: LookupParams,
   hand: string,
 ): GTOLookupResult {
+  const p = 'position' in params ? (params as PreflopLookupParams) : null;
   const data = getScenarioData({
     scenarioType: params.scenarioType,
-    position: 'position' in params ? (params as PreflopLookupParams).position : undefined,
-    villainPosition:
-      'villainPosition' in params ? (params as PreflopLookupParams).villainPosition : undefined,
+    position: p?.position,
+    villainPosition: p?.villainPosition,
+    openerPosition: p?.openerPosition,
+    callerPosition: p?.callerPosition,
     boardTexture:
       'boardTexture' in params ? (params as PostflopLookupParams).boardTexture : undefined,
   });

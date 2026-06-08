@@ -103,8 +103,14 @@ export function scoreAction(
   const userFrequency = normalisedStrategy[normalisedAction] ?? 0;
   const isCorrect = normalisedAction === bestAction;
 
-  // Frequency deviation scoring: score = GTO frequency of chosen action × 100
-  const score = Math.round(userFrequency * 100);
+  // Frequency deviation scoring:
+  //   - Best action → 100
+  //   - Other actions → (freq / best_freq) × 100
+  const score = normalisedAction === bestAction
+    ? 100
+    : bestFrequency > 0
+      ? Math.round((userFrequency / bestFrequency) * 100)
+      : 0;
 
   return {
     score,

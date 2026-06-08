@@ -167,10 +167,12 @@ function isPostflop(data: ScenarioData): data is PostflopScenarioData {
 // ---------------------------------------------------------------------------
 
 export interface ScenarioQuery {
-  scenarioType: string; // "rfi" | "threeBet" | "defend" | "c-bet"
+  scenarioType: string; // "rfi" | "threeBet" | "defend" | "c-bet" | "coldcall" | "squeeze"
   position?: string;
   villainPosition?: string;
   boardTexture?: string;
+  openerPosition?: string;
+  callerPosition?: string;
 }
 
 /**
@@ -198,7 +200,9 @@ function resolveScenarioKey(params: ScenarioQuery): string | null {
       s.subCategory === params.scenarioType &&
       (!params.position || s.position === params.position) &&
       (!params.villainPosition || s.villainPosition === params.villainPosition) &&
-      (!params.boardTexture || s.boardTexture === params.boardTexture),
+      (!params.boardTexture || s.boardTexture === params.boardTexture) &&
+      (!params.openerPosition || (s as unknown as Record<string, string>).openerPosition === params.openerPosition) &&
+      (!params.callerPosition || (s as unknown as Record<string, string>).callerPosition === params.callerPosition),
   );
   if (meta) {
     const id = meta.id;
