@@ -23,6 +23,9 @@ const QuizPage = lazy(() => import('@/pages/QuizPage'))
 const BetSizingPage = lazy(() => import('@/pages/BetSizingPage'))
 const ExploitPage = lazy(() => import('@/pages/ExploitPage'))
 const ChainDrillPage = lazy(() => import('@/pages/ChainDrillPage'))
+const ImpliedOddsPage = lazy(() => import('@/pages/ImpliedOddsPage'))
+const EquityDistributionPage = lazy(() => import('@/pages/EquityDistributionPage'))
+const BoardTexturePage = lazy(() => import('@/pages/BoardTexturePage'))
 
 const NAV_LINK_KEYS = [
   { to: '/trainer', key: 'nav.training' as const },
@@ -39,6 +42,9 @@ const NAV_LINK_KEYS = [
   { to: '/bet-sizing', key: 'nav.betSizing' as const },
   { to: '/exploit', key: 'nav.exploit' as const },
   { to: '/chain-drill', key: 'nav.chainDrill' as const },
+  { to: '/implied-odds', key: 'nav.impliedOdds' as const },
+  { to: '/equity-dist', key: 'nav.equityDist' as const },
+  { to: '/board-texture', key: 'nav.boardTexture' as const },
 ]
 
 export default function App() {
@@ -71,6 +77,9 @@ export default function App() {
               <Route path="/bet-sizing" element={<BetSizingPage />} />
               <Route path="/chain-drill" element={<ChainDrillPage />} />
               <Route path="/exploit" element={<ExploitPage />} />
+              <Route path="/implied-odds" element={<ImpliedOddsPage />} />
+              <Route path="/equity-dist" element={<EquityDistributionPage />} />
+              <Route path="/board-texture" element={<BoardTexturePage />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>

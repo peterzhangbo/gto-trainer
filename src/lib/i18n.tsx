@@ -625,6 +625,30 @@ const translations = {
     'equityDist.vsRandom': 'vs 随机手牌',
     'equityDist.nuts': '坚果牌 (top equity)',
     'equityDist.air': '空气牌 (low equity)',
+
+    // Board Texture
+    'nav.boardTexture': '牌面分析',
+    'boardTexture.title': '牌面纹理深度分析',
+    'boardTexture.subtitle': '分析翻牌面属性，理解 GTO 策略调整',
+    'boardTexture.wet': '湿润',
+    'boardTexture.dry': '干燥',
+    'boardTexture.high': '高牌',
+    'boardTexture.low': '低牌',
+    'boardTexture.connected': '连接',
+    'boardTexture.disconnected': '断开',
+    'boardTexture.monotone': '同花',
+    'boardTexture.twoTone': '两色',
+    'boardTexture.rainbow': '彩虹',
+    'boardTexture.paired': '配对',
+    'boardTexture.unpaired': '未配对',
+
+    // Multi-way Pot
+    'multiway.title': '多人底池',
+    'multiway.description': '多人底池策略比单挑更紧，需要更强手牌继续',
+    'multiway.reduceBluff': '降低诈唬频率',
+    'multiway.increaseValue': '提高价值下注阈值',
+    'multiway.suitedConnectors': '同花连牌隐含赔率更好',
+    'multiway.offsuitBroadways': '非同花大牌价值降低',
   },
   en: {
     'nav.training': 'Training',
@@ -1230,6 +1254,30 @@ const translations = {
     'equityDist.vsRandom': 'vs Random Hand',
     'equityDist.nuts': 'Nuts (top equity)',
     'equityDist.air': 'Air (low equity)',
+
+    // Board Texture
+    'nav.boardTexture': 'Board Texture',
+    'boardTexture.title': 'Board Texture Deep Analysis',
+    'boardTexture.subtitle': 'Analyze flop properties and understand GTO strategy adjustments',
+    'boardTexture.wet': 'Wet',
+    'boardTexture.dry': 'Dry',
+    'boardTexture.high': 'High',
+    'boardTexture.low': 'Low',
+    'boardTexture.connected': 'Connected',
+    'boardTexture.disconnected': 'Disconnected',
+    'boardTexture.monotone': 'Monotone',
+    'boardTexture.twoTone': 'Two-Tone',
+    'boardTexture.rainbow': 'Rainbow',
+    'boardTexture.paired': 'Paired',
+    'boardTexture.unpaired': 'Unpaired',
+
+    // Multi-way Pot
+    'multiway.title': 'Multi-Way Pot',
+    'multiway.description': 'Multi-way pot strategy is tighter than heads-up, requiring stronger hands to continue',
+    'multiway.reduceBluff': 'Reduce bluffing frequency',
+    'multiway.increaseValue': 'Increase value betting threshold',
+    'multiway.suitedConnectors': 'Suited connectors gain implied odds value',
+    'multiway.offsuitBroadways': 'Offsuit broadways lose value',
   },
 } as const
 
