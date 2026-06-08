@@ -17,8 +17,16 @@ export function classifyBoardTexture(board: [Card, Card, Card]): BoardTexture {
   const highCard = board.some((c) => RANK_VALUES[c.rank] >= 10)
 
   const rankSpread = ranks[2] - ranks[0]
-  const connected = rankSpread <= 4
-  const semiConnected = !connected && rankSpread <= 6
+  const hasAce = ranks.some((r) => r === 14)
+  const aceLowSpread = hasAce
+    ? Math.min(
+        ranks[1] - ranks[0] + 1, // treating Ace as 1
+        rankSpread,
+      )
+    : rankSpread
+
+  const connected = rankSpread <= 4 || aceLowSpread <= 4
+  const semiConnected = !connected && (rankSpread <= 6 || aceLowSpread <= 6)
 
   let label: BoardTexture['label']
 
@@ -87,6 +95,21 @@ function generateFallbackFlop(texture: BoardTexture): Card[] {
       { rank: availableRanks[0], suit },
       { rank: availableRanks[1], suit },
       { rank: availableRanks[2], suit },
+    ]
+  }
+
+  if (texture.paired && !texture.highCard) {
+    // Low-to-mid paired board (no card >= T)
+    const lowRanks: Rank[] = ['2', '3', '4', '5', '6', '7', '8']
+    const pairIdx = Math.floor(Math.random() * lowRanks.length)
+    const pairRank = lowRanks[pairIdx]
+    const otherRanks = lowRanks.filter((r) => r !== pairRank)
+    const otherRank = otherRanks[Math.floor(Math.random() * otherRanks.length)]
+    const suits = shuffleArray([...SUITS])
+    return [
+      { rank: pairRank, suit: suits[0] },
+      { rank: pairRank, suit: suits[1] },
+      { rank: otherRank, suit: suits[2] },
     ]
   }
 

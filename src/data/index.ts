@@ -94,6 +94,8 @@ export interface ScenarioMeta {
   exampleBoard?: string[];
   description: string;
   filePath: string;
+  openerPosition?: string;
+  callerPosition?: string;
 }
 
 export interface MetadataIndex {
@@ -154,6 +156,15 @@ const METADATA: MetadataIndex = metadataJson as unknown as MetadataIndex;
 // Helpers
 // ---------------------------------------------------------------------------
 
+/**
+ * Normalize scenario type strings to canonical casing.
+ * Maps '3bet' -> 'threeBet', 'threebet' -> 'threeBet' for backward compatibility.
+ */
+export function normalizeScenarioType(type: string): string {
+  if (type === '3bet' || type === 'threebet') return 'threeBet'
+  return type
+}
+
 function isPreflop(data: ScenarioData): data is PreflopScenarioData {
   return 'hands' in data;
 }
@@ -180,13 +191,16 @@ export interface ScenarioQuery {
  * Tries to match against the metadata id or build the id from components.
  */
 function resolveScenarioKey(params: ScenarioQuery): string | null {
+  // Normalize scenarioType to handle casing inconsistencies (e.g. '3bet' -> 'threeBet')
+  const normalizedType = normalizeScenarioType(params.scenarioType)
+
   // Direct match on scenarioType if it's already a full key
-  if (DATA_REGISTRY[params.scenarioType]) {
-    return params.scenarioType;
+  if (DATA_REGISTRY[normalizedType]) {
+    return normalizedType;
   }
 
   // Build a key from parts
-  const parts: string[] = [params.scenarioType];
+  const parts: string[] = [normalizedType];
   if (params.position) parts.push(params.position.toLowerCase());
   if (params.villainPosition) parts.push(`vs_${params.villainPosition.toLowerCase()}`);
   if (params.boardTexture) parts.push(params.boardTexture);
@@ -197,12 +211,12 @@ function resolveScenarioKey(params: ScenarioQuery): string | null {
   // Search metadata for a match
   const meta = METADATA.scenarios.find(
     (s) =>
-      s.subCategory === params.scenarioType &&
+      normalizeScenarioType(s.subCategory) === normalizedType &&
       (!params.position || s.position === params.position) &&
       (!params.villainPosition || s.villainPosition === params.villainPosition) &&
       (!params.boardTexture || s.boardTexture === params.boardTexture) &&
-      (!params.openerPosition || (s as unknown as Record<string, string>).openerPosition === params.openerPosition) &&
-      (!params.callerPosition || (s as unknown as Record<string, string>).callerPosition === params.callerPosition),
+      (!params.openerPosition || s.openerPosition === params.openerPosition) &&
+      (!params.callerPosition || s.callerPosition === params.callerPosition),
   );
   if (meta) {
     const id = meta.id;
@@ -253,6 +267,9 @@ export function getScenariosBySubCategory(subCategory: string): ScenarioMeta[] {
 /**
  * Check if the given scenario data was computed by a solver.
  * Looks for a `solverMeta` field on the raw data.
+ *
+ * NOTE: Currently always returns false — no JSON data includes solverMeta yet.
+ * Retained for future use when solver CLI output is integrated.
  */
 export function isSolverComputed(data: ScenarioData): boolean {
   return !!(data as unknown as Record<string, unknown>).solverMeta;

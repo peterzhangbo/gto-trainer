@@ -5,6 +5,7 @@ interface User {
   id: string
   email: string
   displayName: string
+  passwordHash?: string // only used in localStorage mode
 }
 
 interface AuthState {
@@ -19,6 +20,13 @@ interface AuthState {
 // --- localStorage fallback (when Supabase is not configured) ---
 
 const STORAGE_KEY = 'gto-trainer-user'
+
+async function hashPassword(password: string): Promise<string> {
+  const msgBuffer = new TextEncoder().encode(password)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+}
 
 function getStoredUser(): User | null {
   try {
@@ -60,8 +68,11 @@ export const useAuthStore = create<AuthState>((set) => ({
       const users: User[] = JSON.parse(localStorage.getItem('gto-users') ?? '[]')
       const existing = users.find((u) => u.email === email)
       if (!existing) throw new Error('用户不存在，请先注册')
-      setStoredUser(existing)
-      set({ user: existing, loading: false })
+      const hash = await hashPassword(password)
+      if (existing.passwordHash !== hash) throw new Error('密码错误')
+      const { passwordHash: _, ...safeUser } = existing
+      setStoredUser(safeUser)
+      set({ user: safeUser, loading: false })
     }
   },
 
@@ -79,11 +90,13 @@ export const useAuthStore = create<AuthState>((set) => ({
       // localStorage fallback
       const users: User[] = JSON.parse(localStorage.getItem('gto-users') ?? '[]')
       if (users.some((u) => u.email === email)) throw new Error('该邮箱已注册')
-      const newUser: User = { id: crypto.randomUUID(), email, displayName }
+      const hash = await hashPassword(password)
+      const newUser: User = { id: crypto.randomUUID(), email, displayName, passwordHash: hash }
       users.push(newUser)
       localStorage.setItem('gto-users', JSON.stringify(users))
-      setStoredUser(newUser)
-      set({ user: newUser, loading: false })
+      const { passwordHash: _, ...safeUser } = newUser
+      setStoredUser(safeUser)
+      set({ user: safeUser, loading: false })
     }
   },
 

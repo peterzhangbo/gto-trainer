@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useMemo, useCallback, useRef, useEffect, useLayoutEffect } from 'react'
 import { getScenarioData, getAllScenarios, isPreflop, isPostflop, type ScenarioData, type PostflopScenarioData, type PostflopStrategyEntry } from '@/data/index'
 import type { StrategyEntry } from '@/types/poker'
 import { useI18n } from '@/lib/i18n'
@@ -146,13 +146,144 @@ interface TooltipPos {
 }
 
 // ---------------------------------------------------------------------------
+// Segment builder (shared by MatrixCell)
+// ---------------------------------------------------------------------------
+
+function buildSegments(entry: StrategyEntry | undefined, foldOnly: boolean): { action: string; freq: number }[] {
+  const segments: { action: string; freq: number }[] = []
+  if (entry && !foldOnly) {
+    for (const [action, freq] of Object.entries(entry)) {
+      const f = typeof freq === 'number' ? freq : 0
+      if (f > 0.005 && action !== 'fold') {
+        segments.push({ action, freq: f })
+      }
+    }
+    segments.sort((a, b) => b.freq - a.freq)
+    if (entry.fold && entry.fold > 0.005) {
+      segments.push({ action: 'fold', freq: entry.fold })
+    }
+  }
+  return segments
+}
+
+// ---------------------------------------------------------------------------
+// MatrixCell (memoized to avoid re-rendering 169 cells on every state change)
+// ---------------------------------------------------------------------------
+
+interface CellProps {
+  hand: string
+  entry: StrategyEntry | undefined
+  overlayEntry: StrategyEntry | undefined
+  isSelected: boolean
+  overlayMode: boolean
+  onClick: () => void
+  onMouseEnter: (e: React.MouseEvent) => void
+  onMouseMove: (e: React.MouseEvent) => void
+  onMouseLeave: () => void
+}
+
+const MatrixCell = React.memo(function MatrixCell({
+  hand,
+  entry,
+  overlayEntry,
+  isSelected,
+  overlayMode,
+  onClick,
+  onMouseEnter,
+  onMouseMove,
+  onMouseLeave,
+}: CellProps) {
+  const foldOnly = entry ? isFoldOnly(entry) : true
+  const overlayFoldOnly = overlayEntry ? isFoldOnly(overlayEntry) : true
+
+  const segments = useMemo(() => buildSegments(entry, foldOnly), [entry, foldOnly])
+  const overlaySegments = useMemo(
+    () => buildSegments(overlayMode ? overlayEntry : undefined, overlayFoldOnly),
+    [overlayMode, overlayEntry, overlayFoldOnly],
+  )
+
+  const showOverlay = overlayMode && overlaySegments.length > 0
+
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      className={`w-12 min-w-[48px] min-h-[48px] h-12 m-px rounded-md flex flex-col items-center justify-center transition-all relative select-none bg-gray-900 border border-gray-800/50 ${
+        isSelected
+          ? 'ring-2 ring-red-500 scale-105 z-10 shadow-[0_0_12px_rgba(239,68,68,0.3)]'
+          : 'hover:scale-105 hover:z-10 hover:shadow-[0_0_8px_rgba(255,255,255,0.15)]'
+      }`}
+    >
+      {showOverlay ? (
+        <div className="absolute inset-0 flex overflow-hidden rounded-md">
+          <div className="w-1/2 h-full flex">
+            {segments.length > 0 ? segments.map((seg) => (
+              <div
+                key={seg.action}
+                className="h-full"
+                style={{
+                  width: `${(seg.freq / segments.reduce((s, x) => s + x.freq, 0)) * 100}%`,
+                  backgroundColor: getActionColor(seg.action),
+                  opacity: 0.85,
+                }}
+              />
+            )) : (
+              <div className="h-full w-full bg-gray-900" />
+            )}
+          </div>
+          <div className="w-1/2 h-full flex">
+            {overlaySegments.map((seg) => (
+              <div
+                key={seg.action}
+                className="h-full"
+                style={{
+                  width: `${(seg.freq / overlaySegments.reduce((s, x) => s + x.freq, 0)) * 100}%`,
+                  backgroundColor: getOverlayActionColor(seg.action),
+                  opacity: 0.85,
+                }}
+              />
+            ))}
+          </div>
+          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/30" />
+        </div>
+      ) : segments.length > 0 ? (
+        <div className="absolute inset-0 flex overflow-hidden rounded-md">
+          {segments.map((seg, i) => (
+            <div
+              key={seg.action}
+              className="h-full"
+              style={{
+                width: `${seg.freq * 100}%`,
+                background: i === 0
+                  ? `linear-gradient(180deg, ${getActionColor(seg.action)}dd 0%, ${getActionColor(seg.action)} 100%)`
+                  : getActionColor(seg.action),
+              }}
+            />
+          ))}
+        </div>
+      ) : null}
+      <span
+        className={`relative z-10 text-[10px] font-bold leading-none ${
+          foldOnly ? 'text-gray-600' : 'text-white/90'
+        }`}
+      >
+        {hand}
+      </span>
+    </button>
+  )
+})
+
+// ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
 export default function RangeViewerPage() {
-  const scenarios = getAllScenarios()
-  const preflopScenarios = scenarios.filter((s) => s.category === 'preflop')
-  const postflopScenarios = scenarios.filter((s) => s.category === 'postflop')
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
+  const scenarios = useMemo(() => getAllScenarios(), [])
+  const preflopScenarios = useMemo(() => scenarios.filter((s) => s.category === 'preflop'), [scenarios])
+  const postflopScenarios = useMemo(() => scenarios.filter((s) => s.category === 'postflop'), [scenarios])
   const { t } = useI18n()
 
   const [selectedId, setSelectedId] = useState(preflopScenarios[0]?.id ?? '')
@@ -565,119 +696,20 @@ export default function RangeViewerPage() {
                     </div>
                     {RANKS.map((_, colIdx) => {
                       const hand = getHandNotation(rowIdx, colIdx)
-                      const entry = strategy[hand]
-                      const overlayEntry = overlayMode ? overlayStrategy[hand] : undefined
-                      const isSelected = selectedHand === hand
-                      const foldOnly = entry ? isFoldOnly(entry) : true
-                      const overlayFoldOnly = overlayEntry ? isFoldOnly(overlayEntry) : true
-
-                      // Build sorted action segments: largest freq first, fold always last
-                      const segments: { action: string; freq: number }[] = []
-                      if (entry && !foldOnly) {
-                        for (const [action, freq] of Object.entries(entry)) {
-                          const f = typeof freq === 'number' ? freq : 0
-                          if (f > 0.005 && action !== 'fold') {
-                            segments.push({ action, freq: f })
-                          }
-                        }
-                        segments.sort((a, b) => b.freq - a.freq)
-                        // Append fold last if present
-                        if (entry.fold && entry.fold > 0.005) {
-                          segments.push({ action: 'fold', freq: entry.fold })
-                        }
-                      }
-
-                      // Overlay segments
-                      const overlaySegments: { action: string; freq: number }[] = []
-                      if (overlayEntry && !overlayFoldOnly && overlayMode) {
-                        for (const [action, freq] of Object.entries(overlayEntry)) {
-                          const f = typeof freq === 'number' ? freq : 0
-                          if (f > 0.005 && action !== 'fold') {
-                            overlaySegments.push({ action, freq: f })
-                          }
-                        }
-                        overlaySegments.sort((a, b) => b.freq - a.freq)
-                        if (overlayEntry.fold && overlayEntry.fold > 0.005) {
-                          overlaySegments.push({ action: 'fold', freq: overlayEntry.fold })
-                        }
-                      }
 
                       return (
-                        <button
+                        <MatrixCell
                           key={hand}
+                          hand={hand}
+                          entry={strategy[hand]}
+                          overlayEntry={overlayMode ? overlayStrategy[hand] : undefined}
+                          isSelected={selectedHand === hand}
+                          overlayMode={overlayMode}
                           onClick={() => handleCellClick(hand)}
                           onMouseEnter={(e) => handleMouseEnter(hand, e)}
                           onMouseMove={handleMouseMove}
                           onMouseLeave={handleMouseLeave}
-                          className={`w-12 min-w-[48px] min-h-[48px] h-12 m-px rounded-md flex flex-col items-center justify-center transition-all relative select-none bg-gray-900 border border-gray-800/50 ${
-                            isSelected
-                              ? 'ring-2 ring-red-500 scale-105 z-10 shadow-[0_0_12px_rgba(239,68,68,0.3)]'
-                              : 'hover:scale-105 hover:z-10 hover:shadow-[0_0_8px_rgba(255,255,255,0.15)]'
-                          }`}
-                        >
-                          {/* Stacked bar background */}
-                          {overlayMode && overlaySegments.length > 0 ? (
-                            /* Overlay mode: left/right split */
-                            <div className="absolute inset-0 flex overflow-hidden rounded-md">
-                              {/* Left half - range 1 */}
-                              <div className="w-1/2 h-full flex">
-                                {segments.length > 0 ? segments.map((seg) => (
-                                  <div
-                                    key={seg.action}
-                                    className="h-full"
-                                    style={{
-                                      width: `${(seg.freq / segments.reduce((s, x) => s + x.freq, 0)) * 100}%`,
-                                      backgroundColor: getActionColor(seg.action),
-                                      opacity: 0.85,
-                                    }}
-                                  />
-                                )) : (
-                                  <div className="h-full w-full bg-gray-900" />
-                                )}
-                              </div>
-                              {/* Right half - range 2 (overlay) */}
-                              <div className="w-1/2 h-full flex">
-                                {overlaySegments.map((seg) => (
-                                  <div
-                                    key={seg.action}
-                                    className="h-full"
-                                    style={{
-                                      width: `${(seg.freq / overlaySegments.reduce((s, x) => s + x.freq, 0)) * 100}%`,
-                                      backgroundColor: getOverlayActionColor(seg.action),
-                                      opacity: 0.85,
-                                    }}
-                                  />
-                                ))}
-                              </div>
-                              {/* Center divider */}
-                              <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/30" />
-                            </div>
-                          ) : segments.length > 0 ? (
-                            /* Normal mode: gradient fill */
-                            <div className="absolute inset-0 flex overflow-hidden rounded-md">
-                              {segments.map((seg, i) => (
-                                <div
-                                  key={seg.action}
-                                  className="h-full"
-                                  style={{
-                                    width: `${seg.freq * 100}%`,
-                                    background: i === 0
-                                      ? `linear-gradient(180deg, ${getActionColor(seg.action)}dd 0%, ${getActionColor(seg.action)} 100%)`
-                                      : getActionColor(seg.action),
-                                  }}
-                                />
-                              ))}
-                            </div>
-                          ) : null}
-                          {/* Hand notation */}
-                          <span
-                            className={`relative z-10 text-[10px] font-bold leading-none ${
-                              foldOnly ? 'text-gray-600' : 'text-white/90'
-                            }`}
-                          >
-                            {hand}
-                          </span>
-                        </button>
+                        />
                       )
                     })}
                   </div>

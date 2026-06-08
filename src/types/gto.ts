@@ -18,11 +18,12 @@ export interface PostflopScenario {
 }
 
 export interface GTOLookupResult {
-  strategy: GTOStrategyEntry
+  found: boolean
+  hand: string
+  frequencies: Record<string, number>
   bestAction: string
-  ev: number
-  source: string
-  confidence: number
+  bestActionFrequency: number
+  scenarioKey: string
 }
 
 export interface ScenarioConfig {

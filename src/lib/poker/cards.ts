@@ -28,11 +28,12 @@ const SUIT_SYMBOLS: Record<Suit, string> = {
 
 export { RANKS, SUITS, RANK_VALUES, SUIT_SYMBOLS }
 
-export function parseCard(str: string): Card {
-  return {
-    rank: str[0] as Rank,
-    suit: str[1] as Suit,
-  }
+export function parseCard(str: string): Card | null {
+  if (!str || str.length < 2) return null
+  const rank = str[0].toUpperCase() as Rank
+  const suit = str[1].toLowerCase() as Suit
+  if (!RANKS.includes(rank) || !SUITS.includes(suit)) return null
+  return { rank, suit }
 }
 
 export function cardToString(card: Card): string {

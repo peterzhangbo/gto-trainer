@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { useI18n } from '@/lib/i18n'
 import { supabase, isSupabaseConfigured } from '@/config/supabase'
@@ -63,49 +63,69 @@ export default function DashboardPage() {
     }
 
     fetchData()
-  }, [user, t])
+  }, [user])
 
   // Compute stats
-  const totalDrills = drills.length
-  const correctDrills = drills.filter((d) => d.is_correct).length
-  const overallAccuracy = totalDrills > 0 ? Math.round((correctDrills / totalDrills) * 100 * 10) / 10 : 0
+  const {
+    totalDrills,
+    overallAccuracy,
+    preflopAccuracy,
+    postflopAccuracy,
+    preflopDrillCount,
+    postflopDrillCount,
+    currentStreak,
+    longestStreak,
+    scenarioStats,
+  } = useMemo(() => {
+    const totalDrills = drills.length
+    const correctDrills = drills.filter((d) => d.is_correct).length
+    const overallAccuracy = totalDrills > 0 ? Math.round((correctDrills / totalDrills) * 100 * 10) / 10 : 0
 
-  // Preflop vs postflop
-  const preflopDrills = drills.filter((d) => ['rfi', 'threeBet', 'defend'].includes(d.scenario_type))
-  const postflopDrills = drills.filter((d) => ['c-bet', 'turn', 'river'].includes(d.scenario_type))
-  const preflopAccuracy = preflopDrills.length > 0
-    ? Math.round((preflopDrills.filter((d) => d.is_correct).length / preflopDrills.length) * 100 * 10) / 10
-    : 0
-  const postflopAccuracy = postflopDrills.length > 0
-    ? Math.round((postflopDrills.filter((d) => d.is_correct).length / postflopDrills.length) * 100 * 10) / 10
-    : 0
+    const preflopDrills = drills.filter((d) => ['rfi', 'threeBet', 'defend'].includes(d.scenario_type))
+    const postflopDrills = drills.filter((d) => ['c-bet', 'turn', 'river'].includes(d.scenario_type))
+    const preflopAccuracy = preflopDrills.length > 0
+      ? Math.round((preflopDrills.filter((d) => d.is_correct).length / preflopDrills.length) * 100 * 10) / 10
+      : 0
+    const postflopAccuracy = postflopDrills.length > 0
+      ? Math.round((postflopDrills.filter((d) => d.is_correct).length / postflopDrills.length) * 100 * 10) / 10
+      : 0
 
-  // Current streak
-  let currentStreak = 0
-  for (const d of drills) {
-    if (d.is_correct) currentStreak++
-    else break
-  }
-
-  // Longest streak
-  let longestStreak = 0
-  let streak = 0
-  for (const d of [...drills].reverse()) {
-    if (d.is_correct) {
-      streak++
-      longestStreak = Math.max(longestStreak, streak)
-    } else {
-      streak = 0
+    let currentStreak = 0
+    for (const d of drills) {
+      if (d.is_correct) currentStreak++
+      else break
     }
-  }
 
-  // Scenario accuracy
-  const scenarioStats: Record<string, { correct: number; total: number }> = {}
-  for (const d of drills) {
-    if (!scenarioStats[d.scenario_type]) scenarioStats[d.scenario_type] = { correct: 0, total: 0 }
-    scenarioStats[d.scenario_type].total++
-    if (d.is_correct) scenarioStats[d.scenario_type].correct++
-  }
+    let longestStreak = 0
+    let streak = 0
+    for (const d of [...drills].reverse()) {
+      if (d.is_correct) {
+        streak++
+        longestStreak = Math.max(longestStreak, streak)
+      } else {
+        streak = 0
+      }
+    }
+
+    const scenarioStats: Record<string, { correct: number; total: number }> = {}
+    for (const d of drills) {
+      if (!scenarioStats[d.scenario_type]) scenarioStats[d.scenario_type] = { correct: 0, total: 0 }
+      scenarioStats[d.scenario_type].total++
+      if (d.is_correct) scenarioStats[d.scenario_type].correct++
+    }
+
+    return {
+      totalDrills,
+      overallAccuracy,
+      preflopAccuracy,
+      postflopAccuracy,
+      preflopDrillCount: preflopDrills.length,
+      postflopDrillCount: postflopDrills.length,
+      currentStreak,
+      longestStreak,
+      scenarioStats,
+    }
+  }, [drills])
 
   const scenarioNames: Record<string, string> = {
     rfi: `${t('scenario.rfi')}`,
@@ -155,8 +175,8 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
           <StatCard label={t('dash.total')} value={totalDrills} />
           <StatCard label={t('dash.overall')} value={`${overallAccuracy}%`} />
-          <StatCard label={t('dash.preflop')} value={preflopDrills.length > 0 ? `${preflopAccuracy}%` : '-'} />
-          <StatCard label={t('dash.postflop')} value={postflopDrills.length > 0 ? `${postflopAccuracy}%` : '-'} />
+          <StatCard label={t('dash.preflop')} value={preflopDrillCount > 0 ? `${preflopAccuracy}%` : '-'} />
+          <StatCard label={t('dash.postflop')} value={postflopDrillCount > 0 ? `${postflopAccuracy}%` : '-'} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">

@@ -538,9 +538,8 @@ describe('board-texture.ts', () => {
         { rank: '3', suit: 'd' },
       ]
       const texture = classifyBoardTexture(board)
-      // A=14, 2=2, 3=3 → rankSpread = 14-2 = 12 → NOT connected
-      // (A is high, so A-2-3 is not treated as connected by this implementation)
-      expect(texture.connected).toBe(false)
+      // A=14, 2=2, 3=3 → rankSpread = 12, but ace-low spread = 3-2+1 = 2 ≤ 4 → connected
+      expect(texture.connected).toBe(true)
       expect(texture.highCard).toBe(true)
     })
 

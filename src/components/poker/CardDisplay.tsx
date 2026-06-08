@@ -38,7 +38,8 @@ const suitSizeStyles = {
 }
 
 export default function CardDisplay({ card, size = 'md', className, faceDown = false }: CardDisplayProps) {
-  const cardObj: Card = typeof card === 'string' ? parseCard(card) : card
+  const cardObj: Card | null = typeof card === 'string' ? parseCard(card) : card
+  if (!cardObj) return null
 
   if (faceDown) {
     return (

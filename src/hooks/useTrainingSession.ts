@@ -12,6 +12,7 @@ interface Drill {
   position: string
   boardCards?: string[]
   scenarioType: string
+  strategy: Record<string, number>
 }
 
 interface DrillResult {
@@ -89,12 +90,13 @@ export function useTrainingSession(): TrainingSession {
   const [config, setConfig] = useState<SessionConfig | null>(null)
 
   const generateDrill = useCallback((cfg: SessionConfig): Drill => {
-    const { hand } = pickRandomHand()
+    const { hand, strategy } = pickRandomHand()
     return {
       id: crypto.randomUUID(),
       hand,
       position: cfg.position,
       scenarioType: cfg.scenarioType,
+      strategy,
     }
   }, [])
 
@@ -112,8 +114,7 @@ export function useTrainingSession(): TrainingSession {
 
   const submitAction = useCallback((action: string) => {
     if (!currentDrill) return
-    const { strategy } = pickRandomHand()
-    const gtoStrategy = strategy
+    const gtoStrategy = currentDrill.strategy
 
     const actionFreq = gtoStrategy[action] ?? 0
     const bestAction = Object.entries(gtoStrategy).sort((a, b) => b[1] - a[1])[0]

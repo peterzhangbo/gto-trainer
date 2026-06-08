@@ -85,6 +85,8 @@ export function buildLookupKey(params: LookupParams): string {
   const p = params as PreflopLookupParams;
   const parts = ['preflop', p.scenarioType, p.position];
   if (p.villainPosition) parts.push(p.villainPosition);
+  if (p.openerPosition) parts.push(p.openerPosition);
+  if (p.callerPosition) parts.push(p.callerPosition);
   return parts.join(':');
 }
 
@@ -229,10 +231,12 @@ export interface ScenarioHandSummary {
  */
 export function getPreflopScenarioSummary(
   position: string,
-  scenarioType: 'rfi' | 'threeBet' | 'defend' = 'rfi',
+  scenarioType: 'rfi' | 'threeBet' | 'defend' | 'coldcall' | 'squeeze' = 'rfi',
   villainPosition?: string,
+  openerPosition?: string,
+  callerPosition?: string,
 ): ScenarioHandSummary[] | null {
-  const data = getScenarioData({ scenarioType, position, villainPosition });
+  const data = getScenarioData({ scenarioType, position, villainPosition, openerPosition, callerPosition });
   if (!data || !isPreflop(data)) return null;
 
   return ALL_169_HANDS.map((hand) => {

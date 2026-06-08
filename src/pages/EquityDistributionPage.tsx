@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useMemo } from 'react'
+import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import { useI18n } from '@/lib/i18n'
 import { RANKS } from '@/lib/poker/cards'
 import type { Card, Rank, Suit } from '@/types/poker'
@@ -229,6 +229,8 @@ export default function EquityDistributionPage() {
   const [progress, setProgress] = useState(0)
   const [selectedCell, setSelectedCell] = useState<EquityCell | null>(null)
   const computationRef = useRef(false)
+  const abortRef = useRef<AbortController | null>(null)
+  const timeoutChainRef = useRef<ReturnType<typeof setTimeout>[]>([])
 
   // Get the current range map
   const rangeMap: RangeMap = useMemo(() => {
@@ -247,8 +249,32 @@ export default function EquityDistributionPage() {
       .map(([notation]) => notation),
   ), [rangeMap])
 
+  // Cancel pending computation when board changes or component unmounts
+  useEffect(() => {
+    return () => {
+      if (abortRef.current) {
+        abortRef.current.abort()
+        abortRef.current = null
+      }
+      for (const id of timeoutChainRef.current) clearTimeout(id)
+      timeoutChainRef.current = []
+      computationRef.current = false
+      setComputing(false)
+    }
+  }, [])
+
   const runComputation = useCallback(() => {
-    if (computationRef.current) return
+    // Cancel any in-flight computation
+    if (abortRef.current) {
+      abortRef.current.abort()
+    }
+    for (const id of timeoutChainRef.current) clearTimeout(id)
+    timeoutChainRef.current = []
+
+    const controller = new AbortController()
+    abortRef.current = controller
+    const { signal } = controller
+
     computationRef.current = true
     setComputing(true)
     setCells([])
@@ -270,6 +296,8 @@ export default function EquityDistributionPage() {
     let idx = 0
 
     function processNext() {
+      if (signal.aborted) return
+
       if (idx >= allHands.length) {
         setCells(results)
         setDistribution(buildDistribution(results))
@@ -282,6 +310,7 @@ export default function EquityDistributionPage() {
       const end = Math.min(idx + batchSize, allHands.length)
 
       for (let i = idx; i < end; i++) {
+        if (signal.aborted) return
         const notation = allHands[i]
         const equity = computeHandEquity(notation, board)
         const row = RANKS.indexOf(notation[0] as Rank)
@@ -296,7 +325,8 @@ export default function EquityDistributionPage() {
 
       idx = end
       setProgress(Math.round((idx / allHands.length) * 100))
-      setTimeout(processNext, 10)
+      const tid = setTimeout(processNext, 10)
+      timeoutChainRef.current.push(tid)
     }
 
     processNext()
