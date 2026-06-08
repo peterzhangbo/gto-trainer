@@ -588,6 +588,7 @@ export default function TrainerPage() {
     })
   }, [selectedMeta])
 
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const generatePreflopDrill = useCallback((data: typeof scenarioData) => {
     if (!data || !isPreflop(data)) return
     const hand = generateRandomHand(data.hands, difficulty)

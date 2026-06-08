@@ -301,9 +301,24 @@ export default function ChainDrillPage() {
     setPreflopData(data)
     setSessionActive(true)
     setSessionResults([])
-    startNewHand(data)
+    // Use setTimeout to defer startNewHand call to after state updates
+    setTimeout(() => {
+      const pldata = data
+      if (!pldata || !isPreflop(pldata)) return
+      const hand = generateRandomHand(pldata.hands)
+      const strategy = pldata.hands[hand] ?? { fold: 1 }
+      setHeroHand(hand)
+      setHeroCards(handToCards(hand))
+      setBoardCards([])
+      setCurrentStreet('preflop')
+      setCurrentStrategy(strategy)
+      setCurrentCategory('')
+      setStreetResults([])
+      setDrillState('awaiting')
+    }, 0)
   }, [selectedScenarioId])
 
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization
   const startNewHand = useCallback((data?: ScenarioData) => {
     const pldata = data ?? preflopData
     if (!pldata || !isPreflop(pldata)) return
@@ -366,7 +381,7 @@ export default function ChainDrillPage() {
     }
 
     // Build board for next street
-    let newBoard = [...boardCards]
+    let newBoard: Card[]
     if (nextStreet === 'flop') {
       newBoard = generateFlopBoard()
     } else {

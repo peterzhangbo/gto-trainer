@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // @vitest-environment node
 import { describe, it, expect } from 'vitest'
 import {
