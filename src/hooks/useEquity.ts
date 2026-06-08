@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import type { Card } from '@/types/poker'
 import { calculateEquity } from '@/lib/poker/equity'
 
@@ -20,6 +20,13 @@ export function useEquity(): UseEquityReturn {
   const [result, setResult] = useState<EquityPercentageResult | null>(null)
   const [calculating, setCalculating] = useState(false)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    }
+  }, [])
 
   const calculate = useCallback(
     (

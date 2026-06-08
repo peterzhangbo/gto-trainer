@@ -69,11 +69,14 @@ const BTN_RFI: Record<string, Record<string, number>> = {
 
 function pickRandomHand(): { hand: string; strategy: Record<string, number> } {
   const entries = Object.entries(BTN_RFI)
-  // Weight by raise frequency - more likely to see hands that are raised more
+  // Weight by raise/non-fold frequency - more likely to see hands that are raised more
   const weighted: [string, Record<string, number>][] = []
   for (const [hand, strat] of entries) {
-    // Include hands proportional to their appearance frequency in a real game
-    weighted.push([hand, strat])
+    const nonFoldFreq = 1 - (strat.fold ?? 0)
+    const weight = Math.max(1, Math.round(nonFoldFreq * 10))
+    for (let i = 0; i < weight; i++) {
+      weighted.push([hand, strat])
+    }
   }
   const idx = Math.floor(Math.random() * weighted.length)
   return { hand: weighted[idx][0], strategy: weighted[idx][1] }

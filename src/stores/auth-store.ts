@@ -28,6 +28,12 @@ async function hashPassword(password: string): Promise<string> {
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
 }
 
+function stripPasswordHash(user: User): User {
+  const result = { ...user }
+  delete result.passwordHash
+  return result
+}
+
 function getStoredUser(): User | null {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
@@ -70,7 +76,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       if (!existing) throw new Error('用户不存在，请先注册')
       const hash = await hashPassword(password)
       if (existing.passwordHash !== hash) throw new Error('密码错误')
-      const { passwordHash: _, ...safeUser } = existing
+      const safeUser = stripPasswordHash(existing)
       setStoredUser(safeUser)
       set({ user: safeUser, loading: false })
     }
@@ -94,7 +100,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       const newUser: User = { id: crypto.randomUUID(), email, displayName, passwordHash: hash }
       users.push(newUser)
       localStorage.setItem('gto-users', JSON.stringify(users))
-      const { passwordHash: _, ...safeUser } = newUser
+      const safeUser = stripPasswordHash(newUser)
       setStoredUser(safeUser)
       set({ user: safeUser, loading: false })
     }

@@ -63,6 +63,7 @@ export default function DashboardPage() {
     }
 
     fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- 't' removed: only used in error toasts, not data fetching
   }, [user])
 
   // Compute stats
