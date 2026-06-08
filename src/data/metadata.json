@@ -264,6 +264,109 @@
       "exampleBoard": ["Qh", "8d", "5s", "3c", "2h"],
       "description": "河牌面对下注时的抓诈唬决策，根据对手诈唬频率和手牌强度选择跟注、弃牌或加注",
       "filePath": "postflop/river/bluff-catch.json"
+    },
+    {
+      "id": "coldcall_mp_vs_utg",
+      "name": "MP 对 UTG 冷跟注",
+      "category": "preflop",
+      "subCategory": "coldcall",
+      "position": "MP",
+      "villainPosition": "UTG",
+      "description": "MP位面对UTG开牌的GTO冷跟注和3bet范围，~8%跟注频率",
+      "filePath": "preflop/coldcall/mp_vs_utg.json"
+    },
+    {
+      "id": "coldcall_co_vs_utg",
+      "name": "CO 对 UTG 冷跟注",
+      "category": "preflop",
+      "subCategory": "coldcall",
+      "position": "CO",
+      "villainPosition": "UTG",
+      "description": "CO位面对UTG开牌的GTO冷跟注和3bet范围，~10%跟注频率",
+      "filePath": "preflop/coldcall/co_vs_utg.json"
+    },
+    {
+      "id": "coldcall_co_vs_mp",
+      "name": "CO 对 MP 冷跟注",
+      "category": "preflop",
+      "subCategory": "coldcall",
+      "position": "CO",
+      "villainPosition": "MP",
+      "description": "CO位面对MP开牌的GTO冷跟注和3bet范围，~12%跟注频率",
+      "filePath": "preflop/coldcall/co_vs_mp.json"
+    },
+    {
+      "id": "coldcall_btn_vs_utg",
+      "name": "BTN 对 UTG 冷跟注",
+      "category": "preflop",
+      "subCategory": "coldcall",
+      "position": "BTN",
+      "villainPosition": "UTG",
+      "description": "BTN位面对UTG开牌的GTO冷跟注和3bet范围，~15%跟注频率",
+      "filePath": "preflop/coldcall/btn_vs_utg.json"
+    },
+    {
+      "id": "coldcall_btn_vs_co",
+      "name": "BTN 对 CO 冷跟注",
+      "category": "preflop",
+      "subCategory": "coldcall",
+      "position": "BTN",
+      "villainPosition": "CO",
+      "description": "BTN位面对CO开牌的GTO冷跟注和3bet范围，~18%跟注频率",
+      "filePath": "preflop/coldcall/btn_vs_co.json"
+    },
+    {
+      "id": "squeeze_btn_vs_co_open_mp_call",
+      "name": "BTN 挤压 (CO开 MP跟)",
+      "category": "preflop",
+      "subCategory": "squeeze",
+      "position": "BTN",
+      "openerPosition": "CO",
+      "callerPosition": "MP",
+      "description": "CO开牌MP跟注后，BTN位的GTO挤压3bet范围",
+      "filePath": "preflop/squeeze/btn_squeeze_vs_co_open_mp_call.json"
+    },
+    {
+      "id": "squeeze_sb_vs_co_open_btn_call",
+      "name": "SB 挤压 (CO开 BTN跟)",
+      "category": "preflop",
+      "subCategory": "squeeze",
+      "position": "SB",
+      "openerPosition": "CO",
+      "callerPosition": "BTN",
+      "description": "CO开牌BTN跟注后，SB位的GTO挤压3bet范围",
+      "filePath": "preflop/squeeze/sb_squeeze_vs_co_open_btn_call.json"
+    },
+    {
+      "id": "squeeze_bb_vs_co_open_btn_call",
+      "name": "BB 挤压 (CO开 BTN跟)",
+      "category": "preflop",
+      "subCategory": "squeeze",
+      "position": "BB",
+      "openerPosition": "CO",
+      "callerPosition": "BTN",
+      "description": "CO开牌BTN跟注后，BB位的GTO挤压3bet范围",
+      "filePath": "preflop/squeeze/bb_squeeze_vs_co_open_btn_call.json"
+    },
+    {
+      "id": "multiway_co_vs_utg_mp",
+      "name": "CO 冷跟注 vs UTG加注+MP跟注",
+      "category": "preflop",
+      "subCategory": "coldcall",
+      "position": "CO",
+      "villainPosition": "UTG",
+      "description": "多人底池：UTG加注、MP跟注后CO冷跟注范围。比单挑冷跟注范围紧得多，注重适合多人底池的手牌。",
+      "filePath": "preflop/multiway/co_call_vs_utg_open_mp_call.json"
+    },
+    {
+      "id": "multiway_btn_vs_utg_co",
+      "name": "BTN 冷跟注 vs UTG加注+CO跟注",
+      "category": "preflop",
+      "subCategory": "coldcall",
+      "position": "BTN",
+      "villainPosition": "UTG",
+      "description": "多人底池：UTG加注、CO跟注后BTN冷跟注范围。位置优势允许比CO稍宽的范围。",
+      "filePath": "preflop/multiway/btn_call_vs_utg_open_co_call.json"
     }
   ]
 }

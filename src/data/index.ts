@@ -25,6 +25,16 @@ import scaryRiverData from '@/data/postflop/river/scary-river.json';
 import pairedRiverData from '@/data/postflop/river/paired-river.json';
 import valueBetRiverData from '@/data/postflop/river/value-bet.json';
 import bluffCatchRiverData from '@/data/postflop/river/bluff-catch.json';
+import ccMpVsUtgData from '@/data/preflop/coldcall/mp_vs_utg.json';
+import ccCoVsUtgData from '@/data/preflop/coldcall/co_vs_utg.json';
+import ccCoVsMpData from '@/data/preflop/coldcall/co_vs_mp.json';
+import ccBtnVsUtgData from '@/data/preflop/coldcall/btn_vs_utg.json';
+import ccBtnVsCoData from '@/data/preflop/coldcall/btn_vs_co.json';
+import sqBtnVsCoOpenMpCallData from '@/data/preflop/squeeze/btn_squeeze_vs_co_open_mp_call.json';
+import sqSbVsCoOpenBtnCallData from '@/data/preflop/squeeze/sb_squeeze_vs_co_open_btn_call.json';
+import sqBbVsCoOpenBtnCallData from '@/data/preflop/squeeze/bb_squeeze_vs_co_open_btn_call.json';
+import multiwayCoVsUtgMpData from '@/data/preflop/multiway/co_call_vs_utg_open_mp_call.json';
+import multiwayBtnVsUtgCoData from '@/data/preflop/multiway/btn_call_vs_utg_open_co_call.json';
 import metadataJson from '@/data/metadata.json';
 
 // ---------------------------------------------------------------------------
@@ -118,6 +128,16 @@ export const DATA_REGISTRY: Record<string, ScenarioData> = {
   turn_second_barrel: secondBarrelData as unknown as ScenarioData,
   river_value_bet: valueBetRiverData as unknown as ScenarioData,
   river_bluff_catch: bluffCatchRiverData as unknown as ScenarioData,
+  coldcall_mp_vs_utg: ccMpVsUtgData as unknown as ScenarioData,
+  coldcall_co_vs_utg: ccCoVsUtgData as unknown as ScenarioData,
+  coldcall_co_vs_mp: ccCoVsMpData as unknown as ScenarioData,
+  coldcall_btn_vs_utg: ccBtnVsUtgData as unknown as ScenarioData,
+  coldcall_btn_vs_co: ccBtnVsCoData as unknown as ScenarioData,
+  squeeze_btn_vs_co_open_mp_call: sqBtnVsCoOpenMpCallData as unknown as ScenarioData,
+  squeeze_sb_vs_co_open_btn_call: sqSbVsCoOpenBtnCallData as unknown as ScenarioData,
+  squeeze_bb_vs_co_open_btn_call: sqBbVsCoOpenBtnCallData as unknown as ScenarioData,
+  multiway_co_vs_utg_mp: multiwayCoVsUtgMpData as unknown as ScenarioData,
+  multiway_btn_vs_utg_co: multiwayBtnVsUtgCoData as unknown as ScenarioData,
 };
 
 const METADATA: MetadataIndex = metadataJson as unknown as MetadataIndex;

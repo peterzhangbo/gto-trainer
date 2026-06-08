@@ -1,0 +1,855 @@
+{
+  "scenario": "squeeze",
+  "heroPosition": "BTN",
+  "openerPosition": "CO",
+  "callerPosition": "MP",
+  "stackDepth": 100,
+  "ante": false,
+  "hands": {
+    "AA": {
+      "threeBet": 1.0,
+      "call": 0,
+      "fold": 0
+    },
+    "AKs": {
+      "threeBet": 1.0,
+      "call": 0,
+      "fold": 0
+    },
+    "AQs": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "AJs": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "ATs": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "A9s": {
+      "threeBet": 0.0,
+      "call": 0.8,
+      "fold": 0.2
+    },
+    "A8s": {
+      "threeBet": 0.0,
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "A7s": {
+      "threeBet": 0.0,
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "A6s": {
+      "threeBet": 0.0,
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "A5s": {
+      "threeBet": 1.0,
+      "call": 0,
+      "fold": 0
+    },
+    "A4s": {
+      "threeBet": 1.0,
+      "call": 0,
+      "fold": 0
+    },
+    "A3s": {
+      "threeBet": 0.8,
+      "call": 0,
+      "fold": 0.2
+    },
+    "A2s": {
+      "threeBet": 0.8,
+      "call": 0,
+      "fold": 0.2
+    },
+    "AKo": {
+      "threeBet": 1.0,
+      "call": 0,
+      "fold": 0
+    },
+    "KK": {
+      "threeBet": 1.0,
+      "call": 0,
+      "fold": 0
+    },
+    "KQs": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "KJs": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "KTs": {
+      "threeBet": 0.0,
+      "call": 0.7,
+      "fold": 0.3
+    },
+    "K9s": {
+      "threeBet": 0.0,
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "K8s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K7s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K6s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K5s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K4s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K3s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K2s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "AQo": {
+      "threeBet": 0.7,
+      "call": 0,
+      "fold": 0.3
+    },
+    "KQo": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "QQ": {
+      "threeBet": 1.0,
+      "call": 0,
+      "fold": 0
+    },
+    "QJs": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "QTs": {
+      "threeBet": 0.0,
+      "call": 0.7,
+      "fold": 0.3
+    },
+    "Q9s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q8s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q7s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q6s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q5s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q4s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q3s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q2s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "AJo": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "KJo": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "QJo": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "JJ": {
+      "threeBet": 0.8,
+      "call": 0.2,
+      "fold": 0
+    },
+    "JTs": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "J9s": {
+      "threeBet": 0.0,
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "J8s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J7s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J6s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J5s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J4s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J3s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J2s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "ATo": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "KTo": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "QTo": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "JTo": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "TT": {
+      "threeBet": 0.5,
+      "call": 0.5,
+      "fold": 0
+    },
+    "T9s": {
+      "threeBet": 0.0,
+      "call": 0.8,
+      "fold": 0.2
+    },
+    "T8s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T7s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T6s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T5s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T4s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T3s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T2s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "A9o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K9o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q9o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J9o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T9o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "99": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "98s": {
+      "threeBet": 0.0,
+      "call": 0.7,
+      "fold": 0.3
+    },
+    "97s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "96s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "95s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "94s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "93s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "92s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "A8o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K8o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q8o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J8o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T8o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "98o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "88": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "87s": {
+      "threeBet": 0.0,
+      "call": 0.7,
+      "fold": 0.3
+    },
+    "86s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "85s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "84s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "83s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "82s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "A7o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K7o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q7o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J7o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T7o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "97o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "87o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "77": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "76s": {
+      "threeBet": 0.0,
+      "call": 0.5,
+      "fold": 0.5
+    },
+    "75s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "74s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "73s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "72s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "A6o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K6o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q6o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J6o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T6o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "96o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "86o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "76o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "66": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "65s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "64s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "63s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "62s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "A5o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K5o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q5o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J5o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T5o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "95o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "85o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "75o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "65o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "55": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "54s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "53s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "52s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "A4o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K4o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q4o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J4o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T4o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "94o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "84o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "74o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "64o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "54o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "44": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "43s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "42s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "A3o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K3o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q3o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J3o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T3o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "93o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "83o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "73o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "63o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "53o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "43o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "33": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    },
+    "32s": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "A2o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "K2o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "Q2o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "J2o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "T2o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "92o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "82o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "72o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "62o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "52o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "42o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "32o": {
+      "threeBet": 0.0,
+      "call": 0.0,
+      "fold": 1.0
+    },
+    "22": {
+      "threeBet": 0.0,
+      "call": 1.0,
+      "fold": 0
+    }
+  }
+}
