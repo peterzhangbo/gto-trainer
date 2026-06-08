@@ -181,6 +181,15 @@ const translations = {
     'scenario.river': '河牌',
     'scenario.coldcall': '冷跟注',
     'scenario.squeeze': '挤压',
+    'scenario.blockers': 'Blocker 概念',
+    'scenario.defend_sb_vs_bb': 'SB 对 BB 开牌',
+    'scenario.defend_bb_vs_sb': 'BB 对 SB 防守',
+    'scenario.rfi_btn_40bb': 'BTN 40bb 翻前加注',
+    'scenario.rfi_co_40bb': 'CO 40bb 翻前加注',
+
+    // Stack depth
+    'stack.40bb': '40bb',
+    'stack.100bb': '100bb',
 
     // Settings
     'settings.title': '设置',
@@ -814,6 +823,15 @@ const translations = {
     'scenario.river': 'River',
     'scenario.coldcall': 'Cold Call',
     'scenario.squeeze': 'Squeeze',
+    'scenario.blockers': 'Blocker Concepts',
+    'scenario.defend_sb_vs_bb': 'SB Open vs BB',
+    'scenario.defend_bb_vs_sb': 'BB Defend vs SB',
+    'scenario.rfi_btn_40bb': 'BTN 40bb RFI',
+    'scenario.rfi_co_40bb': 'CO 40bb RFI',
+
+    // Stack depth
+    'stack.40bb': '40bb',
+    'stack.100bb': '100bb',
     'settings.title': 'Settings',
     'settings.profile': 'Profile',
     'settings.displayName': 'Display Name',

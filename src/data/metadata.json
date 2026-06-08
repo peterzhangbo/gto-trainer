@@ -116,6 +116,52 @@
       "filePath": "preflop/defend/bb_vs_utg.json"
     },
     {
+      "id": "defend_sb_vs_bb",
+      "name": "SB 对 BB 开牌",
+      "category": "preflop",
+      "subCategory": "defend",
+      "position": "SB",
+      "villainPosition": "BB",
+      "description": "SB在所有人弃牌后对BB的GTO开牌范围（~62%开牌率，最宽的翻前位置）",
+      "filePath": "preflop/defend/sb_open_vs_bb.json"
+    },
+    {
+      "id": "defend_bb_vs_sb",
+      "name": "BB 对 SB 防守",
+      "category": "preflop",
+      "subCategory": "defend",
+      "position": "BB",
+      "villainPosition": "SB",
+      "description": "BB对SB开牌的GTO防守范围（~55%防守率，含跟注和三次加注）",
+      "filePath": "preflop/defend/bb_defend_vs_sb.json"
+    },
+    {
+      "id": "rfi_btn_40bb",
+      "name": "BTN 40bb 翻前加注",
+      "category": "preflop",
+      "subCategory": "rfi",
+      "position": "BTN",
+      "description": "40bb筹码深度BTN位GTO开牌范围（更紧，更多大牌，更少同花连牌）",
+      "filePath": "preflop/rfi/btn_40bb.json"
+    },
+    {
+      "id": "rfi_co_40bb",
+      "name": "CO 40bb 翻前加注",
+      "category": "preflop",
+      "subCategory": "rfi",
+      "position": "CO",
+      "description": "40bb筹码深度CO位GTO开牌范围（比100bb更紧）",
+      "filePath": "preflop/rfi/co_40bb.json"
+    },
+    {
+      "id": "blockers_notes",
+      "name": "Blocker 概念",
+      "category": "preflop",
+      "subCategory": "blockers",
+      "description": "Blocker（阻断牌）概念详解：如何利用手中的牌阻断对手的范围来做出更好的决策",
+      "filePath": "preflop/blockers/notes.json"
+    },
+    {
       "id": "cbet_dry_high",
       "name": "持续下注: 干燥高牌面",
       "category": "postflop",

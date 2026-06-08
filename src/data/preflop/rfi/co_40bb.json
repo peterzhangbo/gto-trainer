@@ -1,15 +1,15 @@
 {
-  "scenario": "defend",
-  "stackDepth": 100,
+  "scenario": "rfi",
+  "stackDepth": 40,
   "ante": false,
   "hands": {
     "22": {
-      "raise": 0.3,
-      "fold": 0.7
+      "raise": 0.4,
+      "fold": 0.6
     },
     "33": {
-      "raise": 0.5,
-      "fold": 0.5
+      "raise": 0.6,
+      "fold": 0.4
     },
     "44": {
       "raise": 1
@@ -66,14 +66,14 @@
       "raise": 1
     },
     "ATo": {
-      "raise": 1
+      "raise": 0.5,
+      "fold": 0.5
     },
     "A9s": {
       "raise": 1
     },
     "A9o": {
-      "raise": 0.5,
-      "fold": 0.5
+      "fold": 1
     },
     "A8s": {
       "raise": 1
@@ -100,19 +100,21 @@
       "fold": 1
     },
     "A4s": {
-      "raise": 1
+      "raise": 0.6,
+      "fold": 0.4
     },
     "A4o": {
       "fold": 1
     },
     "A3s": {
-      "raise": 1
+      "raise": 0.4,
+      "fold": 0.6
     },
     "A3o": {
       "fold": 1
     },
     "A2s": {
-      "raise": 1
+      "fold": 1
     },
     "A2o": {
       "fold": 1
@@ -127,14 +129,15 @@
       "raise": 1
     },
     "KJo": {
-      "raise": 1
+      "raise": 0.5,
+      "fold": 0.5
     },
     "KTs": {
       "raise": 1
     },
     "KTo": {
-      "raise": 0.5,
-      "fold": 0.5
+      "raise": 0.3,
+      "fold": 0.7
     },
     "K9s": {
       "raise": 1
@@ -149,32 +152,33 @@
       "fold": 1
     },
     "K7s": {
-      "raise": 1
+      "raise": 0.5,
+      "fold": 0.5
     },
     "K7o": {
       "fold": 1
     },
     "K6s": {
-      "raise": 1
+      "raise": 0.3,
+      "fold": 0.7
     },
     "K6o": {
       "fold": 1
     },
     "K5s": {
-      "raise": 1
+      "fold": 1
     },
     "K5o": {
       "fold": 1
     },
     "K4s": {
-      "raise": 1
+      "fold": 1
     },
     "K4o": {
       "fold": 1
     },
     "K3s": {
-      "raise": 0.6,
-      "fold": 0.4
+      "fold": 1
     },
     "K3o": {
       "fold": 1
@@ -195,7 +199,8 @@
       "raise": 1
     },
     "QTo": {
-      "fold": 1
+      "raise": 0.4,
+      "fold": 0.6
     },
     "Q9s": {
       "raise": 1
@@ -204,14 +209,14 @@
       "fold": 1
     },
     "Q8s": {
-      "raise": 1
+      "raise": 0.4,
+      "fold": 0.6
     },
     "Q8o": {
       "fold": 1
     },
     "Q7s": {
-      "raise": 0.5,
-      "fold": 0.5
+      "fold": 1
     },
     "Q7o": {
       "fold": 1
@@ -250,17 +255,19 @@
       "raise": 1
     },
     "JTo": {
-      "raise": 1
+      "raise": 0.4,
+      "fold": 0.6
     },
     "J9s": {
-      "raise": 1
+      "raise": 0.5,
+      "fold": 0.5
     },
     "J9o": {
       "fold": 1
     },
     "J8s": {
-      "raise": 0.5,
-      "fold": 0.5
+      "raise": 0.3,
+      "fold": 0.7
     },
     "J8o": {
       "fold": 1
@@ -308,8 +315,8 @@
       "fold": 1
     },
     "T8s": {
-      "raise": 0.5,
-      "fold": 0.5
+      "raise": 0.3,
+      "fold": 0.7
     },
     "T8o": {
       "fold": 1
@@ -357,8 +364,8 @@
       "fold": 1
     },
     "97s": {
-      "raise": 0.5,
-      "fold": 0.5
+      "raise": 0.3,
+      "fold": 0.7
     },
     "97o": {
       "fold": 1
@@ -400,8 +407,7 @@
       "fold": 1
     },
     "86s": {
-      "raise": 0.5,
-      "fold": 0.5
+      "fold": 1
     },
     "86o": {
       "fold": 1
@@ -437,8 +443,7 @@
       "fold": 1
     },
     "75s": {
-      "raise": 0.5,
-      "fold": 0.5
+      "fold": 1
     },
     "75o": {
       "fold": 1
@@ -462,7 +467,7 @@
       "fold": 1
     },
     "65s": {
-      "raise": 1
+      "fold": 1
     },
     "65o": {
       "fold": 1
@@ -486,7 +491,7 @@
       "fold": 1
     },
     "54s": {
-      "raise": 1
+      "fold": 1
     },
     "54o": {
       "fold": 1
@@ -504,8 +509,7 @@
       "fold": 1
     },
     "43s": {
-      "raise": 0.4,
-      "fold": 0.6
+      "fold": 1
     },
     "43o": {
       "fold": 1
@@ -523,6 +527,5 @@
       "fold": 1
     }
   },
-  "heroPosition": "SB",
-  "villainPosition": "BB"
+  "position": "CO"
 }

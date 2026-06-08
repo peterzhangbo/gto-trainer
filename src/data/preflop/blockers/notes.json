@@ -1,0 +1,52 @@
+{
+  "type": "educational",
+  "title": "Blocker Concepts",
+  "concepts": [
+    {
+      "name": "Blocker to opponent's value range",
+      "example": "Having an Ace blocks AA, AK, AQ combinations",
+      "impact": "Reduces opponent's strong hands by ~17%",
+      "application": "Good for bluffing - A5s is better bluff than 76s because Ace blocks strong Ax"
+    },
+    {
+      "name": "Blocker to opponent's calling range",
+      "example": "Having K♠ blocks flush draws on a spade board",
+      "impact": "Reduces opponent's flush combos",
+      "application": "Better for value betting - opponent less likely to have flush"
+    },
+    {
+      "name": "Blocker to opponent's bluffing range",
+      "example": "Having a low card like 4♠ blocks some straight draws",
+      "impact": "Reduces opponent's bluff combos",
+      "application": "Better for calling - opponent has fewer bluffs, but also fewer value hands"
+    },
+    {
+      "name": "Backdoor blocker effects",
+      "example": "Having A♠ on a K♠7♦2♣ board blocks backdoor nut flush draws",
+      "impact": "Slightly reduces opponent's nut flush draw combos",
+      "application": "Small edge in flop decisions - use for marginal bluff selection"
+    }
+  ],
+  "examples": [
+    {
+      "scenario": "Preflop 4-bet bluff",
+      "heroHand": "A5s",
+      "reasoning": "Ace blocks AA (from 6 combos to 3), AK (from 16 to 12), AQ (16 to 12). This makes A5s a better 4-bet bluff than hands like 76s.",
+      "frequency": "Use A5s as 4-bet bluff ~15-20% of time vs tight 3-bet range"
+    },
+    {
+      "scenario": "River bluff",
+      "heroHand": "A♠Q♠",
+      "board": "K♠7♠2♦3♥J♣",
+      "reasoning": "A♠ blocks the nut flush (A♠Xs) and AQ blocks some KQ/KJ value combos. Good bluff candidate with blocker effects.",
+      "frequency": "Bluff more often when holding key blockers to opponent's value range"
+    },
+    {
+      "scenario": "Calling with blockers",
+      "heroHand": "K♠J♠",
+      "board": "9♠6♠2♥3♦",
+      "reasoning": "K♠ blocks some flush combos. However, having K high also blocks some of opponent's bluff range. Net effect is small.",
+      "frequency": "Blockers are one factor among many - don't overweight them"
+    }
+  ]
+}
