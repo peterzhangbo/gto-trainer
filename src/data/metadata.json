@@ -443,6 +443,26 @@
       "exampleBoard": ["8", "8", "3"],
       "description": "配对牌面面对C-bet的Check-Raise策略（如8-8-3彩虹面），减少bluff频率",
       "filePath": "postflop/check-raise/paired-board.json"
+    },
+    {
+      "id": "fourbet_btn_vs_co",
+      "name": "BTN 对 CO 4-Bet",
+      "category": "preflop",
+      "subCategory": "fourbet",
+      "position": "BTN",
+      "villainPosition": "CO",
+      "description": "BTN面对CO三次加注的GTO四次加注和跟注范围，包含价值4bet和诈唬4bet",
+      "filePath": "preflop/fourbet/btn_4bet_vs_co_3bet.json"
+    },
+    {
+      "id": "fourbet_sb_vs_btn",
+      "name": "SB 对 BTN 4-Bet",
+      "category": "preflop",
+      "subCategory": "fourbet",
+      "position": "SB",
+      "villainPosition": "BTN",
+      "description": "SB面对BTN三次加注的GTO四次加注和跟注范围（比BTN 4bet更紧）",
+      "filePath": "preflop/fourbet/sb_4bet_vs_btn_3bet.json"
     }
   ]
 }

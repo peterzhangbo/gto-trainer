@@ -42,6 +42,8 @@ import multiwayBtnVsUtgCoData from '@/data/preflop/multiway/btn_call_vs_utg_open
 import checkraiseDryBoardData from '@/data/postflop/check-raise/dry-board-ip.json';
 import checkraiseWetBoardData from '@/data/postflop/check-raise/wet-board-oop.json';
 import checkraisePairedBoardData from '@/data/postflop/check-raise/paired-board.json';
+import fourbetBtnVsCoData from '@/data/preflop/fourbet/btn_4bet_vs_co_3bet.json';
+import fourbetSbVsBtnData from '@/data/preflop/fourbet/sb_4bet_vs_btn_3bet.json';
 import metadataJson from '@/data/metadata.json';
 
 // ---------------------------------------------------------------------------
@@ -154,6 +156,8 @@ export const DATA_REGISTRY: Record<string, ScenarioData> = {
   checkraise_dry_board_ip: checkraiseDryBoardData as unknown as ScenarioData,
   checkraise_wet_board_oop: checkraiseWetBoardData as unknown as ScenarioData,
   checkraise_paired_board: checkraisePairedBoardData as unknown as ScenarioData,
+  fourbet_btn_vs_co: fourbetBtnVsCoData as unknown as ScenarioData,
+  fourbet_sb_vs_btn: fourbetSbVsBtnData as unknown as ScenarioData,
 };
 
 const METADATA: MetadataIndex = metadataJson as unknown as MetadataIndex;
