@@ -28,6 +28,7 @@ const EquityDistributionPage = lazy(() => import('@/pages/EquityDistributionPage
 const BoardTexturePage = lazy(() => import('@/pages/BoardTexturePage'))
 const StreetPlanningPage = lazy(() => import('@/pages/StreetPlanningPage'))
 const CheckRaisePage = lazy(() => import('@/pages/CheckRaisePage'))
+const BluffCatcherPage = lazy(() => import('@/pages/BluffCatcherPage'))
 
 const NAV_GROUPS = [
   {
@@ -61,6 +62,7 @@ const NAV_GROUPS = [
       { to: '/implied-odds', key: 'nav.impliedOdds' as const },
       { to: '/street-planning', key: 'nav.streetPlanning' as const },
       { to: '/check-raise', key: 'nav.checkRaise' as const },
+      { to: '/bluff-catcher', key: 'nav.bluffCatcher' as const },
     ]
   },
   {
@@ -111,6 +113,7 @@ export default function App() {
               <Route path="/board-texture" element={<BoardTexturePage />} />
               <Route path="/street-planning" element={<StreetPlanningPage />} />
               <Route path="/check-raise" element={<CheckRaisePage />} />
+              <Route path="/bluff-catcher" element={<BluffCatcherPage />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>
