@@ -413,6 +413,36 @@
       "villainPosition": "UTG",
       "description": "多人底池：UTG加注、CO跟注后BTN冷跟注范围。位置优势允许比CO稍宽的范围。",
       "filePath": "preflop/multiway/btn_call_vs_utg_open_co_call.json"
+    },
+    {
+      "id": "checkraise_dry_board_ip",
+      "name": "Check-Raise: 干燥高牌面",
+      "category": "postflop",
+      "subCategory": "check-raise",
+      "boardTexture": "dry-high",
+      "exampleBoard": ["K", "7", "2"],
+      "description": "干燥高牌面面对C-bet的Check-Raise策略（如K-7-2彩虹面），OOP位的价值和诈唬check-raise范围",
+      "filePath": "postflop/check-raise/dry-board-ip.json"
+    },
+    {
+      "id": "checkraise_wet_board_oop",
+      "name": "Check-Raise: 湿润连接牌面",
+      "category": "postflop",
+      "subCategory": "check-raise",
+      "boardTexture": "wet-connected",
+      "exampleBoard": ["J", "T", "9"],
+      "description": "湿润连接牌面面对C-bet的Check-Raise策略（如J-T-9两色面），更强的check-raise频率",
+      "filePath": "postflop/check-raise/wet-board-oop.json"
+    },
+    {
+      "id": "checkraise_paired_board",
+      "name": "Check-Raise: 配对牌面",
+      "category": "postflop",
+      "subCategory": "check-raise",
+      "boardTexture": "paired",
+      "exampleBoard": ["8", "8", "3"],
+      "description": "配对牌面面对C-bet的Check-Raise策略（如8-8-3彩虹面），减少bluff频率",
+      "filePath": "postflop/check-raise/paired-board.json"
     }
   ]
 }

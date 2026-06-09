@@ -26,6 +26,8 @@ const ChainDrillPage = lazy(() => import('@/pages/ChainDrillPage'))
 const ImpliedOddsPage = lazy(() => import('@/pages/ImpliedOddsPage'))
 const EquityDistributionPage = lazy(() => import('@/pages/EquityDistributionPage'))
 const BoardTexturePage = lazy(() => import('@/pages/BoardTexturePage'))
+const StreetPlanningPage = lazy(() => import('@/pages/StreetPlanningPage'))
+const CheckRaisePage = lazy(() => import('@/pages/CheckRaisePage'))
 
 const NAV_GROUPS = [
   {
@@ -57,6 +59,8 @@ const NAV_GROUPS = [
       { to: '/bet-sizing', key: 'nav.betSizing' as const },
       { to: '/exploit', key: 'nav.exploit' as const },
       { to: '/implied-odds', key: 'nav.impliedOdds' as const },
+      { to: '/street-planning', key: 'nav.streetPlanning' as const },
+      { to: '/check-raise', key: 'nav.checkRaise' as const },
     ]
   },
   {
@@ -105,6 +109,8 @@ export default function App() {
               <Route path="/implied-odds" element={<ImpliedOddsPage />} />
               <Route path="/equity-dist" element={<EquityDistributionPage />} />
               <Route path="/board-texture" element={<BoardTexturePage />} />
+              <Route path="/street-planning" element={<StreetPlanningPage />} />
+              <Route path="/check-raise" element={<CheckRaisePage />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>

@@ -39,6 +39,9 @@ import sqSbVsCoOpenBtnCallData from '@/data/preflop/squeeze/sb_squeeze_vs_co_ope
 import sqBbVsCoOpenBtnCallData from '@/data/preflop/squeeze/bb_squeeze_vs_co_open_btn_call.json';
 import multiwayCoVsUtgMpData from '@/data/preflop/multiway/co_call_vs_utg_open_mp_call.json';
 import multiwayBtnVsUtgCoData from '@/data/preflop/multiway/btn_call_vs_utg_open_co_call.json';
+import checkraiseDryBoardData from '@/data/postflop/check-raise/dry-board-ip.json';
+import checkraiseWetBoardData from '@/data/postflop/check-raise/wet-board-oop.json';
+import checkraisePairedBoardData from '@/data/postflop/check-raise/paired-board.json';
 import metadataJson from '@/data/metadata.json';
 
 // ---------------------------------------------------------------------------
@@ -148,6 +151,9 @@ export const DATA_REGISTRY: Record<string, ScenarioData> = {
   squeeze_bb_vs_co_open_btn_call: sqBbVsCoOpenBtnCallData as unknown as ScenarioData,
   multiway_co_vs_utg_mp: multiwayCoVsUtgMpData as unknown as ScenarioData,
   multiway_btn_vs_utg_co: multiwayBtnVsUtgCoData as unknown as ScenarioData,
+  checkraise_dry_board_ip: checkraiseDryBoardData as unknown as ScenarioData,
+  checkraise_wet_board_oop: checkraiseWetBoardData as unknown as ScenarioData,
+  checkraise_paired_board: checkraisePairedBoardData as unknown as ScenarioData,
 };
 
 const METADATA: MetadataIndex = metadataJson as unknown as MetadataIndex;

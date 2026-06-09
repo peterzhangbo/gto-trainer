@@ -1,0 +1,18 @@
+{
+  "scenario": "check-raise",
+  "boardTexture": "wet-connected",
+  "exampleBoard": ["J", "T", "9"],
+  "position": "OOP",
+  "previousAction": "check-bet",
+  "stackDepth": 100,
+  "strategy": {
+    "set": { "raise": 0.70, "call": 0.30 },
+    "twoPair": { "raise": 0.65, "call": 0.35 },
+    "comboDraw": { "raise": 0.45, "call": 0.40, "fold": 0.15 },
+    "oesd": { "raise": 0.20, "call": 0.50, "fold": 0.30 },
+    "flushDraw": { "raise": 0.30, "call": 0.45, "fold": 0.25 },
+    "topPair_topKicker": { "raise": 0.10, "call": 0.70, "fold": 0.20 },
+    "middlePair": { "raise": 0.05, "call": 0.30, "fold": 0.65 },
+    "air": { "raise": 0.08, "fold": 0.92 }
+  }
+}
