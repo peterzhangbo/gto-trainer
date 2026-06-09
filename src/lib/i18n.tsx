@@ -4,6 +4,12 @@ type Lang = 'zh' | 'en'
 
 const translations = {
   zh: {
+    // Navbar groups
+    'nav.trainingGroup': '训练',
+    'nav.analysisGroup': '分析工具',
+    'nav.strategyGroup': '策略学习',
+    'nav.personalGroup': '我的',
+
     // Navbar
     'nav.training': '训练',
     'nav.ranges': '范围',
@@ -660,6 +666,12 @@ const translations = {
     'multiway.offsuitBroadways': '非同花大牌价值降低',
   },
   en: {
+    // Navbar groups
+    'nav.trainingGroup': 'Training',
+    'nav.analysisGroup': 'Analysis',
+    'nav.strategyGroup': 'Strategy',
+    'nav.personalGroup': 'My',
+
     'nav.training': 'Training',
     'nav.ranges': 'Ranges',
     'nav.calculator': 'EV Calc',

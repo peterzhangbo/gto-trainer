@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react'
+import { useState, useRef, useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { useI18n } from '@/lib/i18n'
@@ -27,24 +27,49 @@ const ImpliedOddsPage = lazy(() => import('@/pages/ImpliedOddsPage'))
 const EquityDistributionPage = lazy(() => import('@/pages/EquityDistributionPage'))
 const BoardTexturePage = lazy(() => import('@/pages/BoardTexturePage'))
 
-const NAV_LINK_KEYS = [
-  { to: '/trainer', key: 'nav.training' as const },
-  { to: '/ranges', key: 'nav.ranges' as const },
-  { to: '/calculator', key: 'nav.calculator' as const },
-  { to: '/dashboard', key: 'nav.dashboard' as const },
-  { to: '/mistakes', key: 'nav.mistakes' as const },
-  { to: '/history', key: 'nav.history' as const },
-  { to: '/history-import', key: 'nav.handHistory' as const },
-  { to: '/range-editor', key: 'nav.rangeEditor' as const },
-  { to: '/tournament', key: 'nav.tournament' as const },
-  { to: '/ai-opponent', key: 'nav.aiOpponent' as const },
-  { to: '/quiz', key: 'nav.quiz' as const },
-  { to: '/bet-sizing', key: 'nav.betSizing' as const },
-  { to: '/exploit', key: 'nav.exploit' as const },
-  { to: '/chain-drill', key: 'nav.chainDrill' as const },
-  { to: '/implied-odds', key: 'nav.impliedOdds' as const },
-  { to: '/equity-dist', key: 'nav.equityDist' as const },
-  { to: '/board-texture', key: 'nav.boardTexture' as const },
+const NAV_GROUPS = [
+  {
+    key: 'nav.trainingGroup' as const,
+    label: { zh: '训练', en: 'Training' },
+    items: [
+      { to: '/trainer', key: 'nav.training' as const },
+      { to: '/ai-opponent', key: 'nav.aiOpponent' as const },
+      { to: '/quiz', key: 'nav.quiz' as const },
+      { to: '/chain-drill', key: 'nav.chainDrill' as const },
+      { to: '/tournament', key: 'nav.tournament' as const },
+    ]
+  },
+  {
+    key: 'nav.analysisGroup' as const,
+    label: { zh: '分析工具', en: 'Analysis' },
+    items: [
+      { to: '/ranges', key: 'nav.ranges' as const },
+      { to: '/calculator', key: 'nav.calculator' as const },
+      { to: '/range-editor', key: 'nav.rangeEditor' as const },
+      { to: '/equity-dist', key: 'nav.equityDist' as const },
+      { to: '/board-texture', key: 'nav.boardTexture' as const },
+    ]
+  },
+  {
+    key: 'nav.strategyGroup' as const,
+    label: { zh: '策略学习', en: 'Strategy' },
+    items: [
+      { to: '/bet-sizing', key: 'nav.betSizing' as const },
+      { to: '/exploit', key: 'nav.exploit' as const },
+      { to: '/implied-odds', key: 'nav.impliedOdds' as const },
+    ]
+  },
+  {
+    key: 'nav.personalGroup' as const,
+    label: { zh: '我的', en: 'My' },
+    items: [
+      { to: '/dashboard', key: 'nav.dashboard' as const },
+      { to: '/mistakes', key: 'nav.mistakes' as const },
+      { to: '/history', key: 'nav.history' as const },
+      { to: '/history-import', key: 'nav.handHistory' as const },
+      { to: '/settings', key: 'nav.settings' as const },
+    ]
+  },
 ]
 
 export default function App() {
@@ -104,21 +129,12 @@ function Navbar() {
 
         {/* Desktop nav links */}
         <div className="hidden md:flex gap-1">
-          {NAV_LINK_KEYS.map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className={`relative px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                location.pathname === link.to
-                  ? 'bg-gray-800 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
-              }`}
-            >
-              {t(link.key)}
-              {location.pathname === link.to && (
-                <span className="absolute -bottom-[13px] left-1/2 -translate-x-1/2 w-5 h-0.5 bg-red-500 rounded-full" />
-              )}
-            </Link>
+          {NAV_GROUPS.map((group) => (
+            <NavDropdown
+              key={group.key}
+              group={group}
+              isActive={(path) => location.pathname === path}
+            />
           ))}
         </div>
 
@@ -170,21 +186,10 @@ function Navbar() {
       </div>
 
       {/* Mobile menu */}
-      <div className={`md:hidden border-t border-gray-800 bg-gray-900 overflow-hidden transition-all duration-300 ease-in-out ${menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 border-t-transparent'}`}>
+      <div className={`md:hidden border-t border-gray-800 bg-gray-900 overflow-hidden transition-all duration-300 ease-in-out ${menuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 border-t-transparent'}`}>
         <div className="px-4 py-3 space-y-1">
-            {NAV_LINK_KEYS.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                onClick={() => setMenuOpen(false)}
-                className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  location.pathname === link.to
-                    ? 'bg-gray-800 text-white'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
-                }`}
-              >
-                {t(link.key)}
-              </Link>
+            {NAV_GROUPS.map((group) => (
+              <MobileNavGroup key={group.key} group={group} isActive={(path) => location.pathname === path} onNavigate={() => setMenuOpen(false)} />
             ))}
             {user ? (
               <div className="pt-2 border-t border-gray-800 mt-2 space-y-2 sm:hidden">
@@ -208,5 +213,93 @@ function Navbar() {
         </div>
       </div>
     </nav>
+  )
+}
+
+function NavDropdown({ group, isActive }: { group: typeof NAV_GROUPS[0]; isActive: (path: string) => boolean }) {
+  const { t } = useI18n()
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const hasActive = group.items.some((item) => isActive(item.to))
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className={`px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1 transition-colors ${
+          hasActive
+            ? 'bg-gray-800 text-white'
+            : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+        }`}
+      >
+        {t(group.key)}
+        <svg className={`w-3 h-3 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 mt-1 bg-gray-900 border border-gray-800 rounded-lg shadow-xl py-1 min-w-[180px] z-50">
+          {group.items.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              onClick={() => setOpen(false)}
+              className={`block px-4 py-2 text-sm transition-colors ${
+                isActive(item.to)
+                  ? 'bg-gray-800 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+              }`}
+            >
+              {t(item.key)}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function MobileNavGroup({ group, isActive, onNavigate }: { group: typeof NAV_GROUPS[0]; isActive: (path: string) => boolean; onNavigate: () => void }) {
+  const { t } = useI18n()
+  const [expanded, setExpanded] = useState(() => group.items.some((item) => isActive(item.to)))
+
+  return (
+    <div>
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-800/50"
+      >
+        {t(group.key)}
+        <svg className={`w-4 h-4 transition-transform ${expanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {expanded && (
+        <div className="ml-3 space-y-0.5">
+          {group.items.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              onClick={onNavigate}
+              className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
+                isActive(item.to)
+                  ? 'bg-gray-800 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+              }`}
+            >
+              {t(item.key)}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
