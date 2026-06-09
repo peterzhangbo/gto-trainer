@@ -52,6 +52,9 @@ function buildLookupParams(meta: Record<string, any>): LookupParams | null {
       callerPosition: meta.callerPosition as string,
     }
   }
+  if (sub === 'fourbet' && pos) {
+    return { scenarioType: 'threeBet', position: pos, villainPosition: vp! }
+  }
   if (sub === 'c-bet' && bt) {
     return { scenarioType: 'c-bet', boardTexture: bt, handCategory: '' }
   }
